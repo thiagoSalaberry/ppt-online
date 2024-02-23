@@ -21,7 +21,7 @@ export default function Lobby() {
             </div>
             <div className={styles["lobby-info"]}>
                 <TextComp tag="p" weight="bold">Sala</TextComp>
-                <TextComp tag="p">{gameRoomId}</TextComp>
+                <TextComp tag="p">{gameRoomId ? gameRoomId : ""}</TextComp>
             </div>
         </header>
         <section className={styles["lobby-content"]}>
@@ -37,7 +37,7 @@ export default function Lobby() {
           ) : (
             <>
               <TextComp tag="p">Compartí el código:</TextComp>
-              <TextComp tag="p" weight="bold" size="28px">{gameRoomId}</TextComp>
+              <TextComp tag="p" weight="bold" size="28px">{gameRoomId ? gameRoomId : ""}</TextComp>
               <TextComp tag="p">Con tu contrincante</TextComp>
             </>
           )}
