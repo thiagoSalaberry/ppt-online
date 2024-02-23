@@ -9,7 +9,7 @@ import { useParams } from "next/navigation";
 import { WaitingComp } from "@/components/waiting.tsx";
 export default function Lobby() {
   const params = useParams();
-  const gameRoomId = String(params.gameroomId);
+  const gameRoomId = params?.gameroomId;
   const [host, setHost] = useState<{connected: boolean, ready:boolean, name:string, wins:number}>({connected: true, ready: false, name: "Thiago", wins: 1});
   const [guest, setGuest] = useState<{connected: boolean, ready:boolean, name:string, wins:number}>({connected: false, ready: false, name: "Samay", wins: 3});
   return (
