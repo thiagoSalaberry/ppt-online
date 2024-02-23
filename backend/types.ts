@@ -1,0 +1,25 @@
+type PlayerData = {
+  id?: string;
+  name: string;
+  pin: number;
+};
+
+type GameroomData = {
+  gameroomId: string;
+  players: {
+    host: {
+      name: string;
+      id: string;
+    };
+    guest: {
+      name: string;
+      id: string;
+    };
+  };
+  history: {
+    hostWins: number;
+    guestWins: number;
+    draws: number;
+  };
+  shortRoomId: number;
+};

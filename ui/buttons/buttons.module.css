@@ -24,6 +24,6 @@
     color: black;
 }
 .orange {
-    background: var(--orange);
+    background: var(--orange-gradient);
     box-shadow: var(--buttons-shadow-orange);
 }

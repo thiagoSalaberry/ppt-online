@@ -23,10 +23,10 @@
 }
 .input:focus {
     transform: translateY(-7px);
-    border: 3px solid var(--orange);
-    box-shadow: var(--buttons-shadow-orange);
+    border: 3px solid var(--blue);
+    box-shadow: var(--buttons-shadow-blue);
     outline: none;
 }
 .valued {
-    border: 3px solid var(--orange);
+    border: 3px solid var(--blue);
 }

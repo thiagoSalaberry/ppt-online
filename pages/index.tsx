@@ -43,25 +43,25 @@ export default function Home() {
     (
       <form onSubmit={handleNameSubmit} className={styles["name-form"]}>
         <TextField compRef={nameInputRef} type="text" name="name" label="Nombre" required={true}/>
-        <Button color="orange">Continuar</Button>
+        <Button color="blue">Continuar</Button>
       </form>
     ),
     (
       <div className={styles["step"]}>
-        <Button color="orange" onClick={()=>handleClick("newGame")}>Nuevo juego</Button>
-        <Button color="orange" onClick={()=>handleClick("joinRoom")}>Ingresar a una sala</Button>
+        <Button color="blue" onClick={()=>handleClick("newGame")}>Nuevo juego</Button>
+        <Button color="blue" onClick={()=>handleClick("joinRoom")}>Ingresar a una sala</Button>
       </div>
     ),
     (
       <form onSubmit={handleCodeSubmit} className={styles["code-form"]}>
         <TextField compRef={codeInputRef} type="number" name="code" label="Código" required={true}/>
-        <Button color="orange">Ingresar a la sala</Button>
+        <Button color="blue">Ingresar a la sala</Button>
       </form>
     ),
   ];
   return (
     <main className={styles["home-page"]}>
-      <TextComp tag="h1" size="80px" weight="bold" color="#F17A3E" height="1" align="left">Piedra Papel ó Tijera</TextComp>
+      <TextComp tag="h1" size="80px" weight="bold" color="#0d6efd" height="1" align="left">Piedra Papel ó Tijera</TextComp>
       <section className={styles["steps-container"]}>
         {stepHeaders[currentStep]}
         {steps[currentStep]}

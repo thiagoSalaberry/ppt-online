@@ -16,6 +16,7 @@ type MoveProps = {
   move: "piedra" | "papel" | "tijera";
   selected?: "piedra" | "papel" | "tijera" | null;
   onClick?: (move: "piedra" | "papel" | "tijera") => void;
+  size: "small" | "big";
 };
 type TextProps = {
   tag: "h1" | "h2" | "label" | "p";

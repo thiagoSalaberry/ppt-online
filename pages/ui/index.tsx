@@ -1,5 +1,6 @@
 import styles from "./page.module.css";
 import { Button } from "@/ui/buttons";
+import { Timer } from "@/components/timer";
 import { TextField } from "@/ui/text-fields";
 import { Move } from "@/components/move";
 import { useState } from "react";
@@ -13,12 +14,13 @@ export default function UIPage() {
             <Button color="red">Botón rojo</Button>
             <Button color="back">Volver</Button>
             <div className={styles["moves-container"]}>
-              <Move move="piedra" selected={selected} onClick={()=>{setSelected("piedra")}}/>
-              <Move move="papel" selected={selected} onClick={()=>setSelected("papel")}/>
-              <Move move="tijera" selected={selected} onClick={()=>setSelected("tijera")}/>
+              <Move size="big" move="piedra" selected={selected} onClick={()=>{setSelected("piedra")}}/>
+              <Move size="big" move="papel" selected={selected} onClick={()=>setSelected("papel")}/>
+              <Move size="big" move="tijera" selected={selected} onClick={()=>setSelected("tijera")}/>
             </div>
             <WaitingComp connected={false}/>
             <WaitingComp connected={true}/>
+            <Timer/>
         </section>
       </main>
     )

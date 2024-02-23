@@ -12,3 +12,14 @@
     transform: translateY(15px);
     opacity: .6;
 }
+.big {
+    height: 255px;
+    width: auto;
+}
+.big.selected {
+    transform: translateY(-30px);
+}
+.big.not-selected {
+    transform: translateY(30px);
+    opacity: .6;
+}

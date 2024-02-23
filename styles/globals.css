@@ -8,6 +8,7 @@
   --buttons-shadow-blue: 0 7px 0 rgb(0, 86, 215);
   --buttons-shadow-orange: 0 7px 0 rgb(194, 91, 39);
   --buttons-shadow-red: 0 7px 0 rgb(205, 19, 44);
+  --orange-gradient: linear-gradient(135deg, rgba(254,217,183,1) 0%, rgba(240,113,103,1) 100%);
 }
 * {
   font-family: "Source Code Pro";
@@ -18,8 +19,8 @@
 body {
   background: rgb(239,240,242);
   background: linear-gradient(135deg, rgba(239,240,242,1) 0%, rgba(186,191,209,1) 100%);
-  background: rgb(254,217,183);
-  background: linear-gradient(135deg, rgba(254,217,183,1) 0%, rgba(240,113,103,1) 100%);
+  /* background: rgb(254,217,183);
+  background: linear-gradient(135deg, rgba(254,217,183,1) 0%, rgba(240,113,103,1) 100%); */
 }
 /* :root {
   --max-width: 1100px;
