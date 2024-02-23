@@ -1,0 +1,14 @@
+.move, .selected, .not-selected {
+    transition: all .2s;
+    cursor: pointer;
+}
+.move:hover {
+    transform: translateY(-15px);
+}
+.selected {
+    transform: translateY(-15px);
+}
+.not-selected {
+    transform: translateY(15px);
+    opacity: .6;
+}

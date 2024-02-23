@@ -1,0 +1,29 @@
+.button {
+    font-size: 22px;
+    font-weight: 500;
+    color: white;
+    background: var(--blue);
+    border: none;
+    padding: 16px 0;
+    border-radius: 10px;
+    box-shadow: var(--buttons-shadow-blue);
+    transition: all .1s;
+    width: 100%;
+}
+.button:active {
+    transform: translateY(7px);
+    box-shadow: none;
+}
+.red {
+    background: var(--red);
+    box-shadow: var(--buttons-shadow-red);
+}
+.back {
+    background: var(--back);
+    box-shadow: var(--buttons-shadow);
+    color: black;
+}
+.orange {
+    background: var(--orange);
+    box-shadow: var(--buttons-shadow-orange);
+}

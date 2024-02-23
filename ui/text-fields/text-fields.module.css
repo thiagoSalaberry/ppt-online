@@ -1,0 +1,32 @@
+.input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    gap: 5px;
+}
+
+.input-label {
+    font-size: 24px;
+    font-weight: 500;
+}
+.input {
+    width: 100%;
+    font-size: 22px;
+    padding: 16px;
+    border-radius: 10px;
+    border: 3px solid rgba(0, 0, 0, 0.5);
+    transition: all .1s;
+    text-align: center;
+    font-weight: 600;
+}
+.input:focus {
+    transform: translateY(-7px);
+    border: 3px solid var(--orange);
+    box-shadow: var(--buttons-shadow-orange);
+    outline: none;
+}
+.valued {
+    border: 3px solid var(--orange);
+}

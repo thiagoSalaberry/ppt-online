@@ -1,4 +1,27 @@
 :root {
+  --fondo: #efefef;
+  --blue:#0d6efd;
+  --red: #ff2945;
+  --back: #d2d2d2;
+  --orange: #F17A3E;
+  --buttons-shadow: 0 7px 0 rgb(0,0,0,.5);
+  --buttons-shadow-blue: 0 7px 0 rgb(0, 86, 215);
+  --buttons-shadow-orange: 0 7px 0 rgb(194, 91, 39);
+  --buttons-shadow-red: 0 7px 0 rgb(205, 19, 44);
+}
+* {
+  font-family: "Source Code Pro";
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: rgb(239,240,242);
+  background: linear-gradient(135deg, rgba(239,240,242,1) 0%, rgba(186,191,209,1) 100%);
+  background: rgb(254,217,183);
+  background: linear-gradient(135deg, rgba(254,217,183,1) 0%, rgba(240,113,103,1) 100%);
+}
+/* :root {
   --max-width: 1100px;
   --border-radius: 12px;
   --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
@@ -71,14 +94,14 @@
     --card-rgb: 100, 100, 100;
     --card-border-rgb: 200, 200, 200;
   }
-}
+} */
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
-
+/* 
 html,
 body {
   max-width: 100vw;
@@ -104,4 +127,4 @@ a {
   html {
     color-scheme: dark;
   }
-}
+} */
