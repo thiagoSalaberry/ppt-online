@@ -1,10 +1,11 @@
 :root {
   --fondo: #efefef;
   --blue:#0d6efd;
-  --red: #ff2945;
+  --red: #F28383;
   --back: #d2d2d2;
-  --orange: #F17A3E;
-  --buttons-shadow: 0 7px 0 rgb(0,0,0,.5);
+  --orange: #ff9752;
+  --black: #2b2b2b;
+  --buttons-shadow: 0px 8px 0px 0 rgba(0, 0, 0, 1);
   --buttons-shadow-blue: 0 7px 0 rgb(0, 86, 215);
   --buttons-shadow-orange: 0 7px 0 rgb(194, 91, 39);
   --buttons-shadow-red: 0 7px 0 rgb(205, 19, 44);
@@ -17,8 +18,10 @@
 }
 
 body {
-  background: rgb(239,240,242);
-  background: linear-gradient(135deg, rgba(239,240,242,1) 0%, rgba(186,191,209,1) 100%);
+  background: #f5f5f5;
+  background-image: url(/fondo.svg);
+  background-position: 0% 100%;
+  background-size: cover;
   /* background: rgb(254,217,183);
   background: linear-gradient(135deg, rgba(254,217,183,1) 0%, rgba(240,113,103,1) 100%); */
 }

@@ -3,6 +3,7 @@ import { TextField } from "@/ui/text-fields";
 import { Move } from "@/components/move";
 import { TextComp } from "@/ui/texts";
 import styles from "./home.module.css";
+import { Header } from "@/components/header";
 import React, { useRef, useState } from "react";
 import Router from "next/router";
 export default function Home() {
@@ -36,41 +37,38 @@ export default function Home() {
     };
   }
   const stepHeaders: JSX.Element[] = [
-    <TextComp tag="label" size="28px" weight="500" align="center" color="#333">Ingresá tu nombre para jugar</TextComp>,
-    <TextComp tag="label" size="28px" weight="500" align="center" color="#333">Elegí una opción</TextComp>,
+    <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">Ingresá tus datos para jugar</TextComp>,
+    <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">Elegí una opción</TextComp>,
+    <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">Ingresá el código de la sala</TextComp>,
   ]
   const steps: JSX.Element[] = [
     (
       <form onSubmit={handleNameSubmit} className={styles["name-form"]}>
-        <TextField compRef={nameInputRef} type="text" name="name" label="Nombre" required={true}/>
-        <Button color="blue">Continuar</Button>
+        <TextField compRef={nameInputRef} type="text" name="name" label="NOMBRE" required={true}/>
+        <TextField compRef={nameInputRef} type="number" name="pin" label="PIN" required={true}/>
+        <Button color="black">Continuar</Button>
       </form>
     ),
     (
       <div className={styles["step"]}>
-        <Button color="blue" onClick={()=>handleClick("newGame")}>Nuevo juego</Button>
-        <Button color="blue" onClick={()=>handleClick("joinRoom")}>Ingresar a una sala</Button>
+        <Button color="black" onClick={()=>handleClick("newGame")}>Nuevo juego</Button>
+        <Button color="black" onClick={()=>handleClick("joinRoom")}>Ingresar a una sala</Button>
       </div>
     ),
     (
       <form onSubmit={handleCodeSubmit} className={styles["code-form"]}>
         <TextField compRef={codeInputRef} type="number" name="code" label="Código" required={true}/>
-        <Button color="blue">Ingresar a la sala</Button>
+        <Button color="black">Buscar</Button>
       </form>
     ),
   ];
   return (
     <main className={styles["home-page"]}>
-      <TextComp tag="h1" size="80px" weight="bold" color="#0d6efd" height="1" align="left">Piedra Papel ó Tijera</TextComp>
-      <section className={styles["steps-container"]}>
+      <Header/>
+      <section className={styles["header-section"]}>
         {stepHeaders[currentStep]}
         {steps[currentStep]}
       </section>
-      <footer className={styles["footer"]}>
-        <Move move="piedra" selected={null}/>
-        <Move move="papel" selected={null}/>
-        <Move move="tijera" selected={null}/>
-      </footer>
     </main>
   )
 }

@@ -11,24 +11,24 @@ export default function Lobby() {
   const params = useParams();
   const gameRoomId = params?.gameroomId;
   const [host, setHost] = useState<{connected: boolean, ready:boolean, name:string, wins:number}>({connected: true, ready: false, name: "Thiago", wins: 1});
-  const [guest, setGuest] = useState<{connected: boolean, ready:boolean, name:string, wins:number}>({connected: false, ready: false, name: "Samay", wins: 3});
+  const [guest, setGuest] = useState<{connected: boolean, ready:boolean, name:string, wins:number}>({connected: true, ready: false, name: "Samay", wins: 3});
   return (
     <main className={styles["lobby-page"]}>
         <header className={styles["lobby-header"]}>
             <div className={styles["lobby-players"]}>
-                <span className={styles["player"]}>{host.connected ? (<><WaitingComp connected={host.connected}/><TextComp tag="p" weight="bold">{host.name}: {host.wins.toString()}</TextComp></>) : (<><WaitingComp connected={host.connected}/><TextComp tag="p" weight="bold">{host.name}: {host.wins.toString()}</TextComp></>)}</span>
-                <span className={styles["player"]}>{guest.connected ? (<><WaitingComp connected={guest.connected}/><TextComp tag="p" weight="bold" color="#FF6442">{guest.name}: {guest.wins.toString()}</TextComp></>) : (<><WaitingComp connected={guest.connected}/><TextComp tag="p" weight="bold" color="#FF6442">Guest: 0</TextComp></>)}</span>
+                <span className={styles["player"]}>{host.connected ? (<><WaitingComp connected={host.connected}/><TextComp tag="p" weight="bold" color="#2b2b2b">{host.name}: {host.wins.toString()}</TextComp></>) : (<><WaitingComp connected={host.connected}/><TextComp tag="p" weight="bold" color="#2b2b2b">{host.name}: {host.wins.toString()}</TextComp></>)}</span>
+                <span className={styles["player"]}>{guest.connected ? (<><WaitingComp connected={guest.connected}/><TextComp tag="p" weight="bold" color="#2b2b2b">{guest.name}: {guest.wins.toString()}</TextComp></>) : (<><WaitingComp connected={guest.connected}/><TextComp tag="p" weight="bold" color="#2b2b2b">Guest: 0</TextComp></>)}</span>
             </div>
             <div className={styles["lobby-info"]}>
-                <TextComp tag="p" weight="bold">Sala</TextComp>
-                <TextComp tag="p">{gameRoomId ? gameRoomId : ""}</TextComp>
+                <TextComp tag="p" weight="700" color="#2b2b2b">SALA</TextComp>
+                <TextComp tag="p" color="#2b2b2b">{gameRoomId ? gameRoomId : ""}</TextComp>
             </div>
         </header>
         <section className={styles["lobby-content"]}>
           {host.connected && guest.connected && !host.ready ? (
             <>
-              <TextComp tag="p" align="center">Presioná jugar y elegí: piedra, papel ó tijera antes de que pasen 3 segundos.</TextComp>
-              <Button onClick={()=>setHost({...host, ready: true})}>¡Jugar!</Button>
+              <TextComp tag="p" align="center">¡Presioná: <br></br><span className={styles["bold"]}>PIEDRA</span>, <span className={styles["bold"]}>PAPEL</span> ó <span className={styles["bold"]}>TIJERA</span><br></br> antes de que pasen 3 segundos!</TextComp>
+              <Button onClick={()=>setHost({...host, ready: true})} color="black">¡Jugar!</Button>
             </>
           ) : host.connected && host.ready ? (
             <>
@@ -43,9 +43,9 @@ export default function Lobby() {
           )}
         </section>
         <footer className={styles["footer"]}>
-            <Move move="piedra" selected={null}/>
-            <Move move="papel" selected={null}/>
-            <Move move="tijera" selected={null}/>
+            <Move size="small" move="piedra" selected={null}/>
+            <Move size="small" move="papel" selected={null}/>
+            <Move size="small" move="tijera" selected={null}/>
       </footer>
     </main>
   )

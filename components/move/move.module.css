@@ -23,3 +23,9 @@
     transform: translateY(30px);
     opacity: .6;
 }
+.izq {
+    transform: scaleX(-1) rotate(-90deg);
+}
+.der {
+    transform: rotate(-90deg);
+}

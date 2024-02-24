@@ -1,39 +1,3 @@
-// import { useRef } from "react";
-// import styles from "./timer.module.css";
-// export function Timer() {
-//     let circularProgress = useRef<HTMLDivElement>(null),
-//         progressValue = useRef<HTMLDivElement>(null);
-    
-//     let progressStartValue = 0,
-//         progressEndValue = 1000,
-//         seconds = 0;
-    
-//     let progress = setInterval(()=>{
-//         progressStartValue++;
-//         if(circularProgress.current) {
-//             const circulo = circularProgress.current;
-//             circulo.style.background = `conic-gradient(#ff7469 ${progressStartValue * 1.2}deg, #ededed 0deg)`
-//         }
-//         if(progressStartValue == progressEndValue) {
-//             clearInterval(progress);
-//         }
-//     }, 10);
-//     let addSeconds = setInterval(()=>{
-//         seconds++
-//         if(progressValue.current) {
-//             progressValue.current.textContent = `${seconds}`
-//         }
-//         if(seconds == 3 && progressValue.current) {
-//             progressValue.current.textContent = `¡YA!`
-//             clearInterval(addSeconds);
-//         }
-//     }, 1000)
-//     return (
-//         <div className={styles["circular-progress"]} ref={circularProgress}>
-//             <span className={styles["progress-value"]} ref={progressValue}>{progressStartValue}</span>
-//         </div>
-//     )
-// }
 import { useEffect, useRef, useState } from "react";
 import styles from "./timer.module.css";
 export function Timer() {
@@ -78,7 +42,7 @@ export function Timer() {
     useEffect(() => {
         if (circularProgressRef.current) {
             const circulo = circularProgressRef.current;
-            circulo.style.background = `conic-gradient(#ff7469 ${progressStartValue * 1.2}deg, #ededed 0deg)`;
+            circulo.style.background = `conic-gradient(#2b2b2b ${progressStartValue * 1.2}deg, #ededed 0deg)`;
         }
         if (progressValueRef.current) {
             progressValueRef.current.textContent = `${seconds}`;

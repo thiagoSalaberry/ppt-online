@@ -17,6 +17,7 @@ type MoveProps = {
   selected?: "piedra" | "papel" | "tijera" | null;
   onClick?: (move: "piedra" | "papel" | "tijera") => void;
   size: "small" | "big";
+  className?: string;
 };
 type TextProps = {
   tag: "h1" | "h2" | "label" | "p";
@@ -29,4 +30,19 @@ type TextProps = {
 };
 type WaitingProps = {
   connected: boolean;
+};
+type GameroomCardProps = {
+  gameroomId: string;
+  players: {
+    host: { name: string; id: string };
+    guest: { name: string; id: string };
+  };
+  full: boolean;
+};
+type IconsProps = {
+  size: string;
+};
+type ResultCardProps = {
+  winner: "host" | "guest";
+  img: "win" | "loss";
 };

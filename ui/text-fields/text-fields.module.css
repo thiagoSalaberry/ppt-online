@@ -16,17 +16,17 @@
     font-size: 22px;
     padding: 16px;
     border-radius: 10px;
-    border: 3px solid rgba(0, 0, 0, 0.5);
+    border: 4px solid rgba(0, 0, 0, 0.5);
     transition: all .1s;
     text-align: center;
     font-weight: 600;
 }
 .input:focus {
     transform: translateY(-7px);
-    border: 3px solid var(--blue);
-    box-shadow: var(--buttons-shadow-blue);
+    border: 4px solid var(--black);
+    box-shadow: var(--buttons-shadow);
     outline: none;
 }
 .valued {
-    border: 3px solid var(--blue);
+    border: 4px solid var(--black);
 }
