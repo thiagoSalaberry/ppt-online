@@ -10,6 +10,7 @@ export default function Home() {
   const [player, setPlayer] =  useState<string>("");
   const [currentStep, setCurrentStep] = useState<number>(0);
   const nameInputRef = useRef<HTMLInputElement>(null);
+  const pinInputRef = useRef<HTMLInputElement>(null);
   const codeInputRef = useRef<HTMLInputElement>(null);
   const handleNameSubmit = (e:any) => {
     e.preventDefault();
@@ -38,27 +39,28 @@ export default function Home() {
   }
   const stepHeaders: JSX.Element[] = [
     <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">Ingresá tus datos para jugar</TextComp>,
-    <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">¡Hola Thiago!<br></br>Elegí una opción</TextComp>,
+    <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">¡Hola {player}!<br></br>Elegí una opción</TextComp>,
     <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">Ingresá el código de la sala</TextComp>,
   ]
   const steps: JSX.Element[] = [
     (
       <form onSubmit={handleNameSubmit} className={styles["name-form"]}>
         <TextField compRef={nameInputRef} type="text" name="name" label="NOMBRE" required={true}/>
-        <TextField compRef={nameInputRef} type="number" name="pin" label="PIN" required={true}/>
-        <Button color="black">Continuar</Button>
+        <TextField compRef={pinInputRef} type="number" name="pin" label="PIN" required={true}/>
+        <Button type="submit" color="black">Continuar</Button>
       </form>
     ),
     (
       <div className={styles["step"]}>
-        <Button color="black" onClick={()=>handleClick("newGame")}>Nuevo juego</Button>
-        <Button color="black" onClick={()=>handleClick("joinRoom")}>Ingresar a una sala</Button>
+        <Button type="button" color="black" onClick={()=>handleClick("newGame")}>Nuevo juego</Button>
+        <Button type="button" color="black" onClick={()=>handleClick("joinRoom")}>Ingresar a una sala</Button>
       </div>
     ),
     (
       <form onSubmit={handleCodeSubmit} className={styles["code-form"]}>
         <TextField compRef={codeInputRef} type="number" name="code" label="Código" required={true}/>
-        <Button color="black">Buscar</Button>
+        <Button type="submit" color="black">Buscar</Button>
+        <Button type="button" color="back" onClick={()=>setCurrentStep(prev => prev - 1)}>Volver</Button>
       </form>
     ),
   ];

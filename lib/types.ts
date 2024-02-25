@@ -2,6 +2,7 @@ type ButtonProps = {
   color?: string;
   children: string;
   onClick?: Function;
+  type: "submit" | "button";
 };
 type TextFieldProps = {
   type: "text" | "number" | "email";
