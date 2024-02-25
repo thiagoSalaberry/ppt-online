@@ -8,7 +8,7 @@ import React, { useRef, useState } from "react";
 import Router from "next/router";
 import { getPlayer } from "@/lib/api-calls";
 export default function Home() {
-  const [player, setPlayer] =  useState<string>("");
+  const [currentPlayer, setCurrentPlayer] =  useState<string>("");
   const [currentStep, setCurrentStep] = useState<number>(0);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const pinInputRef = useRef<HTMLInputElement>(null);
@@ -18,12 +18,13 @@ export default function Home() {
     if(nameInputRef.current && pinInputRef.current) {
       const player = await getPlayer(nameInputRef.current.value, parseInt(pinInputRef.current.value));
       console.log(player?.playerData?.name)
-      if(player) {
-        setPlayer(player.playerData?.name);
-        setTimeout(()=>{
-          setCurrentStep(1);
-        }, 100)
-      };
+      // if(player) {
+      //   console.log(player.playerData)
+      //   // setPlayer(player.playerData?.name);
+      //   // setTimeout(()=>{
+      //   //   setCurrentStep(1);
+      //   // }, 100)
+      // };
     }
   };
   const handleCodeSubmit = (e:any) => {
@@ -44,7 +45,7 @@ export default function Home() {
   }
   const stepHeaders: JSX.Element[] = [
     <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">Ingresá tus datos para jugar</TextComp>,
-    <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">¡Hola {player}!<br></br>Elegí una opción</TextComp>,
+    <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">¡Hola {currentPlayer}!<br></br>Elegí una opción</TextComp>,
     <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">Ingresá el código de la sala</TextComp>,
   ]
   const steps: JSX.Element[] = [

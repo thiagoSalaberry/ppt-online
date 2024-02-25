@@ -8,5 +8,5 @@ export default async function handler(
 ) {
   const { name, pin } = req.body;
   const player = await getPlayer(name, pin);
-  res.json({ player });
+  res.json(player);
 }
