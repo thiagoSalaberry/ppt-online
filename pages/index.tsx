@@ -6,20 +6,25 @@ import styles from "./home.module.css";
 import { Header } from "@/components/header";
 import React, { useRef, useState } from "react";
 import Router from "next/router";
+import { getPlayer } from "@/lib/api-calls";
 export default function Home() {
   const [player, setPlayer] =  useState<string>("");
   const [currentStep, setCurrentStep] = useState<number>(0);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const pinInputRef = useRef<HTMLInputElement>(null);
   const codeInputRef = useRef<HTMLInputElement>(null);
-  const handleNameSubmit = (e:any) => {
+  const handleNameSubmit = async (e:any) => {
     e.preventDefault();
-    if(nameInputRef.current) {
-      setPlayer(nameInputRef.current.value);
-      setTimeout(()=>{
-        setCurrentStep(1);
-      }, 100)
-    };
+    if(nameInputRef.current && pinInputRef.current) {
+      const player = await getPlayer(nameInputRef.current.value, parseInt(pinInputRef.current.value));
+      console.log(player?.playerData?.name)
+      if(player) {
+        setPlayer(player.playerData?.name);
+        setTimeout(()=>{
+          setCurrentStep(1);
+        }, 100)
+      };
+    }
   };
   const handleCodeSubmit = (e:any) => {
     e.preventDefault();

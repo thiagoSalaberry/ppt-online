@@ -48,3 +48,12 @@ type ResultCardProps = {
   winner: "host" | "guest" | "draw";
   img: "win" | "loss" | "draw";
 };
+
+//API
+type PlayerAPIResponse = {
+  playerData: {
+    name: string;
+    pin: number;
+  };
+  playerId: string;
+};
