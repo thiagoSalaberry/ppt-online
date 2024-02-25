@@ -18,8 +18,8 @@ export default function UIPage() {
               <Move size="big" move="papel" selected={selected} onClick={()=>setSelected("papel")}/>
               <Move size="big" move="tijera" selected={selected} onClick={()=>setSelected("tijera")}/>
             </div>
-            <WaitingComp connected={false}/>
-            <WaitingComp connected={true}/>
+            <WaitingComp type="dots" connected={false}/>
+            <WaitingComp type="dots" connected={true}/>
             <Timer/>
         </section>
       </main>
