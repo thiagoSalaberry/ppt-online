@@ -6,6 +6,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 50px 0px 100px 0px;
+    gap: 50px;
 }
 .search-section {
     padding: 0 20px;

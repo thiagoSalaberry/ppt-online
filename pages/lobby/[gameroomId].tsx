@@ -12,6 +12,9 @@ export default function Lobby() {
   const gameRoomId = params?.gameroomId;
   const [host, setHost] = useState<{connected: boolean, ready:boolean, name:string, wins:number}>({connected: true, ready: false, name: "Thiago", wins: 1});
   const [guest, setGuest] = useState<{connected: boolean, ready:boolean, name:string, wins:number}>({connected: true, ready: false, name: "Samay", wins: 3});
+  if(host.ready && guest.ready) {
+    Router.push(`/in-game/${gameRoomId}`);
+  }
   return (
     <main className={styles["lobby-page"]}>
         <header className={styles["lobby-header"]}>
@@ -28,11 +31,11 @@ export default function Lobby() {
           {host.connected && guest.connected && !host.ready ? (
             <>
               <TextComp tag="p" align="center">¡Presioná: <br></br><span className={styles["bold"]}>PIEDRA</span>, <span className={styles["bold"]}>PAPEL</span> ó <span className={styles["bold"]}>TIJERA</span><br></br> antes de que pasen 3 segundos!</TextComp>
-              <Button onClick={()=>setHost({...host, ready: true})} color="black">¡Jugar!</Button>
+              <Button onClick={()=>{setHost({...host, ready: true}); setTimeout(()=>{setGuest({...guest, ready:true})},2000)}} color="black">¡Jugar!</Button>
             </>
           ) : host.connected && host.ready ? (
             <>
-              <TextComp tag="p" size="28px">Esperando a que <span style={{fontWeight: "bold"}}>{guest.name}</span> presione ¡Jugar!...</TextComp>
+              <TextComp tag="p" size="28px" align="center">Esperando a que <span style={{fontWeight: "bold"}}>{guest.name}</span> presione ¡Jugar!...</TextComp>
             </>
           ) : (
             <>

@@ -17,7 +17,7 @@ export default function Search() {
       <div className={styles["search-section"]}>
         {true ? (
           <>
-            <TextComp tag="p">Salas</TextComp>
+            <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">Salas</TextComp>
             <GameroomCard gameroomId={gameroomId} full={false} players={{host: {name: "Thiago", id: "12321"}, guest: {name: "Samay", id: "32123"}}}/>
             <GameroomCard gameroomId={gameroomId} full={true} players={{host: {name: "Franco", id: "15987"}, guest: {name: "Samay", id: "32123"}}}/>
           </>

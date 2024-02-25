@@ -23,7 +23,7 @@ export default function Home() {
   const handleCodeSubmit = (e:any) => {
     e.preventDefault();
     if(codeInputRef.current) {
-      Router.push(`/lobby/${codeInputRef.current.value}`);
+      Router.push(`/search?gameroom=${codeInputRef.current.value}`);
     };
   };
   const handleClick = (option: "newGame" | "joinRoom") => {
@@ -38,7 +38,7 @@ export default function Home() {
   }
   const stepHeaders: JSX.Element[] = [
     <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">Ingresá tus datos para jugar</TextComp>,
-    <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">Elegí una opción</TextComp>,
+    <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">¡Hola Thiago!<br></br>Elegí una opción</TextComp>,
     <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">Ingresá el código de la sala</TextComp>,
   ]
   const steps: JSX.Element[] = [
