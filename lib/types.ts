@@ -43,6 +43,6 @@ type IconsProps = {
   size: string;
 };
 type ResultCardProps = {
-  winner: "host" | "guest";
-  img: "win" | "loss";
+  winner: "host" | "guest" | "draw";
+  img: "win" | "loss" | "draw";
 };
