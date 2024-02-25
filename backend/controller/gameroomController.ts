@@ -2,6 +2,7 @@ import { Gameroom } from "../model/gamerooms";
 import { getPlayer } from "./playerController";
 import { rtdb } from "../lib/firestore";
 import { v4 as uuidv4 } from "uuid";
+import { Player } from "../model/players";
 
 export async function createGameroom(player: PlayerData) {
   const longId = uuidv4(),
@@ -40,11 +41,7 @@ export async function createGameroom(player: PlayerData) {
   return { newGameroom: newGameroom.data };
 }
 
-export async function getGameroom(
-  shortRoomId: string
-  // name: string,
-  // pin: string
-) {
+export async function getGameroom(shortRoomId: string) {
   try {
     const gameroom = await Gameroom.getGameroomById(shortRoomId);
     if (!gameroom)
@@ -55,17 +52,26 @@ export async function getGameroom(
         },
       };
     return { gameroom: gameroom.data };
-    // const guest = await getPlayer(name, Number(pin));
-    // const addGuest = await gameroom.addPlayer(
-    //   guest.playerData.name,
-    //   guest.playerId
-    // );
-    // if (addGuest.error) return { error: addGuest.error };
-    // await gameroom.push();
-    // return { message: addGuest.message };
   } catch (error) {
     throw new Error(
       "Error en la función getGameroom() de gameroomControllers.ts"
     );
+  }
+}
+
+export async function joinRoom(
+  shortRoomId: string,
+  playerName: string,
+  playerPin: number
+) {
+  try {
+    const gameroom = await Gameroom.getGameroomById(shortRoomId);
+    const player = await Player.getPlayerByNameAndPin(playerName, playerPin);
+    if (player) {
+      const added = await gameroom?.addPlayer(playerName, player?.id);
+      return added?.message;
+    }
+  } catch (error) {
+    throw new Error("Error en la función joinRoom() de gameroomControllers.ts");
   }
 }

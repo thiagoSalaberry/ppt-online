@@ -19,6 +19,27 @@ export async function getPlayer(name: string, pin: number) {
   }
 }
 
+export async function usePlayer() {
+  const accessId = localStorage.getItem("accessId");
+  const apiResponse = await fetch(
+    `https://ppt-online-two.vercel.app/api/players/${accessId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  try {
+    const apiData = await apiResponse.json();
+    if (!apiData) return null;
+    return apiData;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
 export async function createGameroom(name: string, pin: number) {
   const apiResponse = await fetch(
     "https://ppt-online-two.vercel.app/api/gamerooms",
@@ -48,6 +69,27 @@ export async function searchGameroom(shortRoomId: number) {
       headers: {
         "Content-Type": "application/json",
       },
+    }
+  );
+  try {
+    const apiData = await apiResponse.json();
+    if (!apiData) return null;
+    return apiData;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export async function joinRoom(shortRoomId: number, name: string, pin: number) {
+  const apiResponse = await fetch(
+    `https://ppt-online-two.vercel.app/api/gamerooms/${shortRoomId}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, pin }),
     }
   );
   try {

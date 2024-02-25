@@ -3,32 +3,18 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    padding: 50px 0px 100px 0px;
     gap: 50px;
+    padding: 50px 0 100px 0;
 }
 .search-section {
-    padding: 0 20px;
-    justify-content: flex-start;
-    gap: 20px;
+    padding: 30px;
+    gap: 30px;
 }
-.name-form, .code-form, .steps-container {
-    width: 100%;
+.code-form {
     display: flex;
     flex-direction: column;
-    gap:  20px;
-}
-.step {
+    gap: 15px;
     width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: column;
-    gap: 20px;
-}
-.footer {
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    padding: 0;
 }

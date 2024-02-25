@@ -33,4 +33,13 @@ export class Player {
     const player: Player = new Player(docSnap.id, docSnap.data() as PlayerData);
     return player;
   }
+  static async getPlayerById(accessId: string) {
+    const querySnapshot = await playersCollection.doc(accessId).get();
+    if (!querySnapshot.exists) throw Error(`No such document: ${accessId}`);
+    const player = new Player(
+      querySnapshot.id,
+      querySnapshot.data() as PlayerData
+    );
+    return player;
+  }
 }

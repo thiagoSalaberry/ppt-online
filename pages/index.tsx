@@ -12,24 +12,18 @@ export default function Home() {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const pinInputRef = useRef<HTMLInputElement>(null);
-  const codeInputRef = useRef<HTMLInputElement>(null);
   const handleNameSubmit = async (e:any) => {
     e.preventDefault();
     if(nameInputRef.current && pinInputRef.current) {
       const player = await getPlayer(nameInputRef.current.value, parseInt(pinInputRef.current.value));
       if(player) {
+        localStorage.setItem("accessId", player.playerId);
         setCurrentPlayer(player);
         setTimeout(()=>{
           setCurrentStep(1);
         }, 100)
       };
     }
-  };
-  const handleCodeSubmit = (e:any) => {
-    e.preventDefault();
-    if(codeInputRef.current) {
-      Router.push(`/search?gameroom=${codeInputRef.current.value}`);
-    };
   };
   const handleClick = async (option: "newGame" | "joinRoom") => {
     if(option == "newGame") {
@@ -39,7 +33,7 @@ export default function Home() {
     };
     if(option == "joinRoom") {
       // console.log("Join Room")
-      setCurrentStep(2);
+      Router.push(`/search`);
     };
   }
   const stepHeaders: JSX.Element[] = [
@@ -60,13 +54,6 @@ export default function Home() {
         <Button type="button" color="black" onClick={()=>handleClick("newGame")}>Nuevo juego</Button>
         <Button type="button" color="black" onClick={()=>handleClick("joinRoom")}>Ingresar a una sala</Button>
       </div>
-    ),
-    (
-      <form onSubmit={handleCodeSubmit} className={styles["code-form"]}>
-        <TextField compRef={codeInputRef} type="number" name="code" label="Código" required={true}/>
-        <Button type="submit" color="black">Buscar</Button>
-        <Button type="button" color="back" onClick={()=>setCurrentStep(prev => prev - 1)}>Volver</Button>
-      </form>
     ),
   ];
   return (

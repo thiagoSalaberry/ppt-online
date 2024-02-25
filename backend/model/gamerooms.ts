@@ -40,6 +40,7 @@ export class Gameroom {
     if (this.data.players.host.id !== "" && this.data.players.guest.id !== "")
       return { error: "La sala está llena" };
     this.data.players = { ...this.data.players, guest: { name, id } };
+    await this.push();
     return { message: "Te uniste a la sala correctamente." };
   }
 }
