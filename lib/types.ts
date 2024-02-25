@@ -30,6 +30,7 @@ type TextProps = {
 };
 type WaitingProps = {
   connected: boolean;
+  type: "lines" | "dots";
 };
 type GameroomCardProps = {
   gameroomId: string;

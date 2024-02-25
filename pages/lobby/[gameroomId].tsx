@@ -19,8 +19,8 @@ export default function Lobby() {
     <main className={styles["lobby-page"]}>
         <header className={styles["lobby-header"]}>
             <div className={styles["lobby-players"]}>
-                <span className={styles["player"]}>{host.connected ? (<><WaitingComp connected={host.connected}/><TextComp tag="p" weight="bold" color="#2b2b2b">{host.name}: {host.wins.toString()}</TextComp></>) : (<><WaitingComp connected={host.connected}/><TextComp tag="p" weight="bold" color="#2b2b2b">{host.name}: {host.wins.toString()}</TextComp></>)}</span>
-                <span className={styles["player"]}>{guest.connected ? (<><WaitingComp connected={guest.connected}/><TextComp tag="p" weight="bold" color="#2b2b2b">{guest.name}: {guest.wins.toString()}</TextComp></>) : (<><WaitingComp connected={guest.connected}/><TextComp tag="p" weight="bold" color="#2b2b2b">Guest: 0</TextComp></>)}</span>
+                <span className={styles["player"]}>{host.connected ? (<><WaitingComp type="lines" connected={host.connected}/><TextComp tag="p" weight="bold" color="#2b2b2b">{host.name}: {host.wins.toString()}</TextComp></>) : (<><WaitingComp type="lines" connected={host.connected}/><TextComp tag="p" weight="bold" color="#2b2b2b">{host.name}: {host.wins.toString()}</TextComp></>)}</span>
+                <span className={styles["player"]}>{guest.connected ? (<><WaitingComp type="lines" connected={guest.connected}/><TextComp tag="p" weight="bold" color="#2b2b2b">{guest.name}: {guest.wins.toString()}</TextComp></>) : (<><WaitingComp type="lines" connected={guest.connected}/><TextComp tag="p" weight="bold" color="#2b2b2b">Guest: 0</TextComp></>)}</span>
             </div>
             <div className={styles["lobby-info"]}>
                 <TextComp tag="p" weight="700" color="#2b2b2b">SALA</TextComp>
@@ -31,11 +31,11 @@ export default function Lobby() {
           {host.connected && guest.connected && !host.ready ? (
             <>
               <TextComp tag="p" align="center">¡Presioná: <br></br><span className={styles["bold"]}>PIEDRA</span>, <span className={styles["bold"]}>PAPEL</span> ó <span className={styles["bold"]}>TIJERA</span><br></br> antes de que pasen 3 segundos!</TextComp>
-              <Button onClick={()=>{setHost({...host, ready: true}); setTimeout(()=>{setGuest({...guest, ready:true})},2000)}} color="black">¡Jugar!</Button>
+              <Button onClick={()=>{setHost({...host, ready: true}); setTimeout(()=>{setGuest({...guest, ready:true})},3000)}} color="black">¡Jugar!</Button>
             </>
           ) : host.connected && host.ready ? (
             <>
-              <TextComp tag="p" size="28px" align="center">Esperando a que <span style={{fontWeight: "bold"}}>{guest.name}</span> presione ¡Jugar!...</TextComp>
+              <TextComp tag="p" size="28px" align="center">Esperando a que <span style={{fontWeight: "bold"}}>{guest.name}</span> presione ¡Jugar!<span className={styles["inline-block"]}><WaitingComp type="dots" connected={false}></WaitingComp></span></TextComp>
             </>
           ) : (
             <>

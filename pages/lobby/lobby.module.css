@@ -43,3 +43,8 @@
 .bold {
     font-weight: 900;
 }
+.inline-block {
+    display: inline-block;
+    height: 15px;
+    transform: translateY(-11px);
+}
