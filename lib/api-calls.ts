@@ -52,6 +52,7 @@ export async function searchGameroom(shortRoomId: number) {
   );
   try {
     const apiData = await apiResponse.json();
+    console.log({ apiData });
     if (!apiData) throw new Error("Failed to search gameroom.");
     return apiData;
   } catch (error) {

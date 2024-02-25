@@ -13,6 +13,6 @@ export default async function handler(
     // guestData.name,
     // guestData.pin
   );
-  if (gameroom.error) return res.json({ message: gameroom.error });
+  if (gameroom.error) return res.status(404).send(false);
   return res.json(gameroom);
 }
