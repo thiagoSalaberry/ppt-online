@@ -7,12 +7,12 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { shortRoomId } = req.query;
-  const { guestData } = req.body;
+  // const { guestData } = req.body;
   const gameroom = await getGameroom(
-    String(shortRoomId),
-    guestData.name,
-    guestData.pin
+    String(shortRoomId)
+    // guestData.name,
+    // guestData.pin
   );
   if (gameroom.error) return res.json({ message: gameroom.error });
-  return res.json({ message: gameroom.message });
+  return res.json(gameroom);
 }

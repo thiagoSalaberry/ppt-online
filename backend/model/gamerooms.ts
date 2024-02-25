@@ -32,7 +32,7 @@ export class Gameroom {
     const gameroom = new Gameroom(docSnap.id, docSnap.data() as GameroomData);
     return gameroom;
   }
-  async addGuest(name: string, id: string) {
+  async addPlayer(name: string, id: string) {
     if (this.data.players.host.id == id)
       return { message: `Bienvenido de nuevo ${this.data.players.host.name}` };
     if (this.data.players.guest.id == id)

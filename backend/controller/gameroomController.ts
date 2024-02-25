@@ -1,5 +1,6 @@
 import { Gameroom } from "../model/gamerooms";
 import { getPlayer } from "./playerController";
+import { rtdb } from "../lib/firestore";
 import { v4 as uuidv4 } from "uuid";
 
 export async function createGameroom(player: PlayerData) {
@@ -20,13 +21,29 @@ export async function createGameroom(player: PlayerData) {
     },
     history,
   });
+  //Create gameroom in rtdb
+  const gameroomRef = rtdb.ref(`/gamerooms/${longId}`);
+  const gameroomData = {
+    shortRoomId: shortId,
+    currentGame: {
+      [host.playerId]: {
+        name: host.playerData.name,
+        online: true,
+        move: "",
+        host: true,
+        ready: false,
+      },
+      winner: "",
+    },
+  };
+  await gameroomRef.set(gameroomData);
   return { newGameroom: newGameroom.data };
 }
 
 export async function getGameroom(
-  shortRoomId: string,
-  name: string,
-  pin: string
+  shortRoomId: string
+  // name: string,
+  // pin: string
 ) {
   try {
     const gameroom = await Gameroom.getGameroomById(shortRoomId);
@@ -37,14 +54,15 @@ export async function getGameroom(
           origin: "gameroomControllers.ts => getGameroom()",
         },
       };
-    const guest = await getPlayer(name, Number(pin));
-    const addGuest = await gameroom.addGuest(
-      guest.playerData.name,
-      guest.playerId
-    );
-    if (addGuest.error) return { error: addGuest.error };
-    await gameroom.push();
-    return { message: addGuest.message };
+    return { gameroom: gameroom.data };
+    // const guest = await getPlayer(name, Number(pin));
+    // const addGuest = await gameroom.addPlayer(
+    //   guest.playerData.name,
+    //   guest.playerId
+    // );
+    // if (addGuest.error) return { error: addGuest.error };
+    // await gameroom.push();
+    // return { message: addGuest.message };
   } catch (error) {
     throw new Error(
       "Error en la función getGameroom() de gameroomControllers.ts"

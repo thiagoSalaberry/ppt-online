@@ -35,8 +35,7 @@ export default function Home() {
     if(option == "newGame") {
       // Acá va el código necesario para crear la sala
       const newGameroom = await createGameroom(currentPlayer.playerData.name, currentPlayer.playerData.pin);
-      console.log(newGameroom);
-      // Router.push(`/lobby/${123456}`);
+      Router.push(`/lobby/${newGameroom?.shortRoomId}`);
     };
     if(option == "joinRoom") {
       // console.log("Join Room")
