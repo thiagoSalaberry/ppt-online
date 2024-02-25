@@ -10,9 +10,9 @@ export default function UIPage() {
     return (
       <main className={styles["ui-page"]}>
         <section className={styles["components-section"]}>
-            <Button>Botón azul</Button>
-            <Button color="red">Botón rojo</Button>
-            <Button color="back">Volver</Button>
+            <Button type="button">Botón azul</Button>
+            <Button type="button" color="red">Botón rojo</Button>
+            <Button type="button" color="back">Volver</Button>
             <div className={styles["moves-container"]}>
               <Move size="big" move="piedra" selected={selected} onClick={()=>{setSelected("piedra")}}/>
               <Move size="big" move="papel" selected={selected} onClick={()=>setSelected("papel")}/>

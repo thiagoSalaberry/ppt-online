@@ -29,7 +29,7 @@ export default function Fight() {
         <p className={styles["result-option"]}>Yo: <span className={styles["bold"]}>0</span></p>
         <p className={styles["result-option"]}>Empates: <span className={styles["bold"]}>0</span></p>
       </div>
-      <Button color="black" onClick={()=>Router.push(`/lobby/${gameRoomId}`)}>Volver a jugar</Button>
+      <Button type="button" color="black" onClick={()=>Router.push(`/lobby/${gameRoomId}`)}>Volver a jugar</Button>
     </div>
   )
   return (

@@ -31,7 +31,7 @@ export default function Lobby() {
           {host.connected && guest.connected && !host.ready ? (
             <>
               <TextComp tag="p" align="center">¡Presioná: <br></br><span className={styles["bold"]}>PIEDRA</span>, <span className={styles["bold"]}>PAPEL</span> ó <span className={styles["bold"]}>TIJERA</span><br></br> antes de que pasen 3 segundos!</TextComp>
-              <Button onClick={()=>{setHost({...host, ready: true}); setTimeout(()=>{setGuest({...guest, ready:true})},3000)}} color="black">¡Jugar!</Button>
+              <Button type="button" onClick={()=>{setHost({...host, ready: true}); setTimeout(()=>{setGuest({...guest, ready:true})},3000)}} color="black">¡Jugar!</Button>
             </>
           ) : host.connected && host.ready ? (
             <>

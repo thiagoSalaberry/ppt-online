@@ -17,12 +17,4 @@ export function WaitingComp(props:WaitingProps) {
     );
     if(props.type == "lines") return signal;
     if(props.type == "dots") return dots;
-    // return (
-    //     <div className={styles["lines-container"]}>
-    //         <div className={`${styles["line"]} ${props.connected ? styles["connected"] : ""}`}></div>
-    //         <div className={`${styles["line"]} ${props.connected ? styles["connected"] : ""}`}></div>
-    //         <div className={`${styles["line"]} ${props.connected ? styles["connected"] : ""}`}></div>
-    //         <div className={`${styles["line"]} ${props.connected ? styles["connected"] : ""}`}></div>
-    //     </div>
-    // )
 }
