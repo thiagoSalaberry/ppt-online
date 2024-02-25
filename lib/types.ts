@@ -57,3 +57,6 @@ type PlayerAPIResponse = {
   };
   playerId: string;
 };
+type shortRoomIdAPIResponse = {
+  shortRoomId: number;
+};

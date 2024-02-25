@@ -18,3 +18,24 @@ export async function getPlayer(name: string, pin: number) {
     return null;
   }
 }
+
+export async function createGameroom(name: string, pin: number) {
+  const apiResponse = await fetch(
+    "https://ppt-online-two.vercel.app/api/gamerooms",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, pin }),
+    }
+  );
+  try {
+    const apiData = await apiResponse.json();
+    if (!apiData) throw new Error("Failed to create room");
+    return apiData as shortRoomIdAPIResponse;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}

@@ -7,7 +7,5 @@ export default async function handler(
 ) {
   const { name, pin } = req.body;
   const gameroom = await createGameroom({ name, pin });
-  return res.json({
-    message: `Compartí el siguiente código con tu contrincante: ${gameroom.newGameroom?.shortRoomId}`,
-  });
+  return res.json({ shortRoomId: gameroom.newGameroom?.shortRoomId });
 }

@@ -6,9 +6,9 @@ import styles from "./home.module.css";
 import { Header } from "@/components/header";
 import React, { useRef, useState } from "react";
 import Router from "next/router";
-import { getPlayer } from "@/lib/api-calls";
+import { getPlayer, createGameroom } from "@/lib/api-calls";
 export default function Home() {
-  const [currentPlayer, setCurrentPlayer] =  useState<string>("");
+  const [currentPlayer, setCurrentPlayer] = useState<PlayerAPIResponse>({playerData: {name: "", pin: 0}, playerId: ""});
   const [currentStep, setCurrentStep] = useState<number>(0);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const pinInputRef = useRef<HTMLInputElement>(null);
@@ -17,14 +17,12 @@ export default function Home() {
     e.preventDefault();
     if(nameInputRef.current && pinInputRef.current) {
       const player = await getPlayer(nameInputRef.current.value, parseInt(pinInputRef.current.value));
-      console.log(player?.playerData?.name)
-      // if(player) {
-      //   console.log(player.playerData)
-      //   // setPlayer(player.playerData?.name);
-      //   // setTimeout(()=>{
-      //   //   setCurrentStep(1);
-      //   // }, 100)
-      // };
+      if(player) {
+        setCurrentPlayer(player);
+        setTimeout(()=>{
+          setCurrentStep(1);
+        }, 100)
+      };
     }
   };
   const handleCodeSubmit = (e:any) => {
@@ -33,10 +31,12 @@ export default function Home() {
       Router.push(`/search?gameroom=${codeInputRef.current.value}`);
     };
   };
-  const handleClick = (option: "newGame" | "joinRoom") => {
+  const handleClick = async (option: "newGame" | "joinRoom") => {
     if(option == "newGame") {
       // Acá va el código necesario para crear la sala
-      Router.push(`/lobby/${123456}`);
+      const newGameroom = await createGameroom(currentPlayer.playerData.name, currentPlayer.playerData.pin);
+      console.log(newGameroom);
+      // Router.push(`/lobby/${123456}`);
     };
     if(option == "joinRoom") {
       // console.log("Join Room")
@@ -45,7 +45,7 @@ export default function Home() {
   }
   const stepHeaders: JSX.Element[] = [
     <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">Ingresá tus datos para jugar</TextComp>,
-    <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">¡Hola {currentPlayer}!<br></br>Elegí una opción</TextComp>,
+    <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">¡Hola {currentPlayer.playerData.name}!<br></br>Elegí una opción</TextComp>,
     <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">Ingresá el código de la sala</TextComp>,
   ]
   const steps: JSX.Element[] = [
