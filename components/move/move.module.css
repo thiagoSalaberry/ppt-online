@@ -25,7 +25,11 @@
 }
 .izq {
     transform: scaleX(-1) rotate(-90deg);
+    position: relative;
+    right: 15px;
 }
 .der {
     transform: rotate(-90deg);
+    position: relative;
+    left: 15px;
 }
