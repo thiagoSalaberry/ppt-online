@@ -14,5 +14,5 @@ export default async function handler(
     // guestData.pin
   );
   if (gameroom.error) return res.status(404).send(false);
-  return res.json(gameroom);
+  return res.json(gameroom.gameroom);
 }

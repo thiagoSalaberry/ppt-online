@@ -14,11 +14,14 @@ export default function Search() {
     const params = useSearchParams();
     const gameroomId = params.get("gameroom")!;
     const [gameroom, setGameroom] = useState<GameroomData>();
-    const [error, setError] = useState(false);
+    const [subtitle, setSubtitle] = useState<string>("Cargando...");
     useEffect(()=>{
       searchGameroom(parseInt(gameroomId)).then((res) => {
-        if(res.message) return setError(true);
-        else setGameroom(res);
+        if(!res) return setSubtitle("La sala no existe.");
+        else {
+          setGameroom(res);
+          setSubtitle("Salas")
+        };
       });
     }, [gameroomId]);
     console.log({gameroom})
@@ -26,7 +29,10 @@ export default function Search() {
     <main className={styles["search-page"]}>
       <Header/>
       <div className={styles["search-section"]}>
-        <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">Salas</TextComp>        
+        <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">{subtitle}</TextComp>
+        {!gameroom ? <CircularProgress color="inherit"/> : (
+          <GameroomCard full={gameroom.players?.guest?.id == "" ? false : true} gameroomId={String(gameroom.shortRoomId)} players={gameroom.players}/>
+        )}
       </div>
     </main>
   )
