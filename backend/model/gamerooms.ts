@@ -33,14 +33,20 @@ export class Gameroom {
     return gameroom;
   }
   async addPlayer(name: string, id: string) {
-    if (this.data.players.host.id == id)
-      return { message: `Bienvenido de nuevo ${this.data.players.host.name}` };
+    //Chequear si quien solicita el ingreso es el host
+    if (this.data.players.host.id == id) return { response: 1 }; //Setear online = true en firebase
+    //Chequear si la sala tiene guest
+    if (this.data.players.guest.id == "") {
+      this.data.players = { ...this.data.players, guest: { name, id } };
+      await this.push();
+      return { response: 2 }; //Agregar al guest en firestore y en firebase
+    }
+    //Chequear si quien solicita es el guest
     if (this.data.players.guest.id == id)
-      return { message: `Bienvenido de nuevo ${this.data.players.guest.name}` };
-    if (this.data.players.host.id !== "" && this.data.players.guest.id !== "")
-      return { error: "La sala está llena" };
-    this.data.players = { ...this.data.players, guest: { name, id } };
-    await this.push();
-    return { message: "Te uniste a la sala correctamente." };
+      return { response: 3 }; //Setear online = true en firebase
+    //Si no es ni el host ni el guest, la sala está llena
+    else {
+      return { response: 4 };
+    }
   }
 }

@@ -40,7 +40,10 @@ type GameroomCardProps = {
     guest: { name: string; id: string };
   };
   full: boolean;
-  onClick?: () => void;
+  requester: {
+    name: string;
+    pin: number;
+  };
 };
 type IconsProps = {
   size: string;

@@ -69,20 +69,35 @@ export async function joinRoom(
     const player = await Player.getPlayerByNameAndPin(playerName, playerPin);
     if (player) {
       const added = await gameroom?.addPlayer(playerName, player?.id);
-      const gameroomRef = rtdb.ref(`/gamerooms/${gameroom?.data.gameroomId}`);
-      await gameroomRef.update({
-        currentGame: {
-          ...(await gameroomRef.get()).val().currentGame,
+      const gameroomRef = rtdb.ref(
+        `/gamerooms/${gameroom?.data.gameroomId}/currentGame`
+      );
+      const currentGameSnapshot = (await gameroomRef.get()).val();
+      if (added?.response == 1) {
+        await gameroomRef.update({
           [player.id]: {
-            host: false,
-            move: "",
+            host: true,
             name: player.data.name,
             online: true,
+            move: "",
             ready: false,
           },
-        },
-      });
-      return added?.message;
+        });
+        return "El host ahora está online";
+      }
+      if (added?.response == 2 || added?.response == 3) {
+        await gameroomRef.update({
+          [player.id]: {
+            host: false,
+            name: player.data.name,
+            online: true,
+            move: "",
+            ready: false,
+          },
+        });
+        return "El guest ahora está online";
+      }
+      if (added?.response == 4) return "La sala está llena";
     }
   } catch (error) {
     throw new Error("Error en la función joinRoom() de gameroomControllers.ts");

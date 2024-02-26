@@ -56,7 +56,7 @@ export default function Search() {
         ) : (
           <>
             {loading ? <CircularProgress color="inherit"/> : gameroom ? (
-              <GameroomCard full={letIn} players={gameroom?.players} gameroomId={String(gameroom?.shortRoomId)}/>
+              <GameroomCard full={letIn} players={gameroom?.players} gameroomId={String(gameroom?.shortRoomId)} requester={{name: player.playerData.name, pin: player.playerData.pin}}/>
             ) : (
               <TextComp tag="p" size="24px" align="center" weight="600" color="#2b2b2b">La sala no existe.</TextComp>
             )}
