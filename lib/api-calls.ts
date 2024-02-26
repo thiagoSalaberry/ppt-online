@@ -22,7 +22,7 @@ export async function getPlayer(name: string, pin: number) {
 export async function usePlayer() {
   const accessId = localStorage.getItem("accessId");
   const apiResponse = await fetch(
-    `https://ppt-online-two.vercel.app/api/players/${accessId}`,
+    `https://ppt-online-two.vercel.app/api/player/${accessId}`,
     {
       method: "GET",
       headers: {

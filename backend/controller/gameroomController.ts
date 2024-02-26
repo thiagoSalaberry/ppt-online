@@ -69,6 +69,19 @@ export async function joinRoom(
     const player = await Player.getPlayerByNameAndPin(playerName, playerPin);
     if (player) {
       const added = await gameroom?.addPlayer(playerName, player?.id);
+      const gameroomRef = rtdb.ref(`/gamerooms/${gameroom?.data.gameroomId}`);
+      await gameroomRef.update({
+        currentGame: {
+          ...(await gameroomRef.get()).val().currentGame,
+          [player.id]: {
+            host: false,
+            move: "",
+            name: player.data.name,
+            online: true,
+            ready: false,
+          },
+        },
+      });
       return added?.message;
     }
   } catch (error) {

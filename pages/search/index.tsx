@@ -16,7 +16,7 @@ export default function Search() {
     const gameroomId = params.get("gameroom");
     const [gameroom, setGameroom] = useState<GameroomData | null>();
     const [loading, setLoading] = useState<boolean>(true);
-    const [player, setPlayer] = useState();
+    const [player, setPlayer] = useState<{playerData: {name:string, pin:number}, playerId:string}>({playerData: {name: "", pin:0}, playerId: ""});
     const codeInputRef = useRef<HTMLInputElement>(null);
     const handleCodeSubmit = (e:any) => {
       e.preventDefault();
@@ -34,7 +34,14 @@ export default function Search() {
         };
       });
     }, [gameroomId]);
-    usePlayer().then((p)=>{setPlayer(p)}).catch((err)=>console.log(err));
+    useEffect(()=>{
+      usePlayer().then((p)=>{setPlayer(p)}).catch((err)=>console.log(err));
+    }, []);
+    const isOnwer = gameroom?.players.host.id === player.playerId;
+    const isGuest = gameroom?.players.guest.id === player.playerId;
+    const isFull = gameroom?.players.guest.id !== "";
+    const letIn = isOnwer || isGuest || !isFull;
+    console.log({isOnwer, isGuest, isFull, letIn});
   return (
     <main className={styles["search-page"]}>
       <Header/>
@@ -49,7 +56,7 @@ export default function Search() {
         ) : (
           <>
             {loading ? <CircularProgress color="inherit"/> : gameroom ? (
-              <GameroomCard full={gameroom?.players.guest.id == "" ? false : true} players={gameroom?.players} gameroomId={String(gameroom?.shortRoomId)}/>
+              <GameroomCard full={letIn} players={gameroom?.players} gameroomId={String(gameroom?.shortRoomId)}/>
             ) : (
               <TextComp tag="p" size="24px" align="center" weight="600" color="#2b2b2b">La sala no existe.</TextComp>
             )}
