@@ -10,6 +10,8 @@ import { getPlayer, createGameroom } from "@/lib/api-calls";
 import { getRtdb } from "@/lib/api-calls";
 import { useRTDB } from "@/lib/hooks";
 export default function Home() {
+  const rtdb = useRTDB("129935");
+  console.log({rtdb})
   const [currentPlayer, setCurrentPlayer] = useState<PlayerAPIResponse>({playerData: {name: "", pin: 0}, playerId: ""});
   const [currentStep, setCurrentStep] = useState<number>(0);
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -38,7 +40,6 @@ export default function Home() {
       Router.push(`/search`);
     };
   };
-  const rtdbData = useRTDB("7afc00ad-574a-4164-aebc-d04dead6ae2e");
   const stepHeaders: JSX.Element[] = [
     <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">Ingresá tus datos para jugar</TextComp>,
     <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">¡Hola {currentPlayer.playerData.name}!<br></br>Elegí una opción</TextComp>,

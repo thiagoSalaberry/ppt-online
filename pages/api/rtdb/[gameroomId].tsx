@@ -6,7 +6,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { gameroomId } = req.query;
-  console.log({gameroomId})
+  console.log(gameroomId)
   const rtdbData = await listenRTDB(String(gameroomId));
-  res.status(200).json({rtdbData});
+  res.status(200).json({apiResponse: rtdbData});
 }

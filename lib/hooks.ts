@@ -1,22 +1,25 @@
 import useSWR from "swr";
 export async function fetchAPI(endpoint: string) {
-  const apiResponse = await fetch(
-    `https://ppt-online-two.vercel.app/api/${endpoint}`,
+  const res = await fetch(
+    `https://desafio-e-commerce-five.vercel.app/api${endpoint}`,
     {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        "Content-type": "application-json",
       },
     }
   );
-  console.log("Api response de fetchAPI", apiResponse);
-  console.log("apiData de fetchAPI", await apiResponse.json());
-
-  return await apiResponse.json();
+  console.log({ res });
+  if (res.status >= 200 && res.status < 300) {
+    const data = await res.json();
+    return data;
+  } else if (res.status >= 400 && res.status < 500) {
+    throw new Error("Error en el fetchAPI()");
+  }
 }
 
 export async function useRTDB(gameroomId: string) {
-  const { data, error } = useSWR(`rtdb/${gameroomId}`, fetchAPI);
-  console.log("esta data viene de useRTDB", data);
-  return data;
+  const { data, error } = useSWR(`/gamerooms/${gameroomId}`, fetchAPI);
+  if (error) return error;
+  if (data) return data;
 }
