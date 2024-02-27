@@ -4,9 +4,10 @@ import { Move } from "@/components/move";
 import { TextComp } from "@/ui/texts";
 import styles from "./home.module.css";
 import { Header } from "@/components/header";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Router from "next/router";
 import { getPlayer, createGameroom } from "@/lib/api-calls";
+import { getRtdb } from "@/lib/api-calls";
 export default function Home() {
   const [currentPlayer, setCurrentPlayer] = useState<PlayerAPIResponse>({playerData: {name: "", pin: 0}, playerId: ""});
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -35,7 +36,11 @@ export default function Home() {
       // console.log("Join Room")
       Router.push(`/search`);
     };
-  }
+  };
+  useEffect(()=>{
+    getRtdb("7afc00ad-574a-4164-aebc-d04dead6ae2e")
+      .then((res) => console.log(res));
+  }, [])
   const stepHeaders: JSX.Element[] = [
     <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">Ingresá tus datos para jugar</TextComp>,
     <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">¡Hola {currentPlayer.playerData.name}!<br></br>Elegí una opción</TextComp>,

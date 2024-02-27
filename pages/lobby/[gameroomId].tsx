@@ -11,7 +11,7 @@ import { WaitingComp } from "@/components/waiting.tsx";
 import { searchGameroom } from "@/lib/api-calls";
 import { usePlayer } from "@/lib/api-calls";
 import { joinRoom } from "@/lib/api-calls";
-export default function Lobby() {
+export default function Lobby({initialData}: {initialData:any}) {
   const params = useParams();
   const gameRoomId = params?.gameroomId;
   const [loading, setLoading] = useState<boolean>(true);

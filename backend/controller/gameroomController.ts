@@ -71,7 +71,6 @@ export async function joinRoom(
       const gameroomRef = rtdb.ref(
         `/gamerooms/${gameroom?.data.gameroomId}/currentGame`
       );
-      const currentGameSnapshot = (await gameroomRef.get()).val();
       if (added?.response == 1) {
         await gameroomRef.update({
           [player.id]: {
@@ -104,4 +103,17 @@ export async function joinRoom(
       `Error en la función joinRoom() de gameroomControllers.ts:`
     );
   }
+}
+
+export async function listenRTDB(gameroomId: string) {
+  const gameroomRef = rtdb.ref(`/gamerooms/${gameroomId}/currentGame`);
+  try {
+    let value;
+    gameroomRef.on("value", (snapshot) => {
+      const val = snapshot.val();
+      console.log({ val });
+      value = val;
+    });
+    return value;
+  } catch (error) {}
 }
