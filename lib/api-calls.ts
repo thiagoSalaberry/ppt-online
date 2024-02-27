@@ -109,6 +109,9 @@ export async function getRtdb(gameroomId: string) {
     `https://ppt-online-two.vercel.app/api/rtdb/${gameroomId}`,
     {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
   );
   console.log(apiResponse);
