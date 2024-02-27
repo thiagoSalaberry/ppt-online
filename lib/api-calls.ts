@@ -111,6 +111,8 @@ export async function getRtdb(gameroomId: string) {
       method: "GET",
     }
   );
+  console.log(apiResponse);
+  console.log(await apiResponse.json());
   try {
     if (apiResponse.status == 200) {
       const apiData = await apiResponse.json();

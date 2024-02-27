@@ -7,5 +7,5 @@ export default async function handler(
 ) {
   const { gameroomId } = req.query;
   const rtdbData = await listenRTDB(String(gameroomId));
-  res.status(200).json(rtdbData);
+  res.status(200).json({rtdbData});
 }
