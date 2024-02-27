@@ -23,10 +23,15 @@ export default function Lobby() {
   }, []);
   useEffect(()=>{
     if(!gameRoomId) return;
-    searchGameroom(Number(gameRoomId)).then((g:GameroomData) => setGameroom(g));
+    searchGameroom(Number(gameRoomId))
+      .then((g:GameroomData) => setGameroom(g))
+      .catch(()=>{
+        setLoading(false);
+        setPageContent(0)
+      });
   }, [gameRoomId]);
   useEffect(()=>{
-    if(player) {
+    if(player && gameroom) {
       joinRoom(Number(gameRoomId), player?.playerData.name, player?.playerData.pin)
         .then(() => {
           setLoading(false);
@@ -37,27 +42,7 @@ export default function Lobby() {
           setPageContent(1)
         })
     }
-  })
-  // useEffect(()=> {
-  //   if(!gameRoomId) return;
-  //   searchGameroom(Number(gameRoomId)).then((res) => {
-  //     setGameroom(res);
-  //     usePlayer().then((p:PlayerAPIResponse) => {
-  //       joinRoom(Number(gameRoomId), p.playerData.name, p.playerData.pin)
-  //       .then(()=>{
-  //         setLoading(false);
-  //         setPageContent(2);
-  //       })
-  //       .catch(()=>{
-  //         setLoading(false);
-  //         setPageContent(1);
-  //       });
-  //     })
-  //   }).catch(()=>{
-  //     setLoading(false);
-  //     setPageContent(0);
-  //   });
-  // }, [gameRoomId]);
+  });
   const contentList:JSX.Element[] = [
     (
       <div className={styles["no-gameroom"]}>

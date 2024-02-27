@@ -93,14 +93,13 @@ export async function joinRoom(shortRoomId: number, name: string, pin: number) {
     }
   );
   try {
-    if (apiResponse.status == 403) {
-      throw new Error("Acceso denegado");
-    } else {
+    if (apiResponse.status == 404) throw new Error("La sala no existe");
+    if (apiResponse.status == 403) throw new Error("La sala está llena");
+    if (apiResponse.status == 200) {
       const apiData = await apiResponse.json();
-      console.log("Funcionó", apiData);
       return apiData;
     }
-  } catch (error) {
-    throw new Error("Acceso denegado");
+  } catch (error: any) {
+    throw new Error(error);
   }
 }

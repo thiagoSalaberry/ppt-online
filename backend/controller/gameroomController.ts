@@ -44,14 +44,11 @@ export async function createGameroom(player: PlayerData) {
 export async function getGameroom(shortRoomId: string) {
   try {
     const gameroom = await Gameroom.getGameroomById(shortRoomId);
-    if (!gameroom)
-      return {
-        error: {
-          message: "No se encontró la sala.",
-          origin: "gameroomControllers.ts => getGameroom()",
-        },
-      };
-    return { gameroom: gameroom.data };
+    if (!gameroom) {
+      return { status: 0, response: "La sala no existe" };
+    } else {
+      return { status: 1, response: gameroom.data };
+    }
   } catch (error) {
     throw new Error(
       "Error en la función getGameroom() de gameroomControllers.ts"
@@ -67,7 +64,7 @@ export async function joinRoom(
   try {
     const gameroom = await Gameroom.getGameroomById(shortRoomId);
     //Devuelve gameroom o null
-    if (!gameroom) return { status: 0, message: "La sala no existe" }; //
+    if (!gameroom) return { status: 0, response: "La sala no existe" }; //
     const player = await Player.getPlayerByNameAndPin(playerName, playerPin);
     if (player) {
       const added = await gameroom?.addPlayer(playerName, player?.id);
@@ -85,7 +82,7 @@ export async function joinRoom(
             ready: false,
           },
         });
-        return { status: 2, message: "El host ahora está online" }; //
+        return { status: 2, response: "El host ahora está online" }; //
       }
       if (added?.response == 2 || added?.response == 3) {
         await gameroomRef.update({
@@ -97,10 +94,10 @@ export async function joinRoom(
             ready: false,
           },
         });
-        return { status: 3, message: "El guest ahora está online" }; //
+        return { status: 3, response: "El guest ahora está online" }; //
       }
       if (added?.response == 4)
-        return { status: 1, message: "La sala está llena" }; //
+        return { status: 1, response: "La sala está llena" }; //
     }
   } catch (error) {
     throw new Error(
