@@ -73,11 +73,11 @@ export async function searchGameroom(shortRoomId: number) {
   );
   try {
     const apiData = await apiResponse.json();
-    if (!apiData) return null;
+    if (!apiData) throw new Error("La sala no existe");
     return apiData;
   } catch (error) {
     console.log(error);
-    return null;
+    throw new Error();
   }
 }
 
@@ -94,7 +94,8 @@ export async function joinRoom(shortRoomId: number, name: string, pin: number) {
   );
   try {
     const apiData = await apiResponse.json();
-    if (!apiData) return null;
+    console.log(apiResponse);
+    if (!apiData) throw new Error("Acceso denegado");
     return apiData;
   } catch (error) {
     console.log(error);

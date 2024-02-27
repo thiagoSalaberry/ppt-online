@@ -27,6 +27,10 @@ export default async function handler(
   }
   if (req.method == "POST") {
     const joined = await post(String(shortRoomId), name, pin);
-    return res.json(joined);
+    if (!joined) {
+      return res.status(403).json({ message: "La sala está llena" });
+    } else {
+      return res.status(200).json(joined);
+    }
   }
 }

@@ -97,7 +97,7 @@ export async function joinRoom(
         });
         return "El guest ahora está online";
       }
-      if (added?.response == 4) return "La sala está llena";
+      if (added?.response == 4) return false;
     }
   } catch (error) {
     throw new Error("Error en la función joinRoom() de gameroomControllers.ts");

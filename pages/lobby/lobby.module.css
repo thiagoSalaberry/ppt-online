@@ -48,3 +48,14 @@
     height: 15px;
     transform: translateY(-11px);
 }
+.no-gameroom, .unauhtorized {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    gap: 15px;
+    position: absolute;
+    top: 50%;
+    padding: 0 40px;
+    text-align: center;
+}

@@ -15,7 +15,12 @@ export function GameroomCard(props:GameroomCardProps) {
         }, 2000);
     };
     const handleJoinRoom = async () => {
-        console.log(props.requester.name, props.requester.pin);
+        const apiCall = await joinRoom(Number(props.gameroomId), props.requester.name, props.requester.pin);
+        if(apiCall) {
+            Router.push(`/lobby/${props.gameroomId}`);
+        } else {
+            console.log("Ocurrió un error ingresando a la sala")
+        }
     }
     return (
         <div className={styles["gameroom-card"]}>
