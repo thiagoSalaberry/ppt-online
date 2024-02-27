@@ -115,5 +115,9 @@ export async function listenRTDB(gameroomId: string) {
       value = val;
     });
     return value;
-  } catch (error) {}
+  } catch (error) {
+    throw new Error(
+      `Error en la función listenRTDB() de gameroomControllers.ts:`
+    );
+  }
 }

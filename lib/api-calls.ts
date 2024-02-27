@@ -112,13 +112,6 @@ export async function getRtdb(gameroomId: string) {
     }
   );
   console.log(apiResponse);
-  console.log(await apiResponse.json());
-  try {
-    if (apiResponse.status == 200) {
-      const apiData = await apiResponse.json();
-      return apiData;
-    }
-  } catch (error: any) {
-    throw new Error(error);
-  }
+  const apiData = await apiResponse.json();
+  console.log({ apiData });
 }
