@@ -16,23 +16,48 @@ export default function Lobby() {
   const gameRoomId = params?.gameroomId;
   const [loading, setLoading] = useState<boolean>(true);
   const [gameroom, setGameroom] = useState<GameroomData>();
+  const [player, setPlayer] = useState<PlayerAPIResponse>();
   const [pageContent, setPageContent] = useState<number>(0);
-  useEffect(()=> {
+  useEffect(()=>{
+    usePlayer().then((p:PlayerAPIResponse) => setPlayer(p));
+  }, []);
+  useEffect(()=>{
     if(!gameRoomId) return;
-    searchGameroom(Number(gameRoomId)).then((res) => {
-      setGameroom(res);
-      usePlayer().then((p:PlayerAPIResponse) => {
-        joinRoom(Number(gameRoomId), p.playerData.name, p.playerData.pin)
-        .then(()=>setPageContent(2))
-        .catch(()=>setPageContent(1));
-      })
-      setLoading(false);
-      setPageContent(2);
-    }).catch(()=>{
-      setLoading(false);
-      setPageContent(0);
-    });
+    searchGameroom(Number(gameRoomId)).then((g:GameroomData) => setGameroom(g));
   }, [gameRoomId]);
+  useEffect(()=>{
+    if(player) {
+      joinRoom(Number(gameRoomId), player?.playerData.name, player?.playerData.pin)
+        .then(() => {
+          setLoading(false);
+          setPageContent(2)
+        })
+        .catch(() => {
+          setLoading(false);
+          setPageContent(1)
+        })
+    }
+  })
+  // useEffect(()=> {
+  //   if(!gameRoomId) return;
+  //   searchGameroom(Number(gameRoomId)).then((res) => {
+  //     setGameroom(res);
+  //     usePlayer().then((p:PlayerAPIResponse) => {
+  //       joinRoom(Number(gameRoomId), p.playerData.name, p.playerData.pin)
+  //       .then(()=>{
+  //         setLoading(false);
+  //         setPageContent(2);
+  //       })
+  //       .catch(()=>{
+  //         setLoading(false);
+  //         setPageContent(1);
+  //       });
+  //     })
+  //   }).catch(()=>{
+  //     setLoading(false);
+  //     setPageContent(0);
+  //   });
+  // }, [gameRoomId]);
   const contentList:JSX.Element[] = [
     (
       <div className={styles["no-gameroom"]}>

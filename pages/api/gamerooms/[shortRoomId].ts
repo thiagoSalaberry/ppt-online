@@ -27,10 +27,9 @@ export default async function handler(
   }
   if (req.method == "POST") {
     const joined = await post(String(shortRoomId), name, pin);
-    if (!joined) {
-      return res.status(403).json({ message: "La sala está llena" });
-    } else {
-      return res.status(200).json(joined);
-    }
+    if (joined?.status == 0) return res.status(404).json(joined.message);
+    if (joined?.status == 1) return res.status(403).json(joined.message);
+    if (joined?.status == 2 || joined?.status == 3)
+      return res.status(200).json(joined.message);
   }
 }

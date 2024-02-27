@@ -93,12 +93,14 @@ export async function joinRoom(shortRoomId: number, name: string, pin: number) {
     }
   );
   try {
-    const apiData = await apiResponse.json();
-    console.log(apiResponse);
-    if (!apiData) throw new Error("Acceso denegado");
-    return apiData;
+    if (apiResponse.status == 403) {
+      throw new Error("Acceso denegado");
+    } else {
+      const apiData = await apiResponse.json();
+      console.log("Funcionó", apiData);
+      return apiData;
+    }
   } catch (error) {
-    console.log(error);
-    return null;
+    throw new Error("Acceso denegado");
   }
 }
