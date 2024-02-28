@@ -120,10 +120,21 @@ export async function setMove(
   move: "piedra" | "papel" | "tijera"
 ) {
   const gameroom = await Gameroom.getGameroomById(shortRoomId);
+  console.log(gameroom);
   if (!gameroom) {
     return { status: 0, response: "La sala no existe" };
   } else {
     const settingMove = await gameroom.setMove(move, playerId);
+    return settingMove.message;
+  }
+}
+
+export async function setReady(shortRoomId: string, playerId: string) {
+  const gameroom = await Gameroom.getGameroomById(shortRoomId);
+  if (!gameroom) {
+    return { status: 0, response: "La sala no existe" };
+  } else {
+    const settingMove = await gameroom.setReady(playerId);
     return settingMove.message;
   }
 }

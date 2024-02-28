@@ -103,3 +103,24 @@ export async function joinRoom(shortRoomId: number, name: string, pin: number) {
     throw new Error(error);
   }
 }
+
+export async function setReady(shortRoomId: string, playerId: string) {
+  const apiResponse = await fetch(
+    `https://ppt-online-react.vercel.app/api/setReady/${shortRoomId}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ playerId }),
+    }
+  );
+  try {
+    if (apiResponse.status == 200) {
+      const apiData = await apiResponse.json();
+      return apiData;
+    }
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}

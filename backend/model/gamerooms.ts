@@ -97,4 +97,17 @@ export class Gameroom {
     const player = Object.values(this.data.players).find((p) => p.id == id);
     return { message: `El jugador ${player?.name} ha elegido ${move}` };
   }
+  async setReady(id: string) {
+    const playerCurrentState = this.data.currentGame[id];
+    this.data.currentGame = {
+      ...this.data.currentGame,
+      [id]: {
+        ...playerCurrentState,
+        ready: true,
+      },
+    };
+    await this.push();
+    const player = Object.values(this.data.players).find((p) => p.id === id);
+    return { message: `El jugador ${player?.name} está listo` };
+  }
 }
