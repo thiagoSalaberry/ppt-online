@@ -10,7 +10,7 @@ import { CircularProgress } from "@mui/material";
 import { WaitingComp } from "@/components/waiting.tsx";
 import { usePlayer, joinRoom, searchGameroom, setReady } from "@/lib/api-calls";
 import { useRoom } from "@/lib/hooks";
-import { LobbyContent } from "./lobby-content";
+import LobbyContent from "./lobby-content";
 export default function Lobby() {
   const params = useParams();
   const gameRoomId = params?.gameroomId!;

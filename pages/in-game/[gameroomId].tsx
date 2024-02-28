@@ -19,7 +19,9 @@ export default function InGame() {
   }, []);
   useEffect(()=>{
     player && setReady(String(gameRoomId), player.playerId)
-  })
+      .then((response)=>console.log(response))
+      .catch(() => console.error("No se actaulizó"))
+  },[selected]);
   return (
     <main className={styles["in-game-page"]}>
       <Timer/>
