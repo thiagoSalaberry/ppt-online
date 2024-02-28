@@ -11,6 +11,7 @@ import { WaitingComp } from "@/components/waiting.tsx";
 import { searchGameroom } from "@/lib/api-calls";
 import { usePlayer } from "@/lib/api-calls";
 import { joinRoom } from "@/lib/api-calls";
+import { useRoom } from "@/lib/hooks";
 export default function Lobby({initialData}: {initialData:any}) {
   const params = useParams();
   const gameRoomId = params?.gameroomId;

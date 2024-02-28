@@ -103,18 +103,3 @@ export async function joinRoom(shortRoomId: number, name: string, pin: number) {
     throw new Error(error);
   }
 }
-
-export async function getRtdb(gameroomId: string) {
-  const apiResponse = await fetch(
-    `https://ppt-online-two.vercel.app/api/rtdb/${gameroomId}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
-  console.log(apiResponse);
-  const apiData = await apiResponse.json();
-  console.log({ apiData });
-}

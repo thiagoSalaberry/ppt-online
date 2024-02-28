@@ -1,25 +1,30 @@
+import { useEffect, useState } from "react";
 import useSWR from "swr";
-export async function fetchAPI(endpoint: string) {
-  const res = await fetch(
-    `https://desafio-e-commerce-five.vercel.app/api${endpoint}`,
-    {
+
+export const useRoom = (shortRoomId: string) => {
+  const [apiData, setApiData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    fetch(`https://ppt-online-two.vercel.app/api/gamerooms/${shortRoomId}`, {
       method: "GET",
       headers: {
-        "Content-type": "application-json",
+        "Content-Type": "application/json",
       },
-    }
-  );
-  console.log({ res });
-  if (res.status >= 200 && res.status < 300) {
-    const data = await res.json();
-    return data;
-  } else if (res.status >= 400 && res.status < 500) {
-    throw new Error("Error en el fetchAPI()");
-  }
-}
-
-export async function useRTDB(gameroomId: string) {
-  const { data, error } = useSWR(`/gamerooms/${gameroomId}`, fetchAPI);
-  if (error) return error;
-  if (data) return data;
-}
+    }).then((apiResponse) => {
+      setLoading(true);
+      apiResponse
+        .json()
+        .then((data) => {
+          return setApiData(data);
+        })
+        .catch((err) => {
+          return setError(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    });
+  });
+  return { apiData, loading, error };
+};

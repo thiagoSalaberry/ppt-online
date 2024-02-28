@@ -7,11 +7,7 @@ import { Header } from "@/components/header";
 import React, { useEffect, useRef, useState } from "react";
 import Router from "next/router";
 import { getPlayer, createGameroom } from "@/lib/api-calls";
-import { getRtdb } from "@/lib/api-calls";
-import { useRTDB } from "@/lib/hooks";
 export default function Home() {
-  const rtdb = useRTDB("129935");
-  console.log({rtdb})
   const [currentPlayer, setCurrentPlayer] = useState<PlayerAPIResponse>({playerData: {name: "", pin: 0}, playerId: ""});
   const [currentStep, setCurrentStep] = useState<number>(0);
   const nameInputRef = useRef<HTMLInputElement>(null);

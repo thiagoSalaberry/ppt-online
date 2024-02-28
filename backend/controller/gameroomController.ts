@@ -104,20 +104,3 @@ export async function joinRoom(
     );
   }
 }
-
-export async function listenRTDB(gameroomId: string) {
-  const gameroomRef = rtdb.ref(`/gamerooms/${gameroomId}/currentGame`);
-  try {
-    let value;
-    gameroomRef.on("value", (snapshot) => {
-      const val = snapshot.val();
-      console.log({ val });
-      value = val;
-    });
-    return value;
-  } catch (error) {
-    throw new Error(
-      `Error en la función listenRTDB() de gameroomControllers.ts:`
-    );
-  }
-}
