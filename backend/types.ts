@@ -22,4 +22,13 @@ type GameroomData = {
     draws: number;
   };
   shortRoomId: number;
+  currentGame: {
+    [x: string]: {
+      name: string;
+      move: "piedra" | "papel" | "tijera" | null;
+      online: boolean;
+      host: boolean;
+      ready: boolean;
+    };
+  };
 };

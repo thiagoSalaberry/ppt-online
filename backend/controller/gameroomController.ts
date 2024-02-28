@@ -1,5 +1,5 @@
 import { Gameroom } from "../model/gamerooms";
-import { getPlayer } from "./playerController";
+import { getPlayer, getPlayerById } from "./playerController";
 import { rtdb } from "../lib/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { Player } from "../model/players";
@@ -21,23 +21,32 @@ export async function createGameroom(player: PlayerData) {
       guest: { name: "", id: "" },
     },
     history,
-  });
-  //Create gameroom in rtdb
-  const gameroomRef = rtdb.ref(`/gamerooms/${longId}`);
-  const gameroomData = {
-    shortRoomId: shortId,
     currentGame: {
       [host.playerId]: {
-        name: host.playerData.name,
-        online: true,
-        move: "",
         host: true,
+        online: true,
         ready: false,
+        move: null,
+        name: host.playerData.name,
       },
-      winner: "",
     },
-  };
-  await gameroomRef.set(gameroomData);
+  });
+  //Create gameroom in rtdb
+  // const gameroomRef = rtdb.ref(`/gamerooms/${longId}`);
+  // const gameroomData = {
+  //   shortRoomId: shortId,
+  //   currentGame: {
+  //     [host.playerId]: {
+  //       name: host.playerData.name,
+  //       online: true,
+  //       move: "",
+  //       host: true,
+  //       ready: false,
+  //     },
+  //     winner: "",
+  //   },
+  // };
+  // await gameroomRef.set(gameroomData);
   return { newGameroom: newGameroom.data };
 }
 
@@ -102,5 +111,19 @@ export async function joinRoom(
     throw new Error(
       `Error en la función joinRoom() de gameroomControllers.ts:`
     );
+  }
+}
+
+export async function setMove(
+  shortRoomId: string,
+  playerId: string,
+  move: "piedra" | "papel" | "tijera"
+) {
+  const gameroom = await Gameroom.getGameroomById(shortRoomId);
+  if (!gameroom) {
+    return { status: 0, response: "La sala no existe" };
+  } else {
+    const settingMove = await gameroom.setMove(move, playerId);
+    return settingMove.message;
   }
 }

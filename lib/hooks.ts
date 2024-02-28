@@ -1,30 +1,34 @@
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 
-export const useRoom = (shortRoomId: string) => {
-  const [apiData, setApiData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  useEffect(() => {
-    fetch(`https://ppt-online-two.vercel.app/api/gamerooms/${shortRoomId}`, {
+export async function fetchAPI2(endpoint: string) {
+  const token = localStorage.getItem("accessToken");
+  const res = await fetch(
+    `https://ppt-online-git-master-thiago-salaberrys-projects.vercel.app/api${endpoint}`,
+    {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        "Content-type": "application-json",
+        Authorization: `Bearer ${token}`,
       },
-    }).then((apiResponse) => {
-      setLoading(true);
-      apiResponse
-        .json()
-        .then((data) => {
-          return setApiData(data);
-        })
-        .catch((err) => {
-          return setError(err);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    });
+    }
+  );
+  if (res.status >= 200 && res.status < 300) {
+    const data = await res.json();
+    return data;
+  } else if (res.status >= 400 && res.status < 500) {
+    throw new Error("Error en el fetchAPI()");
+  }
+}
+
+export function useJSONPlaceholder(productId: string) {
+  const { data, error } = useSWR(`/users/${productId}`, fetchAPI2);
+  return data;
+}
+
+export function useRoom(shortRoomId: string) {
+  const { data, error } = useSWR(`/gamerooms/${shortRoomId}`, fetchAPI2, {
+    refreshInterval: 100,
   });
-  return { apiData, loading, error };
-};
+  return data as GameroomData;
+}

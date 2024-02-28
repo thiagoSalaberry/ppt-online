@@ -14,7 +14,7 @@ type TextFieldProps = {
   compRef: React.RefObject<HTMLInputElement>;
 };
 type MoveProps = {
-  move: "piedra" | "papel" | "tijera";
+  move: "piedra" | "papel" | "tijera" | null;
   selected?: "piedra" | "papel" | "tijera" | null;
   onClick?: (move: "piedra" | "papel" | "tijera") => void;
   size: "small" | "big";
