@@ -124,3 +124,28 @@ export async function setReady(shortRoomId: string, playerId: string) {
     throw new Error(error);
   }
 }
+
+export async function setMove(
+  shortRoomId: string,
+  playerId: string,
+  move: "piedra" | "papel" | "tijera"
+) {
+  const apiResponse = await fetch(
+    `https://ppt-online-react.vercel.app/api/setMove/${shortRoomId}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ playerId, move }),
+    }
+  );
+  try {
+    if (apiResponse.status == 200) {
+      const apiData = await apiResponse.json();
+      return apiData;
+    }
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}

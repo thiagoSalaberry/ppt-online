@@ -7,7 +7,7 @@ import Router from "next/router";
 import useSWRMutation from "swr/mutation";
 import { useJSONPlaceholder, useRoom } from "@/lib/hooks";
 import { useParams } from "next/navigation";
-import { setReady } from "@/lib/api-calls";
+import { setMove, setReady } from "@/lib/api-calls";
 export default function Home() {
   const params = useParams();
   const gameRoomId = params?.gameroomId;
@@ -18,6 +18,10 @@ export default function Home() {
   const handleSetReady = async (who: "host" | "guest") => {
     const apiCall = await setReady(String(room.shortRoomId), room.players[who].id);
     if(apiCall) console.log(`${room.players[who].name} está listo`)
+  };
+  const handleSetMove = async (who: "host" | "guest", move: "piedra" | "papel" | "tijera") => {
+    const apiCall = await setMove(String(room.shortRoomId), room.players[who].id, move);
+    if(apiCall) console.log(`El jugador ${room.players[who].name} eligió ${move}`)
   }
   return (
     <main className={styles["hooks-page"]}>
@@ -42,6 +46,24 @@ export default function Home() {
           </div>
         ) : null}
       </section>
+      <div>
+        <div>
+          <h3>Thiago: {room?.currentGame[hostId].ready ? "¡Está listo!" : "Le cuesta una banda"}</h3>
+          <div>
+            <Button type="submit" onClick={()=>handleSetMove("host", "piedra")}>Piedra</Button>
+            <Button type="submit" onClick={()=>handleSetMove("host", "papel")}>Papel</Button>
+            <Button type="submit" onClick={()=>handleSetMove("host", "tijera")}>Tijera</Button>
+          </div>
+        </div>
+        <div>
+          <h3>Franco: {room?.currentGame[guestId].ready ? "¡Está listo!" : "Le cuesta una banda"}</h3>
+          <div>
+            <Button type="submit" onClick={()=>handleSetMove("guest", "piedra")}>Piedra</Button>
+            <Button type="submit" onClick={()=>handleSetMove("guest", "papel")}>Papel</Button>
+            <Button type="submit" onClick={()=>handleSetMove("guest", "tijera")}>Tijera</Button>
+          </div>
+        </div>
+      </div>
     </main>
   )
 }
