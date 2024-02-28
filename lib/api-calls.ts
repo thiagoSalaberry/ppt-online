@@ -72,8 +72,8 @@ export async function searchGameroom(shortRoomId: number) {
     }
   );
   try {
+    if (!apiResponse.ok) throw new Error("La sala no existe");
     const apiData = await apiResponse.json();
-    if (!apiData) throw new Error("La sala no existe");
     return apiData;
   } catch (error) {
     console.log(error);

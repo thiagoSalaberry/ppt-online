@@ -103,7 +103,7 @@ export class Gameroom {
       ...this.data.currentGame,
       [id]: {
         ...playerCurrentState,
-        ready: true,
+        ready: !playerCurrentState.ready,
       },
     };
     await this.push();

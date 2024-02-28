@@ -7,7 +7,6 @@ import { joinRoom } from "@/lib/api-calls";
 import { useState } from "react";
 export function GameroomCard(props:GameroomCardProps) {
     const [error, setError] = useState<boolean>(false);
-    const [player, setPlayer] = useState();
     const handleErrorClick = () => {
         setError(true);
         setTimeout(() => {

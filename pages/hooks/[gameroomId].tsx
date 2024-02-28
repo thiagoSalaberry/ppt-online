@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Move } from "@/components/move";
 import { Header } from "@/components/header";
 import Router from "next/router";
+import { WaitingComp } from "@/components/waiting.tsx";
 import useSWRMutation from "swr/mutation";
 import { useJSONPlaceholder, useRoom } from "@/lib/hooks";
 import { useParams } from "next/navigation";
@@ -29,7 +30,7 @@ export default function Home() {
       <section className={styles["current-game"]}>
         <div className={styles["host"]}>
           <h3 className={styles["player-name"]}>{room?.players.host.name}</h3>
-          <p className={styles["player-status"]}>{room?.currentGame[hostId].online ? "Online" : "Offline"}</p>
+          <p className={styles["player-status"]}>{<WaitingComp type="lines" connected={room?.currentGame[hostId].online}/>}</p>
           <div className={styles["player-move"]}>
             {room?.currentGame[hostId].move && room.currentGame[room.players.host.id].online ? <Move size="small" move={room?.currentGame[hostId].move}></Move> : null}
           </div>
@@ -38,7 +39,7 @@ export default function Home() {
         {room?.currentGame[guestId] ? (
           <div className={styles["guest"]}>
             <h3 className={styles["player-name"]}>{room?.players.guest.name}</h3>
-            <p className={styles["player-status"]}>{room?.currentGame[guestId].online ? "Online" : "Offline"}</p>
+            <p className={styles["player-status"]}>{<WaitingComp type="lines" connected={room.currentGame[guestId].online}/>}</p>
             <div className={styles["player-move"]}>
               {room?.currentGame[guestId].move && room?.currentGame[guestId].online ? <Move size="small" move={room?.currentGame[guestId].move}></Move> : null}
             </div>

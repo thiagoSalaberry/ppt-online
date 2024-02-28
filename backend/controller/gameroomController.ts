@@ -77,31 +77,10 @@ export async function joinRoom(
     const player = await Player.getPlayerByNameAndPin(playerName, playerPin);
     if (player) {
       const added = await gameroom?.addPlayer(playerName, player?.id);
-      const gameroomRef = rtdb.ref(
-        `/gamerooms/${gameroom?.data.gameroomId}/currentGame`
-      );
       if (added?.response == 1) {
-        await gameroomRef.update({
-          [player.id]: {
-            host: true,
-            name: player.data.name,
-            online: true,
-            move: "",
-            ready: false,
-          },
-        });
         return { status: 2, response: "El host ahora está online" }; //
       }
       if (added?.response == 2 || added?.response == 3) {
-        await gameroomRef.update({
-          [player.id]: {
-            host: false,
-            name: player.data.name,
-            online: true,
-            move: "",
-            ready: false,
-          },
-        });
         return { status: 3, response: "El guest ahora está online" }; //
       }
       if (added?.response == 4)

@@ -28,20 +28,22 @@ export default function Search() {
       setLoading(true)
       gameroomId && searchGameroom(parseInt(gameroomId)).then((res) => {
         setLoading(false)
-        if(!res) return setGameroom(null);
-        else {
+        if(!res) {
+          return setGameroom(null);
+        } else {
           setGameroom(res);
         };
-      });
+      })
+      .catch(()=>setGameroom(null))
+      .finally(()=>setLoading(false));
     }, [gameroomId]);
     useEffect(()=>{
       usePlayer().then((p)=>{setPlayer(p)}).catch((err)=>console.log(err));
     }, []);
-    const isOnwer = gameroom?.players.host.id === player.playerId;
-    const isGuest = gameroom?.players.guest.id === player.playerId;
-    const isFull = gameroom?.players.guest.id !== "";
+    const isOnwer = gameroom?.players?.host.id === player.playerId;
+    const isGuest = gameroom?.players?.guest.id === player.playerId;
+    const isFull = gameroom?.players?.guest.id !== "";
     const letIn = isOnwer || isGuest || !isFull;
-    console.log({isOnwer, isGuest, isFull, letIn});
   return (
     <main className={styles["search-page"]}>
       <Header/>
