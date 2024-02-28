@@ -1,6 +1,6 @@
 export async function getPlayer(name: string, pin: number) {
   const apiResponse = await fetch(
-    `https://ppt-online-two.vercel.app/api/player`,
+    `https://ppt-online-react.vercel.app/api/player`,
     {
       method: "POST",
       headers: {
@@ -22,7 +22,7 @@ export async function getPlayer(name: string, pin: number) {
 export async function usePlayer() {
   const accessId = localStorage.getItem("accessId");
   const apiResponse = await fetch(
-    `https://ppt-online-two.vercel.app/api/player/${accessId}`,
+    `https://ppt-online-react.vercel.app/api/player/${accessId}`,
     {
       method: "GET",
       headers: {
@@ -42,7 +42,7 @@ export async function usePlayer() {
 
 export async function createGameroom(name: string, pin: number) {
   const apiResponse = await fetch(
-    "https://ppt-online-two.vercel.app/api/gamerooms",
+    "https://ppt-online-react.vercel.app/api/gamerooms",
     {
       method: "POST",
       headers: {
@@ -63,7 +63,7 @@ export async function createGameroom(name: string, pin: number) {
 
 export async function searchGameroom(shortRoomId: number) {
   const apiResponse = await fetch(
-    `https://ppt-online-two.vercel.app/api/gamerooms/${shortRoomId}`,
+    `https://ppt-online-react.vercel.app/api/gamerooms/${shortRoomId}`,
     {
       method: "GET",
       headers: {
@@ -83,7 +83,7 @@ export async function searchGameroom(shortRoomId: number) {
 
 export async function joinRoom(shortRoomId: number, name: string, pin: number) {
   const apiResponse = await fetch(
-    `https://ppt-online-two.vercel.app/api/gamerooms/${shortRoomId}`,
+    `https://ppt-online-react.vercel.app/api/gamerooms/${shortRoomId}`,
     {
       method: "POST",
       headers: {

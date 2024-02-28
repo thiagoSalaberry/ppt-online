@@ -4,7 +4,7 @@ import useSWR from "swr";
 export async function fetchAPI2(endpoint: string) {
   const token = localStorage.getItem("accessToken");
   const res = await fetch(
-    `https://ppt-online-git-master-thiago-salaberrys-projects.vercel.app/api${endpoint}`,
+    `https://ppt-online-react.vercel.app/api${endpoint}`,
     {
       method: "GET",
       headers: {
