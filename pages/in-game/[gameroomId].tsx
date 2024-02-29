@@ -8,7 +8,7 @@ import Router from "next/router";
 import { useParams } from "next/navigation";
 import { WaitingComp } from "@/components/waiting.tsx";
 import { Timer } from "@/components/timer";
-import { setReady, usePlayer } from "@/lib/api-calls";
+import { setReady, usePlayer, setMove } from "@/lib/api-calls";
 export default function InGame() {
   const params = useParams();
   const gameRoomId = params?.gameroomId;
@@ -22,13 +22,17 @@ export default function InGame() {
       .then((response)=>console.log(response))
       .catch(() => console.error("No se actaulizó"))
   },[selected]);
+  const handleSelect = (move:"piedra" | "papel" | "tijera") => {
+    setSelected(move);
+    setMove(String(gameRoomId), String(player!.playerId), move);
+  }
   return (
     <main className={styles["in-game-page"]}>
       <Timer/>
       <div className={styles["moves-container"]}>
-        <Move size="big" move="piedra" selected={selected} onClick={()=>setSelected("piedra")}/>
-        <Move size="big" move="papel" selected={selected} onClick={()=>setSelected("papel")}/>
-        <Move size="big" move="tijera" selected={selected} onClick={()=>setSelected("tijera")}/>
+        <Move size="big" move="piedra" selected={selected} onClick={handleSelect}/>
+        <Move size="big" move="papel" selected={selected} onClick={handleSelect}/>
+        <Move size="big" move="tijera" selected={selected} onClick={handleSelect}/>
       </div>
     </main>
   )

@@ -7,6 +7,7 @@ import { usePlayer, joinRoom, searchGameroom, setReady } from "@/lib/api-calls";
 import { WaitingComp } from "@/components/waiting.tsx";
 import { Fight } from "@/components/fight";
 import Router from "next/router";
+import { useState } from "react";
 export default function LobbyContent({index, gameroomId, gameroom, room, player}: {index:number, gameroomId:string, gameroom:GameroomData, room:GameroomData, player:PlayerAPIResponse}) {
     const me = gameroom && Object.values(gameroom.players).find(p => p.id === player?.playerId);
     const rival = gameroom && Object.values(gameroom.players).find(p => p.id !== player?.playerId);
