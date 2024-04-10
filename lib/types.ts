@@ -64,3 +64,38 @@ type PlayerAPIResponse = {
 type shortRoomIdAPIResponse = {
   shortRoomId: number;
 };
+type GameroomAPIResponse = {
+  currentGame: {
+    hostId: {
+      host: boolean;
+      move: null;
+      name: string;
+      online: boolean;
+      ready: boolean;
+    };
+    guestId: {
+      host: boolean;
+      move: null;
+      name: string;
+      online: boolean;
+      ready: boolean;
+    };
+  };
+  gameroomId: string;
+  history: {
+    draws: number;
+    guestWins: number;
+    hostWins: number;
+  };
+  players: {
+    guest: {
+      id: string;
+      name: string;
+    };
+    host: {
+      id: string;
+      name: string;
+    };
+  };
+  shortRoomId: number;
+};

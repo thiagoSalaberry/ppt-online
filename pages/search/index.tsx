@@ -1,7 +1,6 @@
 import { Button } from "@/ui/buttons";
 import { Header } from "@/components/header";
 import { TextField } from "@/ui/text-fields";
-import { Move } from "@/components/move";
 import { TextComp } from "@/ui/texts";
 import { CircularProgress } from "@mui/material";
 import styles from "./search.module.css";
@@ -9,14 +8,17 @@ import React, { useEffect, useRef, useState } from "react";
 import Router from "next/router";
 import { useSearchParams } from "next/navigation";
 import { GameroomCard } from "@/components/gameroom-card";
-import { usePlayer } from "@/lib/api-calls";
 import { searchGameroom } from "@/lib/api-calls";
+import { useRecoilState } from "recoil";
+import { playerState } from "@/atoms/playerState";
+import { gameroomState } from "@/atoms/currentGameState";
 export default function Search() {
     const params = useSearchParams();
     const gameroomId = params.get("gameroom");
-    const [gameroom, setGameroom] = useState<GameroomData | null>();
+    const [gameroom, setGameroom] = useRecoilState(gameroomState);
     const [loading, setLoading] = useState<boolean>(true);
-    const [player, setPlayer] = useState<{playerData: {name:string, pin:number}, playerId:string}>({playerData: {name: "", pin:0}, playerId: ""});
+    const [player, _] = useRecoilState(playerState);
+    const [error, setError] = useState(false);
     const codeInputRef = useRef<HTMLInputElement>(null);
     const handleCodeSubmit = (e:any) => {
       e.preventDefault();
@@ -29,17 +31,15 @@ export default function Search() {
       gameroomId && searchGameroom(parseInt(gameroomId)).then((res) => {
         setLoading(false)
         if(!res) {
-          return setGameroom(null);
+          setError(true)
         } else {
+          setError(false)
           setGameroom(res);
         };
       })
-      .catch(()=>setGameroom(null))
+      .catch(()=>setError(true))
       .finally(()=>setLoading(false));
     }, [gameroomId]);
-    useEffect(()=>{
-      usePlayer().then((p)=>{setPlayer(p)}).catch((err)=>console.log(err));
-    }, []);
     const isOnwer = gameroom?.players?.host.id === player.playerId;
     const isGuest = gameroom?.players?.guest.id === player.playerId;
     const isFull = gameroom?.players?.guest.id !== "";
@@ -57,10 +57,10 @@ export default function Search() {
           </form>
         ) : (
           <>
-            {loading ? <CircularProgress color="inherit"/> : gameroom ? (
-              <GameroomCard full={letIn} players={gameroom?.players} gameroomId={String(gameroom?.shortRoomId)} requester={{name: player.playerData.name, pin: player.playerData.pin}}/>
-            ) : (
+            {loading ? <CircularProgress color="inherit"/> : error ? (
               <TextComp tag="p" size="24px" align="center" weight="600" color="#2b2b2b">La sala no existe.</TextComp>
+              ) : (
+              <GameroomCard full={letIn} players={gameroom?.players} gameroomId={String(gameroom?.shortRoomId)} requester={{name: player.playerData.name, pin: player.playerData.pin}}/>
             )}
             <Button type="button" color="back" onClick={()=>Router.back()}>Volver</Button>
           </>

@@ -7,18 +7,20 @@ import { Header } from "@/components/header";
 import React, { useEffect, useRef, useState } from "react";
 import Router from "next/router";
 import { getPlayer, createGameroom } from "@/lib/api-calls";
+import { useRecoilState } from "recoil";
+import { playerState } from "@/atoms/playerState";
 export default function Home() {
-  const [currentPlayer, setCurrentPlayer] = useState<PlayerAPIResponse>({playerData: {name: "", pin: 0}, playerId: ""});
   const [currentStep, setCurrentStep] = useState<number>(0);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const pinInputRef = useRef<HTMLInputElement>(null);
-  const handleNameSubmit = async (e:any) => {
+  const [player, setPlayer] = useRecoilState<PlayerAPIResponse>(playerState);
+  const handleNameSubmit = async (e:React.FormEvent) => {
     e.preventDefault();
     if(nameInputRef.current && pinInputRef.current) {
       const player = await getPlayer(nameInputRef.current.value, parseInt(pinInputRef.current.value));
       if(player) {
         localStorage.setItem("accessId", player.playerId);
-        setCurrentPlayer(player);
+        setPlayer(player);
         setTimeout(()=>{
           setCurrentStep(1);
         }, 100)
@@ -28,7 +30,7 @@ export default function Home() {
   const handleClick = async (option: "newGame" | "joinRoom") => {
     if(option == "newGame") {
       // Acá va el código necesario para crear la sala
-      const newGameroom = await createGameroom(currentPlayer.playerData.name, currentPlayer.playerData.pin);
+      const newGameroom = await createGameroom(player.playerData.name, player.playerData.pin);
       Router.push(`/lobby/${newGameroom?.shortRoomId}`);
     };
     if(option == "joinRoom") {
@@ -38,7 +40,7 @@ export default function Home() {
   };
   const stepHeaders: JSX.Element[] = [
     <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">Ingresá tus datos para jugar</TextComp>,
-    <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">¡Hola {currentPlayer.playerData.name}!<br></br>Elegí una opción</TextComp>,
+    <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">¡Hola {player.playerData.name}!<br></br>Elegí una opción</TextComp>,
     <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">Ingresá el código de la sala</TextComp>,
   ]
   const steps: JSX.Element[] = [
