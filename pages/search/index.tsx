@@ -17,9 +17,13 @@ export default function Search() {
     const gameroomId = params.get("gameroom");
     const [gameroom, setGameroom] = useRecoilState(gameroomState);
     const [loading, setLoading] = useState<boolean>(true);
-    const [player, _] = useRecoilState(playerState);
+    const [player, setPlayer] = useRecoilState<PlayerAPIResponse>(playerState);
     const [error, setError] = useState(false);
+    const [form, setForm] = useState<{code: string}>({code: ""});
     const codeInputRef = useRef<HTMLInputElement>(null);
+    const handleInputChange = (value:string) => {
+      setForm({code: value});
+    }
     const handleCodeSubmit = (e:any) => {
       e.preventDefault();
       if(codeInputRef.current) {
@@ -51,7 +55,7 @@ export default function Search() {
         <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">{!gameroomId ? "Buscá tu sala acá" : "Salas"}</TextComp>
         {!gameroomId ? (
           <form onSubmit={handleCodeSubmit} className={styles["code-form"]}>
-            <TextField compRef={codeInputRef} type="number" name="code" label="Código" required={true}/>
+            <TextField type="number" name="code" label="Código" id="code" required value={form.code} onChange={(value) => handleInputChange(value)}/>
             <Button type="submit" color="black">Buscar</Button>
             <Button type="button" color="back" onClick={()=>Router.push("/")}>Volver</Button>
           </form>
@@ -62,7 +66,7 @@ export default function Search() {
               ) : (
               <GameroomCard full={letIn} players={gameroom?.players} gameroomId={String(gameroom?.shortRoomId)} requester={{name: player.playerData.name, pin: player.playerData.pin}}/>
             )}
-            <Button type="button" color="back" onClick={()=>Router.back()}>Volver</Button>
+            <Button type="button" color="back" onClick={()=>{Router.push("/"); setPlayer(player)}}>Volver</Button>
           </>
         )}
       </section>

@@ -1,6 +1,7 @@
 .button {
     font-size: 22px;
     font-weight: 500;
+    min-height: 60px;
     color: white;
     background: var(--blue);
     border: none;
@@ -11,7 +12,11 @@
     width: 100%;
 }
 .button:active {
-    transform: translateY(7px);
+    transform: translateY(8px);
+    box-shadow: none;
+}
+.button.submitting:active {
+    transform: translateY(4px);
     box-shadow: none;
 }
 .red {
@@ -35,4 +40,8 @@
     color: black;
     background: var(--grey);
     box-shadow: var(--buttons-shadow-grey);
+}
+.submitting {
+    transform: translateY(4px);
+    box-shadow: none;
 }

@@ -8,6 +8,7 @@
 }
 .lines-container, .dots-container {
     display: flex;
+    justify-content: center;
     gap: 3px;
     overflow: hidden;
     height: 100%;
@@ -25,6 +26,9 @@
     height: 4px;
     border-radius: 50%;
     animation: waiting 1.2s infinite;
+}
+.white {
+    background-color: white;
 }
 .line:nth-child(1), .dot:nth-child(1) {
     animation: waiting 1.2s 0 infinite;

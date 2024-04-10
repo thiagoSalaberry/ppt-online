@@ -24,16 +24,25 @@
     border: 4px solid var(--black);
 }
 .input:active {
-    transform: translateY(7px);
+    transform: translateY(8px);
     box-shadow: none;
 
 }
 .input:focus {
-    transform: translateY(-7px);
-    border: 4px solid var(--black);
-    box-shadow: 0px 16px 0px 0 rgba(0, 0, 0, 1);
+    transform: translateY(-4px);
+    box-shadow: 0px 12px 0px 0 rgba(0, 0, 0, 1);
     outline: none;
 }
-.valued {
+.input.valued {
     border: 4px solid var(--black);
+}
+.input.missing {
+    border: 4px solid var(--red);
+    box-shadow: var(--buttons-shadow-red);
+}
+.input.missing:focus {
+    transform: translateY(-4px);
+    border: 4px solid var(--red);
+    box-shadow: 0px 12px 0px 0 rgb(182, 10, 33);
+    outline: none;
 }

@@ -10,9 +10,9 @@ export function WaitingComp(props:WaitingProps) {
     );
     const dots:JSX.Element = (
         <div className={styles["dots-container"]}>
-            <div className={`${styles["dot"]} ${props.connected ? styles["connected"] : ""}`}></div>
-            <div className={`${styles["dot"]} ${props.connected ? styles["connected"] : ""}`}></div>
-            <div className={`${styles["dot"]} ${props.connected ? styles["connected"] : ""}`}></div>
+            <div className={`${styles["dot"]} ${props.color ? styles["white"] : ""}`}></div>
+            <div className={`${styles["dot"]} ${props.color ? styles["white"] : ""}`}></div>
+            <div className={`${styles["dot"]} ${props.color ? styles["white"] : ""}`}></div>
         </div>
     );
     if(props.type == "lines") return signal;

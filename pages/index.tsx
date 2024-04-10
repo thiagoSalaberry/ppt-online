@@ -4,38 +4,78 @@ import { Move } from "@/components/move";
 import { TextComp } from "@/ui/texts";
 import styles from "./home.module.css";
 import { Header } from "@/components/header";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Router from "next/router";
 import { getPlayer, createGameroom } from "@/lib/api-calls";
 import { useRecoilState } from "recoil";
 import { playerState } from "@/atoms/playerState";
 export default function Home() {
-  const [currentStep, setCurrentStep] = useState<number>(0);
-  const nameInputRef = useRef<HTMLInputElement>(null);
-  const pinInputRef = useRef<HTMLInputElement>(null);
   const [player, setPlayer] = useRecoilState<PlayerAPIResponse>(playerState);
-  const handleNameSubmit = async (e:React.FormEvent) => {
+  const [currentStep, setCurrentStep] = useState<number>(player.playerData.name ? 1 : 0);
+  const [form, setForm] = useState<{
+    name: string;
+    pin: string;
+  }>({
+    name: "",
+    pin: ""
+  });
+  const [missing, setMissing] = useState<{
+    name: boolean,
+    pin: boolean
+  }>({
+    name: false,
+    pin: false
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const handleInputChange = (fieldName: "name" | "pin", value: string):void => {
+    setForm({
+      ...form,
+      [fieldName]: value
+    });
+    setMissing({
+      ...missing,
+      [fieldName]: false
+    });
+  }
+  const handleOnInvalid = (e:React.FormEvent<HTMLFormElement>):void => {
     e.preventDefault();
-    if(nameInputRef.current && pinInputRef.current) {
-      const player = await getPlayer(nameInputRef.current.value, parseInt(pinInputRef.current.value));
-      if(player) {
-        localStorage.setItem("accessId", player.playerId);
-        setPlayer(player);
-        setTimeout(()=>{
-          setCurrentStep(1);
-        }, 100)
-      };
+    const input = e.target as HTMLInputElement;
+    setMissing({
+      ...missing,
+      [input.name]: true
+    })
+  }
+  const handleSubmit = async (e:React.FormEvent):Promise<void> => {
+    e.preventDefault();
+    setSubmitting(true);
+    setPlayer({playerData: {name: form.name, pin: parseInt(form.pin)}, playerId: ""})
+    setTimeout(() => {
+      setSubmitting(false);
+      setCurrentStep(1)
+    }, 2000);
+      // const player = form.pin && await getPlayer(form.name, form.pin);
+      // if(player) {
+      //   localStorage.setItem("accessId", player.playerId);
+      //   setPlayer(player);
+      //   setTimeout(()=>{
+      //     setCurrentStep(1);
+      //   }, 100)
+      // };
     }
-  };
-  const handleClick = async (option: "newGame" | "joinRoom") => {
+  const handleClick = async (option: "newGame" | "joinRoom" | "back"):Promise<void> => {
     if(option == "newGame") {
-      // Acá va el código necesario para crear la sala
+      setSubmitting(true)
       const newGameroom = await createGameroom(player.playerData.name, player.playerData.pin);
-      Router.push(`/lobby/${newGameroom?.shortRoomId}`);
+      if(newGameroom) {
+        setSubmitting(false)
+        Router.push(`/lobby/${newGameroom?.shortRoomId}`);
+      }
     };
     if(option == "joinRoom") {
-      // console.log("Join Room")
       Router.push(`/search`);
+    };
+    if(option == "back") {
+      setCurrentStep(0);
     };
   };
   const stepHeaders: JSX.Element[] = [
@@ -45,16 +85,17 @@ export default function Home() {
   ]
   const steps: JSX.Element[] = [
     (
-      <form onSubmit={handleNameSubmit} className={styles["name-form"]}>
-        <TextField compRef={nameInputRef} type="text" name="name" label="NOMBRE" required={true}/>
-        <TextField compRef={pinInputRef} type="number" name="pin" label="PIN" required={true}/>
-        <Button type="submit" color="black">Continuar</Button>
+      <form onInvalid={handleOnInvalid} onSubmit={handleSubmit} className={styles["name-form"]}>
+        <TextField label="NOMBRE DE USARIO" id="name" type="text" name="name" value={form.name} missing={missing.name} disabled={submitting} onChange={(value) => handleInputChange("name", value)} required/>
+        <TextField label="PIN" id="pin" type="number" name="pin" value={form.pin} missing={missing.pin} disabled={submitting} onChange={(value) => handleInputChange("pin", value)} required/>
+        <Button type="submit" color="black" submitting={submitting}>Ingresar</Button>
       </form>
     ),
     (
       <div className={styles["step"]}>
         <Button type="button" color="black" onClick={()=>handleClick("newGame")}>Nuevo juego</Button>
         <Button type="button" color="black" onClick={()=>handleClick("joinRoom")}>Ingresar a una sala</Button>
+        <Button type="button" color="back" onClick={()=>handleClick("back")}>Salir</Button>
       </div>
     ),
   ];

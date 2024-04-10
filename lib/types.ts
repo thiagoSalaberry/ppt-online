@@ -1,17 +1,21 @@
 type ButtonProps = {
+  type: "submit" | "button";
   color?: string;
   children: string;
-  onClick?: Function;
-  type: "submit" | "button";
+  submitting?: boolean;
+  onClick?: () => void;
 };
 type TextFieldProps = {
-  type: "text" | "number" | "email";
+  type: "text" | "number";
   name: string;
-  placeholder?: string;
+  id: string;
   label: string;
+  value?: string;
+  placeholder?: string;
+  disabled?: boolean;
   required?: boolean;
-  onSubmit?: (input: string | number) => void;
-  compRef: React.RefObject<HTMLInputElement>;
+  missing?: boolean;
+  onChange?: (value: string) => void;
 };
 type MoveProps = {
   move: "piedra" | "papel" | "tijera" | null;
@@ -30,8 +34,9 @@ type TextProps = {
   align?: "left" | "center" | "right";
 };
 type WaitingProps = {
-  connected: boolean;
   type: "lines" | "dots";
+  connected?: boolean;
+  color: "white" | "black";
 };
 type GameroomCardProps = {
   gameroomId: string;

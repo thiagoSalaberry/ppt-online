@@ -1,16 +1,16 @@
 :root {
   --fondo: #efefef;
   --blue:#0d6efd;
-  --red: #F28383;
+  --red: #f52d47;
   --back: #d2d2d2;
   --orange: #ff9752;
   --black: #2b2b2b;
   --grey:  #cccccc;
   --buttons-shadow: 0px 8px 0px 0 rgba(0, 0, 0, 1);
   --buttons-shadow-grey: 0px 8px 0px 0 rgba(100, 100, 100, 1);
-  --buttons-shadow-blue: 0 7px 0 rgb(0, 86, 215);
-  --buttons-shadow-orange: 0 7px 0 rgb(194, 91, 39);
-  --buttons-shadow-red: 0 7px 0 rgb(205, 19, 44);
+  --buttons-shadow-blue: 0 8px 0 0 rgb(0, 86, 215);
+  --buttons-shadow-orange: 0 8px 0 0 rgb(194, 91, 39);
+  --buttons-shadow-red: 0 8px 0 0 rgb(182, 10, 33);
   --orange-gradient: linear-gradient(135deg, rgba(254,217,183,1) 0%, rgba(240,113,103,1) 100%);
 }
 * {
