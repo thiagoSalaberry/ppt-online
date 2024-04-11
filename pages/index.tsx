@@ -88,7 +88,7 @@ export default function Home() {
       <form onInvalid={handleOnInvalid} onSubmit={handleSubmit} className={styles["name-form"]}>
         <TextField label="NOMBRE DE USARIO" id="name" type="text" name="name" value={form.name} missing={missing.name} disabled={submitting} onChange={(value) => handleInputChange("name", value)} required/>
         <TextField label="PIN" id="pin" type="number" name="pin" value={form.pin} missing={missing.pin} disabled={submitting} onChange={(value) => handleInputChange("pin", value)} required/>
-        {error ? <p>El pin es incorrecto</p> : null}
+        {error ? <p className={styles["error__message"]}>El pin es incorrecto</p> : null}
         <Button type="submit" color="black" submitting={submitting}>Ingresar</Button>
       </form>
     ),

@@ -13,7 +13,7 @@ export function TextField(props:TextFieldProps) {
                 value={props.value}
                 name={props.name}
                 id={props.id}
-                placeholder={props.placeholder}
+                placeholder={props.missing ? "Completá este campo" : ""}
                 required={props.required}
                 onChange={handleChange}
             />
