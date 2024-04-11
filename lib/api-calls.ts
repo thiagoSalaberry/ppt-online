@@ -1,20 +1,33 @@
-export async function getPlayer(name: string, pin: number) {
-  const apiResponse = await fetch(
-    `https://ppt-online-react.vercel.app/api/player`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, pin }),
-    }
-  );
+export async function getPlayer(
+  name: string,
+  pin: number
+): Promise<PlayerAPIResponse | null> {
   try {
-    const apiData = await apiResponse.json();
-    if (!apiData) throw new Error("Failed to load player data");
-    return apiData as PlayerAPIResponse;
+    const apiResponse = await fetch(
+      // `https://ppt-online-react.vercel.app/api/player`,
+      `http://localhost:3000/api/player`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, pin }),
+      }
+    );
+    if (apiResponse.status < 400) {
+      console.log("Salió todo bien");
+      const apiData = await apiResponse.json();
+      console.log("Esto viene del api-call", apiData);
+      return apiData;
+    } else if (apiResponse.status >= 400 && apiResponse.status < 500) {
+      console.log("La petición es mala o el pin es incorrecto");
+      return null;
+    } else {
+      console.log("Salió todo mal");
+      throw new Error("Internal server error");
+    }
   } catch (error) {
-    console.log(error);
+    console.log("Error getting player data: ", error);
     return null;
   }
 }

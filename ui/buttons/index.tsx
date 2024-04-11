@@ -11,5 +11,6 @@ export function Button(props:ButtonProps) {
                 type={props.type}
                 className={`${styles["button"]} ${styles[props.color ? props.color : ""]} ${props.submitting ? styles["submitting"] : ""}`}
                 onClick={handleClick}
+                disabled={props.submitting}
                 >{!props.submitting ? props.children : <WaitingComp type="dots" color="white"/>}</button>
 }

@@ -1,12 +1,10 @@
 import { atom } from "recoil";
 
-export const playerState = atom({
+export const playerState = atom<PlayerData>({
   key: "player",
   default: {
-    playerData: {
-      name: "",
-      pin: 0,
-    },
-    playerId: "",
+    id: "",
+    name: "",
+    pin: 0,
   },
 });

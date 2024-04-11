@@ -59,12 +59,14 @@ type ResultCardProps = {
 };
 
 //API
+type PlayerModelResponse = {
+  status: 0 | 1 | 2;
+  message: string;
+  player?: PlayerData;
+};
 type PlayerAPIResponse = {
-  playerData: {
-    name: string;
-    pin: number;
-  };
-  playerId: string;
+  message: string;
+  playerData: PlayerData;
 };
 type shortRoomIdAPIResponse = {
   shortRoomId: number;
