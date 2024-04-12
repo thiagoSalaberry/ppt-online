@@ -88,22 +88,7 @@ type shortRoomIdAPIResponse = {
   shortRoomId: number;
 };
 type GameroomAPIResponse = {
-  currentGame: {
-    hostId: {
-      host: boolean;
-      move: null;
-      name: string;
-      online: boolean;
-      ready: boolean;
-    };
-    guestId: {
-      host: boolean;
-      move: null;
-      name: string;
-      online: boolean;
-      ready: boolean;
-    };
-  };
+  currentGame: CurrentGame;
   gameroomId: string;
   history: {
     draws: number;
@@ -121,4 +106,20 @@ type GameroomAPIResponse = {
     };
   };
   shortRoomId: number;
+};
+type CurrentGame = {
+  host: {
+    host: true;
+    name: string;
+    online: boolean;
+    ready: boolean;
+    move: "piedra" | "papel" | "tijera" | null;
+  };
+  guest: {
+    host: false;
+    name: string;
+    online: boolean;
+    ready: boolean;
+    move: "piedra" | "papel" | "tijera" | null;
+  };
 };

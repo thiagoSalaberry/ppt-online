@@ -4,7 +4,8 @@ import useSWR from "swr";
 export async function fetchAPI2(endpoint: string) {
   const token = localStorage.getItem("accessToken");
   const res = await fetch(
-    `https://ppt-online-react.vercel.app/api${endpoint}`,
+    // `https://ppt-online-react.vercel.app/api${endpoint}`,
+    `http://localhost:3000/api${endpoint}`,
     {
       method: "GET",
       headers: {
@@ -34,5 +35,16 @@ export function useRoom(shortRoomId: string) {
 }
 
 export function useCurrentGame(shortRoomId: string) {
-  const { data, error } = useSWR(`/`);
+  const { data, isLoading, error } = useSWR(
+    `/gamerooms/${shortRoomId}`,
+    fetchAPI2,
+    {
+      refreshInterval: 30,
+    }
+  );
+  return {
+    data: data as GameroomAPIResponse,
+    isLoading,
+    error,
+  };
 }

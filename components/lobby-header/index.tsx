@@ -2,6 +2,7 @@ import styles from "./lobby-header.module.css";
 import { WaitingComp } from "../waiting.tsx";
 import { TextComp } from "@/ui/texts";
 export default function LobbyHeader(props:LobbyHeaderProps) {
+    console.log("esto viene del comp:", props)
     return (
         <header className={styles["lobby-header"]}>
             <div className={styles["lobby-players"]}>

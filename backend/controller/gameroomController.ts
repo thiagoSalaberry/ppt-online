@@ -22,12 +22,19 @@ export async function createGameroom(player: PlayerData) {
     },
     history,
     currentGame: {
-      [host.id!]: {
+      host: {
         host: true,
         online: true,
+        name: host.name,
         ready: false,
         move: null,
-        name: host.name,
+      },
+      guest: {
+        host: false,
+        online: false,
+        name: "",
+        ready: false,
+        move: null,
       },
     },
   });

@@ -8,7 +8,7 @@ async function get(shortRoomId: string) {
   const gameroom = await getGameroom(shortRoomId);
   return gameroom;
 }
-// async function post(
+// async function patch(
 //   shortRoomId: string,
 //   playerName: string,
 //   playerPin: number
@@ -29,8 +29,8 @@ export default async function handler(
     if (gameroom.status == 0) return res.status(404).json(gameroom.response);
     if (gameroom.status == 1) return res.status(200).json(gameroom.response);
   }
-  // if (req.method == "POST") {
-  //   const joined = await post(String(shortRoomId), name, pin);
+  // if (req.method == "PATCH") {
+  //   const joined = await patch(String(shortRoomId), name, pin);
   //   if (joined?.status == 0) return res.status(404).json(joined.response);
   //   if (joined?.status == 1) return res.status(403).json(joined.response);
   //   if (joined?.status == 2 || joined?.status == 3)

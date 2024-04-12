@@ -6,6 +6,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  if (req.method !== "POST")
+    return res.status(400).json({ message: "Falta el ID de la sala" });
   const { playerId } = req.body;
   if (!playerId)
     return res.status(400).json({ message: "Falta el ID del jugador." });
