@@ -36,7 +36,7 @@ type TextProps = {
 type WaitingProps = {
   type: "lines" | "dots";
   connected?: boolean;
-  color: "white" | "black";
+  color?: "white" | "black";
 };
 type GameroomCardProps = {
   gameroomId: string;
@@ -58,7 +58,7 @@ type ResultCardProps = {
   img: "win" | "loss" | "draw";
 };
 type LobbyHeaderProps = {
-  shortRoomId: number;
+  shortRoomId: string;
   currentGame: {
     host: {
       name: string;

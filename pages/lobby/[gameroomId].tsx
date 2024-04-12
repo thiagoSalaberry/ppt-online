@@ -5,7 +5,7 @@ import { CircularProgress } from "@mui/material";
 import { joinRoom, searchGameroom } from "@/lib/api-calls";
 import { useCurrentGame, useRoom } from "@/lib/hooks";
 import LobbyContent from "./lobby-content";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { playerState } from "@/atoms/playerState";
 import { gameroomState } from "@/atoms/currentGameState";
 import LobbyHeader from "@/components/lobby-header";
@@ -24,6 +24,8 @@ export default function Lobby() {
   const params = useParams();
   const paramsId = params?.gameroomId!;
   const { data, isLoading, error } = useCurrentGame(String(paramsId));
+  const [pageContent, setPageContet] = useState<number>(0);
+  const player = useRecoilValue(playerState);
   if(isLoading) return (
     <main className={styles["lobby-page"]}>
       <CircularProgress />
@@ -37,7 +39,12 @@ export default function Lobby() {
   const { shortRoomId, history, currentGame } = data;
   return (
     <main className={styles["lobby-page"]}>
-      <LobbyHeader shortRoomId={shortRoomId} history={history} currentGame={{host:{name:currentGame.host.name, online: currentGame.host.online}, guest:{name:currentGame.guest.name, online: currentGame.guest.online}}}/>
+      <LobbyContent
+        gameroom={data}
+        shortRoomId={shortRoomId.toString()}
+        index={pageContent}
+        player={player}
+      />
     </main>
   )
 }
