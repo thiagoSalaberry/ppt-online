@@ -4,8 +4,8 @@ export async function getPlayer(
 ): Promise<PlayerAPIResponse | null> {
   try {
     const apiResponse = await fetch(
-      // `https://ppt-online-react.vercel.app/api/player`,
-      `http://localhost:3000/api/player`,
+      `https://ppt-online-react.vercel.app/api/player`,
+      // `http://localhost:3000/api/player`,
       {
         method: "POST",
         headers: {
