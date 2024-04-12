@@ -82,13 +82,13 @@ export async function searchGameroom(shortRoomId: number) {
   }
 }
 
-export async function joinRoom(shortRoomId: number, name: string, pin: number) {
+export async function joinRoom(shortRoomId: number, playerId: string) {
   const apiResponse = await fetch(`${API_BASE_URL}/gamerooms/${shortRoomId}`, {
-    method: "POST",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name, pin }),
+    body: JSON.stringify({ playerId }),
   });
   try {
     if (apiResponse.status == 404) throw new Error("La sala no existe");

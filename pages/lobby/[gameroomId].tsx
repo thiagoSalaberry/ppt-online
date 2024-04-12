@@ -3,11 +3,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 import { joinRoom, searchGameroom } from "@/lib/api-calls";
-import { useRoom } from "@/lib/hooks";
+import { useCurrentGame, useRoom } from "@/lib/hooks";
 import LobbyContent from "./lobby-content";
 import { useRecoilState } from "recoil";
 import { playerState } from "@/atoms/playerState";
 import { gameroomState } from "@/atoms/currentGameState";
+import LobbyHeader from "@/components/lobby-header";
 /*
   Este componente representa la página del lobby. En este, debo obtener los datos de la gameroom correspondiente a través del shortRoomId
   En el header debo poner el shortRoomId, el nombre del host, si está conectado y sus victorias. Lo mismo con el guest.
@@ -21,32 +22,22 @@ import { gameroomState } from "@/atoms/currentGameState";
  */
 export default function Lobby() {
   const params = useParams();
-  const gameRoomId = params?.gameroomId!;
-  const [loading, setLoading] = useState<boolean>(false);
-  const [gameroom, setGameroom] = useRecoilState(gameroomState);
-  const [player, setPlayer] = useRecoilState<PlayerData>(playerState);
-  const [pageContent, setPageContent] = useState<number>(0);
-  const room = useRoom(String(gameRoomId));
-  // useEffect(()=>{
-  //   if(player && gameroom) {
-  //     joinRoom(Number(gameRoomId), player?.name, player?.pin)
-  //       .then((res:string) => {
-  //         setLoading(false);
-  //         setPageContent(2);
-  //       })
-  //       .catch(() => {
-  //         setLoading(false);
-  //         setPageContent(1)
-  //       })
-  //   }
-  // }, [player]);
+  const paramsId = params?.gameroomId!;
+  const { data, isLoading, error } = useCurrentGame(String(paramsId));
+  if(isLoading) return (
+    <main className={styles["lobby-page"]}>
+      <CircularProgress />
+    </main>
+  );
+  if(error) return (
+    <main className={styles["lobby-page"]}>
+      <div>Error</div>
+    </main>
+  );
+  const { shortRoomId, history, currentGame } = data;
   return (
     <main className={styles["lobby-page"]}>
-      {loading ? (
-          <CircularProgress color="inherit"/>
-        ) : (
-          <LobbyContent gameroom={gameroom!} gameroomId={String(gameRoomId)} index={pageContent} player={player!} room={room}/>
-        )}
+      <LobbyHeader shortRoomId={shortRoomId} history={history} currentGame={{host:{name:currentGame.host.name, online: currentGame.host.online}, guest:{name:currentGame.guest.name, online: currentGame.guest.online}}}/>
     </main>
   )
 }

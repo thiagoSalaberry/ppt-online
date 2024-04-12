@@ -13,49 +13,53 @@ import { useRecoilState } from "recoil";
 import { playerState } from "@/atoms/playerState";
 import { gameroomState } from "@/atoms/currentGameState";
 export default function Search() {
-    // const params = useSearchParams();
-    // const gameroomId = params.get("gameroom");
-    // const [gameroom, setGameroom] = useRecoilState(gameroomState);
-    // const [loading, setLoading] = useState<boolean>(true);
-    // const [player, setPlayer] = useRecoilState<PlayerAPIResponse>(playerState);
-    // const [error, setError] = useState(false);
-    // const [form, setForm] = useState<{code: string}>({code: ""});
-    // const codeInputRef = useRef<HTMLInputElement>(null);
-    // const handleInputChange = (value:string) => {
-    //   setForm({code: value});
-    // }
-    // const handleCodeSubmit = (e:any) => {
-    //   e.preventDefault();
-    //   if(codeInputRef.current) {
-    //     Router.push(`/search?gameroom=${codeInputRef.current.value}`);
-    //   };
-    // };
-    // useEffect(()=>{
-    //   setLoading(true)
-    //   gameroomId && searchGameroom(parseInt(gameroomId)).then((res) => {
-    //     setLoading(false)
-    //     if(!res) {
-    //       setError(true)
-    //     } else {
-    //       setError(false)
-    //       setGameroom(res);
-    //     };
-    //   })
-    //   .catch(()=>setError(true))
-    //   .finally(()=>setLoading(false));
-    // }, [gameroomId]);
-    // const isOnwer = gameroom?.players?.host.id === player.playerId;
-    // const isGuest = gameroom?.players?.guest.id === player.playerId;
-    // const isFull = gameroom?.players?.guest.id !== "";
-    // const letIn = isOnwer || isGuest || !isFull;
+    const params = useSearchParams();
+    const gameroomId = params.get("gameroom");
+    const [code, setCode] = useState("");
+    const [missing, setMissgin] = useState(false);
+    const [gameroom, setGameroom] = useState();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const handleInputChange = (value: string):void => {
+      setCode(value)
+      setMissgin(false)
+    };
+    const handleOnInvalid = (e: React.FormEvent<HTMLFormElement>):void => {
+      e.preventDefault();
+      setMissgin(true)
+    }
+    const handleCodeSubmit = async (e: React.FormEvent<HTMLFormElement>):Promise<void> => {
+      e.preventDefault();
+      Router.push(`/search?gameroom=${code}`);
+    };
+    useEffect(()=>{
+      setLoading(true)
+      gameroomId && searchGameroom(parseInt(code))
+        .then((res) => {
+          setLoading(false);
+          if(!res) {
+            setError(true)
+          } else {
+            setError(false);
+            setGameroom(res)
+          }
+        })
+        .catch(()=>{
+          setError(true)
+        })
+        .finally(()=>{
+          setLoading(false)
+        });
+      console.log(gameroom)
+    }, [gameroomId])
   return (
     <main className={styles["search-page"]}>
       <Header/>
-      {/* <section className={styles["search-section"]}>
+      <section className={styles["search-section"]}>
         <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">{!gameroomId ? "Buscá tu sala acá" : "Salas"}</TextComp>
         {!gameroomId ? (
-          <form onSubmit={handleCodeSubmit} className={styles["code-form"]}>
-            <TextField type="number" name="code" label="Código" id="code" required value={form.code} onChange={(value) => handleInputChange(value)}/>
+          <form onSubmit={handleCodeSubmit} onInvalid={handleOnInvalid} className={styles["code-form"]}>
+            <TextField type="number" name="code" label="Código" id="code" required missing={missing} value={code} onChange={(value) => handleInputChange(value)}/>
             <Button type="submit" color="black">Buscar</Button>
             <Button type="button" color="back" onClick={()=>Router.push("/")}>Volver</Button>
           </form>
@@ -64,12 +68,13 @@ export default function Search() {
             {loading ? <CircularProgress color="inherit"/> : error ? (
               <TextComp tag="p" size="24px" align="center" weight="600" color="#2b2b2b">La sala no existe.</TextComp>
               ) : (
-              <GameroomCard full={letIn} players={gameroom?.players} gameroomId={String(gameroom?.shortRoomId)} requester={{name: player.playerData.name, pin: player.playerData.pin}}/>
+              <p>god</p>
+                // <GameroomCard full={false} players={{host: {}}} gameroomId={String(gameroom?.shortRoomId)} requester={{name: player.playerData.name, pin: player.playerData.pin}}/>
             )}
-            <Button type="button" color="back" onClick={()=>{Router.push("/"); setPlayer(player)}}>Volver</Button>
+            <Button type="button" color="back" onClick={()=>{Router.push("/search")}}>Volver</Button>
           </>
         )}
-      </section> */}
+      </section>
     </main>
   )
 }
