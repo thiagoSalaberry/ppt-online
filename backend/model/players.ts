@@ -35,7 +35,11 @@ export class Player {
       return {
         status: 0,
         message: `Bienvenido ${newPlayer.data.name}`,
-        player: newPlayer.data,
+        player: {
+          id: newPlayer.id,
+          name: newPlayer.data.name,
+          pin: newPlayer.data.pin,
+        },
       };
     } else {
       const docSnap = querySnapshot.docs[0];
@@ -47,7 +51,11 @@ export class Player {
         return {
           status: 1,
           message: `Hola de nuevo ${player.data.name}`,
-          player: player.data,
+          player: {
+            id: player.id,
+            name: player.data.name,
+            pin: player.data.pin,
+          },
         };
       } else {
         return {
@@ -57,9 +65,9 @@ export class Player {
       }
     }
   }
-  static async getPlayerById(accessId: string) {
+  static async getPlayerById(accessId: string): Promise<Player | null> {
     const querySnapshot = await playersCollection.doc(accessId).get();
-    if (!querySnapshot.exists) throw Error(`No such document: ${accessId}`);
+    if (!querySnapshot.exists) return null;
     const player = new Player(
       querySnapshot.id,
       querySnapshot.data() as PlayerData

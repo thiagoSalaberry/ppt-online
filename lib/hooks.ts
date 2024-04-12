@@ -1,7 +1,6 @@
 import { resolve } from "path";
 import { use, useEffect, useState, useTransition } from "react";
 import useSWR from "swr";
-import axios from "axios";
 export async function fetchAPI2(endpoint: string) {
   const token = localStorage.getItem("accessToken");
   const res = await fetch(
@@ -32,4 +31,8 @@ export function useRoom(shortRoomId: string) {
     refreshInterval: 100,
   });
   return data as GameroomData;
+}
+
+export function useCurrentGame(shortRoomId: string) {
+  const { data, error } = useSWR(`/`);
 }

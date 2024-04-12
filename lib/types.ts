@@ -57,7 +57,23 @@ type ResultCardProps = {
   winner: "host" | "guest" | "draw";
   img: "win" | "loss" | "draw";
 };
-
+type LobbyHeaderProps = {
+  shortRoomId: number;
+  currentGame: {
+    host: {
+      name: string;
+      online: boolean;
+    };
+    guest: {
+      name: string;
+      online: boolean;
+    };
+  };
+  history: {
+    hostWins: number;
+    guestWins: number;
+  };
+};
 //API
 type PlayerModelResponse = {
   status: 0 | 1 | 2;
