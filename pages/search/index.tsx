@@ -9,17 +9,17 @@ import Router from "next/router";
 import { useSearchParams } from "next/navigation";
 import { GameroomCard } from "@/components/gameroom-card";
 import { searchGameroom } from "@/lib/api-calls";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { playerState } from "@/atoms/playerState";
-import { gameroomState } from "@/atoms/currentGameState";
 export default function Search() {
     const params = useSearchParams();
     const gameroomId = params.get("gameroom");
     const [code, setCode] = useState("");
     const [missing, setMissgin] = useState(false);
-    const [gameroom, setGameroom] = useState();
+    const [gameroom, setGameroom] = useState<GameroomAPIResponse>();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
+    const player = useRecoilValue(playerState);
     const handleInputChange = (value: string):void => {
       setCode(value)
       setMissgin(false)
@@ -50,8 +50,11 @@ export default function Search() {
         .finally(()=>{
           setLoading(false)
         });
-      console.log(gameroom)
-    }, [gameroomId])
+    }, [gameroomId]);
+  const isOwner = gameroom?.players.host.id == player.id,
+        isGuest = gameroom?.players.guest.id == player.id,
+        isFull = gameroom?.players.guest.id !== "",
+        letIn = isOwner || isGuest || !isFull;
   return (
     <main className={styles["search-page"]}>
       <Header/>
@@ -68,8 +71,7 @@ export default function Search() {
             {loading ? <CircularProgress color="inherit"/> : error ? (
               <TextComp tag="p" size="24px" align="center" weight="600" color="#2b2b2b">La sala no existe.</TextComp>
               ) : (
-              <p>god</p>
-                // <GameroomCard full={false} players={{host: {}}} gameroomId={String(gameroom?.shortRoomId)} requester={{name: player.playerData.name, pin: player.playerData.pin}}/>
+              gameroom && <GameroomCard full={letIn} players={gameroom.players} gameroomId={String(gameroom.shortRoomId)} requester={{id: player.id!, name: player.name}}/>
             )}
             <Button type="button" color="back" onClick={()=>{Router.push("/search")}}>Volver</Button>
           </>

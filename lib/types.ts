@@ -47,7 +47,7 @@ type GameroomCardProps = {
   full: boolean;
   requester: {
     name: string;
-    pin: number;
+    id: string;
   };
 };
 type IconsProps = {
