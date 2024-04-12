@@ -13,45 +13,45 @@ import { useRecoilState } from "recoil";
 import { playerState } from "@/atoms/playerState";
 import { gameroomState } from "@/atoms/currentGameState";
 export default function Search() {
-    const params = useSearchParams();
-    const gameroomId = params.get("gameroom");
-    const [gameroom, setGameroom] = useRecoilState(gameroomState);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [player, setPlayer] = useRecoilState<PlayerAPIResponse>(playerState);
-    const [error, setError] = useState(false);
-    const [form, setForm] = useState<{code: string}>({code: ""});
-    const codeInputRef = useRef<HTMLInputElement>(null);
-    const handleInputChange = (value:string) => {
-      setForm({code: value});
-    }
-    const handleCodeSubmit = (e:any) => {
-      e.preventDefault();
-      if(codeInputRef.current) {
-        Router.push(`/search?gameroom=${codeInputRef.current.value}`);
-      };
-    };
-    useEffect(()=>{
-      setLoading(true)
-      gameroomId && searchGameroom(parseInt(gameroomId)).then((res) => {
-        setLoading(false)
-        if(!res) {
-          setError(true)
-        } else {
-          setError(false)
-          setGameroom(res);
-        };
-      })
-      .catch(()=>setError(true))
-      .finally(()=>setLoading(false));
-    }, [gameroomId]);
-    const isOnwer = gameroom?.players?.host.id === player.playerId;
-    const isGuest = gameroom?.players?.guest.id === player.playerId;
-    const isFull = gameroom?.players?.guest.id !== "";
-    const letIn = isOnwer || isGuest || !isFull;
+    // const params = useSearchParams();
+    // const gameroomId = params.get("gameroom");
+    // const [gameroom, setGameroom] = useRecoilState(gameroomState);
+    // const [loading, setLoading] = useState<boolean>(true);
+    // const [player, setPlayer] = useRecoilState<PlayerAPIResponse>(playerState);
+    // const [error, setError] = useState(false);
+    // const [form, setForm] = useState<{code: string}>({code: ""});
+    // const codeInputRef = useRef<HTMLInputElement>(null);
+    // const handleInputChange = (value:string) => {
+    //   setForm({code: value});
+    // }
+    // const handleCodeSubmit = (e:any) => {
+    //   e.preventDefault();
+    //   if(codeInputRef.current) {
+    //     Router.push(`/search?gameroom=${codeInputRef.current.value}`);
+    //   };
+    // };
+    // useEffect(()=>{
+    //   setLoading(true)
+    //   gameroomId && searchGameroom(parseInt(gameroomId)).then((res) => {
+    //     setLoading(false)
+    //     if(!res) {
+    //       setError(true)
+    //     } else {
+    //       setError(false)
+    //       setGameroom(res);
+    //     };
+    //   })
+    //   .catch(()=>setError(true))
+    //   .finally(()=>setLoading(false));
+    // }, [gameroomId]);
+    // const isOnwer = gameroom?.players?.host.id === player.playerId;
+    // const isGuest = gameroom?.players?.guest.id === player.playerId;
+    // const isFull = gameroom?.players?.guest.id !== "";
+    // const letIn = isOnwer || isGuest || !isFull;
   return (
     <main className={styles["search-page"]}>
       <Header/>
-      <section className={styles["search-section"]}>
+      {/* <section className={styles["search-section"]}>
         <TextComp tag="label" size="28px" weight="700" align="center" color="#2b2b2b">{!gameroomId ? "Buscá tu sala acá" : "Salas"}</TextComp>
         {!gameroomId ? (
           <form onSubmit={handleCodeSubmit} className={styles["code-form"]}>
@@ -69,7 +69,7 @@ export default function Search() {
             <Button type="button" color="back" onClick={()=>{Router.push("/"); setPlayer(player)}}>Volver</Button>
           </>
         )}
-      </section>
+      </section> */}
     </main>
   )
 }

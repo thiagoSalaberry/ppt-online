@@ -9,7 +9,7 @@ export default function UIPage() {
     const [selected, setSelected] = useState<"piedra" | "papel" | "tijera" | null>(null);
     return (
       <main className={styles["ui-page"]}>
-        <section className={styles["components-section"]}>
+        {/* <section className={styles["components-section"]}>
             <Button type="button">Botón azul</Button>
             <Button type="button" color="red">Botón rojo</Button>
             <Button type="button" color="back">Volver</Button>
@@ -21,7 +21,7 @@ export default function UIPage() {
             <WaitingComp type="dots" connected={false}/>
             <WaitingComp type="dots" connected={true}/>
             <Timer/>
-        </section>
+        </section> */}
       </main>
     )
   }

@@ -1,11 +1,12 @@
 import { resolve } from "path";
 import { use, useEffect, useState, useTransition } from "react";
 import useSWR from "swr";
+const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3000/api";
 export async function fetchAPI2(endpoint: string) {
   const token = localStorage.getItem("accessToken");
   const res = await fetch(
     // `https://ppt-online-react.vercel.app/api${endpoint}`,
-    `http://localhost:3000/api${endpoint}`,
+    `${API_BASE_URL}${endpoint}`,
     {
       method: "GET",
       headers: {

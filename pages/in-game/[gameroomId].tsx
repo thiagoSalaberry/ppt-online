@@ -13,36 +13,36 @@ import { useRecoilState } from "recoil";
 import { gameroomState } from "@/atoms/currentGameState";
 import { playerState } from "@/atoms/playerState";
 export default function InGame() {
-  const params = useParams();
-  const gameRoomId = params?.gameroomId;
-  const [selected, setSelected] = useState<"piedra" | "papel" | "tijera" | null>(null);
-  const [player, setPlayer] = useRecoilState(playerState);
+  // const params = useParams();
+  // const gameRoomId = params?.gameroomId;
+  // const [selected, setSelected] = useState<"piedra" | "papel" | "tijera" | null>(null);
+  // const [player, setPlayer] = useRecoilState(playerState);
   // const [gameroom, setGameroom] = useRecoilState(gameroomState);
   // const handleSetMove = (move: "piedra" | "papel" | "tijera") => {
   //   setMove(String(gameRoomId), player.playerId, move);
   //   setSelected(move);
   //   setPlayer
   // }
-  useEffect(()=>{
-    player && setReady(String(gameRoomId), player.playerId)
-      .then((response)=>{
-        console.log(response);
-      })
-      .catch(() => console.error("No se actaulizó"));
-  },[]);
-  useEffect(()=>{
-    setTimeout(() => {
-      Router.push(`/fight/${gameRoomId}`)
-    }, 4000);
-  }, []);
+  // useEffect(()=>{
+  //   player && setReady(String(gameRoomId), player.playerId)
+  //     .then((response)=>{
+  //       console.log(response);
+  //     })
+  //     .catch(() => console.error("No se actaulizó"));
+  // },[]);
+  // useEffect(()=>{
+  //   setTimeout(() => {
+  //     Router.push(`/fight/${gameRoomId}`)
+  //   }, 4000);
+  // }, []);
   return (
     <main className={styles["in-game-page"]}>
-      <Timer/>
+      {/* <Timer/>
       <div className={styles["moves-container"]}>
         <Move size="big" move="piedra" selected={selected} onClick={()=>{player && setMove(String(gameRoomId), player?.playerId, "piedra"); setSelected("piedra")}}/>
         <Move size="big" move="papel" selected={selected} onClick={()=>{player && setMove(String(gameRoomId), player?.playerId, "papel"); setSelected("papel")}}/>
         <Move size="big" move="tijera" selected={selected} onClick={()=>{player && setMove(String(gameRoomId), player?.playerId, "tijera"); setSelected("tijera")}}/>
-      </div>
+      </div> */}
     </main>
   )
 }
