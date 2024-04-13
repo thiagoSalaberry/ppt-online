@@ -9,8 +9,9 @@ import Router from "next/router";
 import { useSearchParams } from "next/navigation";
 import { GameroomCard } from "@/components/gameroom-card";
 import { searchGameroom } from "@/lib/api-calls";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { playerState } from "@/atoms/playerState";
+import { gameroomState } from "@/atoms/gameroomState";
 export default function Search() {
     const params = useSearchParams();
     const gameroomId = params.get("gameroom");
@@ -20,6 +21,7 @@ export default function Search() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const player = useRecoilValue(playerState);
+    const [recoilGameroom, setRecoilGameroom] = useRecoilState<GameroomAPIResponse>(gameroomState);
     const handleInputChange = (value: string):void => {
       setCode(value)
       setMissgin(false)
@@ -35,13 +37,14 @@ export default function Search() {
     useEffect(()=>{
       setLoading(true)
       gameroomId && searchGameroom(parseInt(code))
-        .then((res) => {
+        .then((res:GameroomAPIResponse) => {
           setLoading(false);
           if(!res) {
             setError(true)
           } else {
             setError(false);
-            setGameroom(res)
+            setGameroom(res);
+            setRecoilGameroom(res);
           }
         })
         .catch(()=>{
@@ -50,7 +53,7 @@ export default function Search() {
         .finally(()=>{
           setLoading(false)
         });
-    }, [gameroomId]);
+    }, [gameroomId, params]);
   const isOwner = gameroom?.players.host.id == player.id,
         isGuest = gameroom?.players.guest.id == player.id,
         isFull = gameroom?.players.guest.id !== "",

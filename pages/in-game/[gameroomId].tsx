@@ -10,7 +10,7 @@ import { WaitingComp } from "@/components/waiting.tsx";
 import { Timer } from "@/components/timer";
 import { setReady, usePlayer, setMove } from "@/lib/api-calls";
 import { useRecoilState } from "recoil";
-import { gameroomState } from "@/atoms/currentGameState";
+import { gameroomState } from "@/atoms/gameroomState";
 import { playerState } from "@/atoms/playerState";
 export default function InGame() {
   // const params = useParams();

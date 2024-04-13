@@ -2,13 +2,16 @@ import styles from "./lobby.module.css";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { CircularProgress } from "@mui/material";
-import { joinRoom, searchGameroom } from "@/lib/api-calls";
+import { getMe, joinRoom, searchGameroom } from "@/lib/api-calls";
 import { useCurrentGame, useRoom } from "@/lib/hooks";
 import LobbyContent from "./lobby-content";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { playerState } from "@/atoms/playerState";
-import { gameroomState } from "@/atoms/currentGameState";
+import { gameroomState } from "@/atoms/gameroomState";
 import LobbyHeader from "@/components/lobby-header";
+import Router from "next/router";
+import { TextComp } from "@/ui/texts";
+import { Button } from "@/ui/buttons";
 /*
   Este componente representa la página del lobby. En este, debo obtener los datos de la gameroom correspondiente a través del shortRoomId
   En el header debo poner el shortRoomId, el nombre del host, si está conectado y sus victorias. Lo mismo con el guest.
@@ -21,11 +24,19 @@ import LobbyHeader from "@/components/lobby-header";
   De esta forma, del hook voy a estar obteniendo los datos necesarios actualizados mediante SWR
  */
 export default function Lobby() {
+  //Al ingresar, debo verificar si el player existe, sino irlo a buscar a través de getMe();
   const params = useParams();
   const paramsId = params?.gameroomId!;
+  const [player, setPlayer] = useRecoilState<PlayerData>(playerState);
+  useEffect(()=>{
+    if(player.id) return;
+    getMe()
+      .then((player:PlayerData) => {
+        if(!player.id) return Router.push("/");
+        setPlayer(player)
+      })
+  }, [])
   const { data, isLoading, error } = useCurrentGame(String(paramsId));
-  const [pageContent, setPageContet] = useState<number>(0);
-  const player = useRecoilValue(playerState);
   if(isLoading) return (
     <main className={styles["lobby-page"]}>
       <CircularProgress />
@@ -33,16 +44,26 @@ export default function Lobby() {
   );
   if(error) return (
     <main className={styles["lobby-page"]}>
-      <div>Error</div>
+      <div className={styles["no-gameroom"]}>
+        <TextComp tag="p" weight="700" color="#2b2b2b">La sala {paramsId} no existe.</TextComp>
+        <Button type="button" color="black" onClick={()=>Router.push("/search")}>Buscar sala</Button>
+      </div>
     </main>
   );
   const { shortRoomId, history, currentGame } = data;
+  if(!Object.values(data.players).some(p => p.id == player.id)) return (
+    <main className={styles["lobby-page"]}>
+      <div className={styles["unauhtorized"]}>
+        <TextComp tag="p" weight="700" color="#2b2b2b">No estás autorizado a ingresar a esta sala.</TextComp>
+        <Button type="button" color="black" onClick={()=>Router.push("/search")}>Buscar sala</Button>
+      </div>
+    </main>
+  );
   return (
     <main className={styles["lobby-page"]}>
       <LobbyContent
         gameroom={data}
         shortRoomId={shortRoomId.toString()}
-        index={pageContent}
         player={player}
       />
     </main>

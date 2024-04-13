@@ -3,23 +3,28 @@ import React, { useEffect, useRef, useState } from "react";
 import { useCurrentGame } from "@/lib/hooks";
 import { useParams } from "next/navigation";
 import LobbyHeader from "@/components/lobby-header";
+import { useRecoilState } from "recoil";
+import { playerState } from "@/atoms/playerState";
+import { getMe } from "@/lib/api-calls";
 export default function Hooks() {
-  const {data, isLoading, error} = useCurrentGame("691633");
-  if(error) return <div>Error al usar el hook</div>
-  if(isLoading) return <div>Cargando...</div>
-  const { currentGame, history, shortRoomId, players, gameroomId} = data;
+  const [player, setPlayer] = useRecoilState<PlayerData>(playerState);
+  const [loading, setLoading] = useState(false);
+  useEffect(()=>{
+    if(player.id) {
+      console.log("Este user viene de Recoil", player);
+    } else {
+      console.log("Este user viene de getMe()");
+      setLoading(true)
+      getMe()
+      .then((data: PlayerData) => {
+        setPlayer(data);
+        setLoading(false);
+      });
+    }
+  }, []);
   return (
     <main className={styles["hooks-page"]}>
-      <LobbyHeader
-        currentGame={
-          {
-            host: {name: currentGame.host.name, online: currentGame.host.online},
-            guest: {name: currentGame.guest.name, online: currentGame.guest.online}
-          }
-        }
-        history={history}
-        shortRoomId={shortRoomId}
-      />
+      {loading ? "Cargando" : JSON.stringify(player)}
     </main>
   )
 }

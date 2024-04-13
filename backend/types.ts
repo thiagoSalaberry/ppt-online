@@ -1,5 +1,5 @@
 type PlayerData = {
-  id?: string;
+  id: string;
   name: string;
   pin: number;
 };

@@ -28,7 +28,23 @@ export async function getPlayer(
     return null;
   }
 }
-
+export async function getMe() {
+  const accessToken = localStorage.getItem("accessToken");
+  const apiResponse = await fetch(`${API_BASE_URL}/me`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  try {
+    const apiData = await apiResponse.json();
+    return apiData;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
 export async function usePlayer() {
   const accessId = localStorage.getItem("accessId");
   const apiResponse = await fetch(`${API_BASE_URL}/player/${accessId}`, {

@@ -53,6 +53,7 @@ export default function Home() {
     const apiResponse = form.pin && await getPlayer(form.name, parseInt(form.pin));
     if(apiResponse) {
       setPlayer(apiResponse.playerData);
+      localStorage.setItem("accessToken", apiResponse.playerData.id);
       setTimeout(()=>{
         setSubmitting(false);
         setCurrentStep(1);
