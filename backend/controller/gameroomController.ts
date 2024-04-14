@@ -94,6 +94,22 @@ export async function joinRoom(shortRoomId: string, playerId: string) {
   }
 }
 
+export async function setReady(shortRoomId: string, playerId: string) {
+  const gameroom = await Gameroom.getGameroomById(shortRoomId);
+  if (!gameroom) {
+    return { status: 0, response: "La sala no existe" };
+  } else {
+    const hostOrGuest = Object.entries(gameroom.data.players).find(
+      ([_, value]) => value.id === playerId
+    )?.[0] as "host" | "guest";
+    if (!hostOrGuest) {
+      return { status: -1, response: "No estás en esta partida" };
+    }
+    const settingMove = await gameroom.setReady(hostOrGuest);
+    return settingMove.message;
+  }
+}
+
 // export async function setMove(
 //   shortRoomId: string,
 //   playerId: string,
@@ -108,18 +124,3 @@ export async function joinRoom(shortRoomId: string, playerId: string) {
 //     return settingMove.message;
 //   }
 // }
-
-export async function setReady(shortRoomId: string, playerId: string) {
-  const gameroom = await Gameroom.getGameroomById(shortRoomId);
-  if (!gameroom) {
-    return { status: 0, response: "La sala no existe" };
-  } else {
-    const hostOrGuest = Object.entries(gameroom.data.players).find(
-      ([key, value]) => {
-        return value.id === playerId ? key : undefined;
-      }
-    );
-    const settingMove = await gameroom.setReady(hostOrGuest[0]);
-    return settingMove.message;
-  }
-}

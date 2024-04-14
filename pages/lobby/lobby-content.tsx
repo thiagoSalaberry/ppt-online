@@ -25,15 +25,13 @@ export default function LobbyContent({shortRoomId, gameroom, player}: {shortRoom
           ) : me && rival && me.online && !me.ready && rival.online ? (
               <>
                   <TextComp tag="p" align="center">¡Presioná: <br/><span className={styles["bold"]}>PIEDRA</span>, <span className={styles["bold"]}>PAPEL</span> ó <span className={styles["bold"]}>TIJERA</span><br></br> antes de que pasen 3 segundos!</TextComp>
-                  {/* <Button type="button" onClick={()=>{setReady(String(gameroomId), String(player?.id))}} color="black">¡Jugar!</Button>                     */}
-                  <Button type="button" onClick={()=>{console.log(player.name + " está listo")}} color="black">¡Jugar!</Button>                    
+                  <Button type="button" onClick={()=>{setReady(shortRoomId)}} color="black">¡Jugar!</Button>                    
               </>
           ) : me && rival && me.online && me.ready && rival.online && !rival.ready ? (
               <>
                   <TextComp tag="p" size="28px" align="center">Esperando a que <span style={{fontWeight: "bold"}}>{rival?.name}</span> presione ¡Jugar!<span className={styles["inline-block"]}><WaitingComp type="dots" connected={false}></WaitingComp></span></TextComp>
               </>
-          // ) : <Fight gameroomId={shortRoomId}/>}
-          ) : <p>A pelear</p>}
+          ) : <Fight gameroomId={shortRoomId}/>}
         </section>
         <footer className={styles["footer"]}>
             <Move size="small" move="piedra" selected={null}/>
