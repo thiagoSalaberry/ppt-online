@@ -110,17 +110,22 @@ export async function setReady(shortRoomId: string, playerId: string) {
   }
 }
 
-// export async function setMove(
-//   shortRoomId: string,
-//   playerId: string,
-//   move: "piedra" | "papel" | "tijera"
-// ) {
-//   const gameroom = await Gameroom.getGameroomById(shortRoomId);
-//   console.log(gameroom);
-//   if (!gameroom) {
-//     return { status: 0, response: "La sala no existe" };
-//   } else {
-//     const settingMove = await gameroom.setMove(move, playerId);
-//     return settingMove.message;
-//   }
-// }
+export async function setMove(
+  shortRoomId: string,
+  playerId: string,
+  move: "piedra" | "papel" | "tijera"
+) {
+  const gameroom = await Gameroom.getGameroomById(shortRoomId);
+  if (!gameroom) {
+    return { status: 0, response: "La sala no existe" };
+  } else {
+    const hostOrGuest = Object.entries(gameroom.data.players).find(
+      ([_, value]) => value.id === playerId
+    )?.[0] as "host" | "guest";
+    if (!hostOrGuest) {
+      return { status: -1, response: "No estás en esta partida" };
+    }
+    const settingMove = await gameroom.setMove(hostOrGuest, move);
+    return settingMove.message;
+  }
+}

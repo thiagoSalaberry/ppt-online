@@ -12,25 +12,22 @@ import { Timer } from "@/components/timer";
 import { usePlayer } from "@/lib/api-calls";
 import { useRoom } from "@/lib/hooks";
 import { setWinner } from "@/lib/determineWinner";
+import { useCurrentGame } from "@/lib/hooks";
+import { useRecoilValue } from "recoil";
+import { playerState } from "@/atoms/playerState";
 export default function Fight() {
-  // const params = useParams();
-  // const gameRoomId = params?.gameroomId;
-  // const [player, setPlayer] = useState<PlayerAPIResponse>();
-  // const [rivalMove, setRivalMove] = useState<"piedra" | "papel" | "tijera">();
-  // const [myMove, setMy] = useState<"piedra" | "papel" | "tijera">();
-  // const [result, setResult] = useState<"host" | "guest" | "draw">();
-  // const room = useRoom(String(gameRoomId));
-  // const me = room && Object.values(room.players).find(p => p.id === player?.playerId);
-  // const rival = room && Object.values(room.players).find(p => p.id !== player?.playerId);
-  // useEffect(()=>{
-  //   setTimeout(() => {
-  //     const winner = setWinner(Object.values(room.currentGame).find(player => player.host)?.move!, Object.values(room.currentGame).find(player => !player.host)?.move!);
-  //     setResult(winner);
-  //   }, 2000);
-  // }, [])
-  // useEffect(()=>{
-  //   usePlayer().then((p:PlayerAPIResponse) => setPlayer(p));
-  // }, []);
+  const params = useParams();
+  const paramsId = params?.gameroomId;
+  const { data, isLoading, error } = useCurrentGame(String(paramsId));
+  if(isLoading) return null;
+  if(error) return <div>Error...</div>
+  // const player = useRecoilValue<PlayerData>(playerState);
+  const me = Object.values(data.players).find(p => p.id == localStorage.getItem("accessToken"));
+  const rival = Object.values(data.players).find(p => p.id !== localStorage.getItem("accessToken"));
+  const myMove = Object.values(data.currentGame).find(p => p.name == me?.name)?.move;
+  const rivalMove = Object.values(data.currentGame).find(p => p.name == rival?.name)?.move;
+  const hostMove = Object.values(data.currentGame).find(p => p.host)!.move as "piedra" | "papel" | "tijera";
+  const guestMove = Object.values(data.currentGame).find(p => !p.host)!.move as "piedra" | "papel" | "tijera";
   // const display:JSX.Element = (
   //   <div className={styles["result"]}>
   //     {result ? <ResultCard winner={result} img="win"/> : null}
@@ -43,22 +40,16 @@ export default function Fight() {
   //     <Button type="button" color="black" onClick={()=>Router.push(`/lobby/${gameRoomId}`)}>Volver a jugar</Button>
   //   </div>
   // );
-  // console.log("Esto viene de /fight",room);
-  // console.log("Mi movimiento", room.currentGame[me!.id].move)
-  // console.log("Movimiento del rival", room.currentGame[rival!.id].move);
+  console.log("Yo:", me?.name)
   return (
     <main className={styles["fight-page"]}>
-      {/* {room && player ? (
-        <>
-          <div className={styles["rival-move"]}>
-            <Move move={room && room.currentGame[rival!.id].move} size="big"/>
-          </div>
-          <div className={styles["my-move"]}>
-            <Move move={room && room.currentGame[me!.id].move} size="big"/>
-          </div>
-        </>
-      ) : null}
-      {result ? display : null} */}
+      <div className={styles["rival-move"]}>
+        <Move move={rivalMove as "piedra" | "papel" | "tijera"} size="big"/>
+      </div>
+      <p>Ganador: <span style={{fontWeight: "bold"}}>{setWinner(hostMove, guestMove)}</span></p>
+      <div className={styles["my-move"]}>
+        <Move move={myMove as "piedra" | "papel" | "tijera"} size="big"/>
+      </div>
     </main>
   )
 }

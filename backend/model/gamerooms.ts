@@ -87,19 +87,6 @@ export class Gameroom {
       return { response: 3 };
     }
   }
-  // async setMove(move: "piedra" | "papel" | "tijera", id: string) {
-  //   const playerCurrentState = this.data.currentGame[id];
-  //   this.data.currentGame = {
-  //     ...this.data.currentGame,
-  //     [id]: {
-  //       ...playerCurrentState,
-  //       move,
-  //     },
-  //   };
-  //   await this.push();
-  //   const player = Object.values(this.data.players).find((p) => p.id == id);
-  //   return { message: `El jugador ${player?.name} ha elegido ${move}` };
-  // }
   async setReady(who: "host" | "guest") {
     const currentGameState = this.data.currentGame;
     this.data.currentGame = {
@@ -112,5 +99,18 @@ export class Gameroom {
     await this.push();
     const player = currentGameState[who].name;
     return { message: `El jugador ${player} está listo` };
+  }
+  async setMove(who: "host" | "guest", move: "piedra" | "papel" | "tijera") {
+    const currentGameState = this.data.currentGame;
+    this.data.currentGame = {
+      ...currentGameState,
+      [who]: {
+        ...currentGameState[who],
+        move,
+      },
+    };
+    await this.push();
+    const player = currentGameState[who].name;
+    return { message: `El jugador ${player} ha elegido ${move}` };
   }
 }

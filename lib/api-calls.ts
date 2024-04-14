@@ -139,15 +139,16 @@ export async function setReady(shortRoomId: string) {
 
 export async function setMove(
   shortRoomId: string,
-  playerId: string,
   move: "piedra" | "papel" | "tijera"
 ) {
+  const accessToken = localStorage.getItem("accessToken");
   const apiResponse = await fetch(`${API_BASE_URL}/setMove/${shortRoomId}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify({ playerId, move }),
+    body: JSON.stringify({ move }),
   });
   try {
     if (apiResponse.status == 200) {
