@@ -118,13 +118,14 @@ export async function joinRoom(shortRoomId: number, playerId: string) {
   }
 }
 
-export async function setReady(shortRoomId: string, playerId: string) {
+export async function setReady(shortRoomId: string) {
+  const accessToken = localStorage.getItem("accessToken");
   const apiResponse = await fetch(`${API_BASE_URL}/setReady/${shortRoomId}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify({ playerId }),
   });
   try {
     if (apiResponse.status == 200) {

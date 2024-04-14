@@ -109,12 +109,17 @@ export async function joinRoom(shortRoomId: string, playerId: string) {
 //   }
 // }
 
-// export async function setReady(shortRoomId: string, playerId: string) {
-//   const gameroom = await Gameroom.getGameroomById(shortRoomId);
-//   if (!gameroom) {
-//     return { status: 0, response: "La sala no existe" };
-//   } else {
-//     const settingMove = await gameroom.setReady(playerId);
-//     return settingMove.message;
-//   }
-// }
+export async function setReady(shortRoomId: string, playerId: string) {
+  const gameroom = await Gameroom.getGameroomById(shortRoomId);
+  if (!gameroom) {
+    return { status: 0, response: "La sala no existe" };
+  } else {
+    const hostOrGuest = Object.entries(gameroom.data.players).find(
+      ([key, value]) => {
+        return value.id === playerId ? key : undefined;
+      }
+    );
+    const settingMove = await gameroom.setReady(hostOrGuest[0]);
+    return settingMove.message;
+  }
+}

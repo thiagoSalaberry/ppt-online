@@ -100,17 +100,17 @@ export class Gameroom {
   //   const player = Object.values(this.data.players).find((p) => p.id == id);
   //   return { message: `El jugador ${player?.name} ha elegido ${move}` };
   // }
-  // async setReady(id: string) {
-  //   const playerCurrentState = this.data.currentGame[id];
-  //   this.data.currentGame = {
-  //     ...this.data.currentGame,
-  //     [id]: {
-  //       ...playerCurrentState,
-  //       ready: !playerCurrentState.ready,
-  //     },
-  //   };
-  //   await this.push();
-  //   const player = Object.values(this.data.players).find((p) => p.id === id);
-  //   return { message: `El jugador ${player?.name} está listo` };
-  // }
+  async setReady(who: "host" | "guest") {
+    const currentGameState = this.data.currentGame;
+    this.data.currentGame = {
+      ...currentGameState,
+      [who]: {
+        ...currentGameState[who],
+        ready: !currentGameState[who].ready,
+      },
+    };
+    await this.push();
+    const player = currentGameState[who].name;
+    return { message: `El jugador ${player} está listo` };
+  }
 }

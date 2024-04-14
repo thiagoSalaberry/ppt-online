@@ -6,7 +6,7 @@
     justify-content: center;
     align-items: center;
     padding: 50px;
-    background: var(--fondo);
+    background: #ccc;
 }
 
 .components-section {
@@ -14,4 +14,22 @@
     background-color: white;
     gap: 20px;
     padding: 20px;
+}
+.tablero {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 1fr);
+}
+.row {
+    display: flex;
+}
+.tile {
+    border: 1px solid black;
+    width: 70px;
+    height: 70px;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
