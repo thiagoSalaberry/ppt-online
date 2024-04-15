@@ -1,4 +1,8 @@
-const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3000/api";
+const env = process.env.NODE_ENV;
+const API_BASE_URL =
+  env == "development"
+    ? "http://localhost:3000"
+    : "https://ppt-online-react.vercel.app/api";
 export async function getPlayer(
   name: string,
   pin: number
