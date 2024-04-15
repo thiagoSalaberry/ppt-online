@@ -36,7 +36,7 @@ type TextProps = {
 type WaitingProps = {
   type: "lines" | "dots";
   connected?: boolean;
-  color: "white" | "black";
+  color?: "white" | "black";
 };
 type GameroomCardProps = {
   gameroomId: string;
@@ -47,18 +47,17 @@ type GameroomCardProps = {
   full: boolean;
   requester: {
     name: string;
-    pin: number;
+    id: string;
   };
 };
 type IconsProps = {
   size: string;
 };
 type ResultCardProps = {
-  winner: "host" | "guest" | "draw";
-  img: "win" | "loss" | "draw";
+  result: "me" | "rival" | "draw";
 };
 type LobbyHeaderProps = {
-  shortRoomId: number;
+  shortRoomId: string;
   currentGame: {
     host: {
       name: string;
@@ -88,22 +87,7 @@ type shortRoomIdAPIResponse = {
   shortRoomId: number;
 };
 type GameroomAPIResponse = {
-  currentGame: {
-    hostId: {
-      host: boolean;
-      move: null;
-      name: string;
-      online: boolean;
-      ready: boolean;
-    };
-    guestId: {
-      host: boolean;
-      move: null;
-      name: string;
-      online: boolean;
-      ready: boolean;
-    };
-  };
+  currentGame: CurrentGame;
   gameroomId: string;
   history: {
     draws: number;
@@ -121,4 +105,20 @@ type GameroomAPIResponse = {
     };
   };
   shortRoomId: number;
+};
+type CurrentGame = {
+  host: {
+    host: true;
+    name: string;
+    online: boolean;
+    ready: boolean;
+    move: "piedra" | "papel" | "tijera" | "";
+  };
+  guest: {
+    host: false;
+    name: string;
+    online: boolean;
+    ready: boolean;
+    move: "piedra" | "papel" | "tijera" | "";
+  };
 };

@@ -32,82 +32,117 @@ export class Gameroom {
     const gameroom = new Gameroom(docSnap.id, docSnap.data() as GameroomData);
     return gameroom;
   }
-  async addPlayer(name: string, id: string) {
+  async addPlayer(
+    name: string,
+    id: string
+  ): Promise<{ response: 0 | 1 | 2 | 3 }> {
     //Chequear si quien solicita el ingreso es el host
     if (this.data.players.host.id == id) {
       this.data.currentGame = {
         ...this.data.currentGame,
-        [id]: {
+        host: {
           host: true,
-          move: null,
+          move: "",
           name,
           online: true,
           ready: false,
         },
       };
       await this.push();
-      return { response: 1 }; //Setear online = true en firestore
+      return { response: 0 }; //Setear online = true en firestore
     }
     //Chequear si la sala tiene guest
     if (this.data.players.guest.id == "") {
       this.data.players = { ...this.data.players, guest: { name, id } };
       this.data.currentGame = {
         ...this.data.currentGame,
-        [id]: {
+        guest: {
           host: false,
-          move: null,
+          move: "",
           name,
           online: true,
           ready: false,
         },
       };
       await this.push();
-      return { response: 2 }; //Agregar al guest en firestore y en firebase
+      return { response: 1 }; //Agregar al guest en firestore y en firebase
     }
     //Chequear si quien solicita es el guest
     if (this.data.players.guest.id == id) {
       this.data.currentGame = {
         ...this.data.currentGame,
-        [id]: {
+        guest: {
           host: false,
-          move: null,
+          move: "",
           name,
           online: true,
           ready: false,
         },
       };
       await this.push();
-      return { response: 3 }; //Setear online = true en firebase
+      return { response: 2 }; //Setear online = true en firebase
     }
     //Si no es ni el host ni el guest, la sala está llena
     else {
-      return { response: 4 };
+      return { response: 3 };
     }
   }
-  async setMove(move: "piedra" | "papel" | "tijera", id: string) {
-    const playerCurrentState = this.data.currentGame[id];
+  async setReady(who: "host" | "guest") {
+    const currentGameState = this.data.currentGame;
     this.data.currentGame = {
-      ...this.data.currentGame,
-      [id]: {
-        ...playerCurrentState,
+      ...currentGameState,
+      [who]: {
+        ...currentGameState[who],
+        ready: !currentGameState[who].ready,
+      },
+    };
+    await this.push();
+    const player = currentGameState[who].name;
+    return { message: `El jugador ${player} está listo` };
+  }
+  async setMove(who: "host" | "guest", move: "piedra" | "papel" | "tijera") {
+    const currentGameState = this.data.currentGame;
+    this.data.currentGame = {
+      ...currentGameState,
+      [who]: {
+        ...currentGameState[who],
         move,
       },
     };
     await this.push();
-    const player = Object.values(this.data.players).find((p) => p.id == id);
-    return { message: `El jugador ${player?.name} ha elegido ${move}` };
+    const player = currentGameState[who].name;
+    return { message: `El jugador ${player} ha elegido ${move}` };
   }
-  async setReady(id: string) {
-    const playerCurrentState = this.data.currentGame[id];
+  async pushToHistory(result: "host" | "guest" | "draw") {
+    const key: "draws" | "guestWins" | "hostWins" =
+      result == "draw" ? "draws" : `${result}Wins`;
+    const history = this.data.history;
+    this.data.history = {
+      ...history,
+      [key]: history[key] + 1,
+    };
+    await this.push();
+    return { message: "El historial se actualizó correctamente" };
+  }
+  async endGame() {
+    const gameHost = this.data.currentGame.host;
+    const gameGuest = this.data.currentGame.guest;
     this.data.currentGame = {
-      ...this.data.currentGame,
-      [id]: {
-        ...playerCurrentState,
-        ready: !playerCurrentState.ready,
+      host: {
+        host: gameHost.host,
+        name: gameHost.name,
+        ready: false,
+        online: gameHost.online,
+        move: "",
+      },
+      guest: {
+        host: gameGuest.host,
+        name: gameGuest.name,
+        ready: false,
+        online: gameGuest.online,
+        move: "",
       },
     };
     await this.push();
-    const player = Object.values(this.data.players).find((p) => p.id === id);
-    return { message: `El jugador ${player?.name} está listo` };
   }
 }

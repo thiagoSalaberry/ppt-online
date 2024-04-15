@@ -1,5 +1,5 @@
 type PlayerData = {
-  id?: string;
+  id: string;
   name: string;
   pin: number;
 };
@@ -23,12 +23,19 @@ type GameroomData = {
   };
   shortRoomId: number;
   currentGame: {
-    [x: string]: {
+    host: {
+      host: true;
       name: string;
-      move: "piedra" | "papel" | "tijera" | null;
       online: boolean;
-      host: boolean;
       ready: boolean;
+      move: "piedra" | "papel" | "tijera" | "";
+    };
+    guest: {
+      host: false;
+      name: string;
+      online: boolean;
+      ready: boolean;
+      move: "piedra" | "papel" | "tijera" | "";
     };
   };
 };

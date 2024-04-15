@@ -10,7 +10,7 @@ const results = {
   guest: [-2, 1],
 };
 
-export const setWinner = (
+export const determineWinner = (
   hostMove: "piedra" | "papel" | "tijera",
   guestMove: "piedra" | "papel" | "tijera"
 ): "host" | "guest" | "draw" => {

@@ -1,64 +1,86 @@
 import { Button } from "@/ui/buttons";
-import { TextField } from "@/ui/text-fields";
 import { Move } from "@/components/move";
-import { TextComp } from "@/ui/texts";
 import styles from "./fight.module.css";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Router from "next/router";
 import { ResultCard } from "@/components/result-card";
 import { useParams } from "next/navigation";
-import { WaitingComp } from "@/components/waiting.tsx";
-import { Timer } from "@/components/timer";
-import { usePlayer } from "@/lib/api-calls";
-import { useRoom } from "@/lib/hooks";
-import { setWinner } from "@/lib/determineWinner";
+import { determineWinner } from "@/lib/determineWinner";
+import { useCurrentGame } from "@/lib/hooks";
+import { playerState } from "@/atoms/playerState";
+import { gameroomState } from "@/atoms/gameroomState";
+import { endGame, pushToHistory } from "@/lib/api-calls";
 export default function Fight() {
-  // const params = useParams();
-  // const gameRoomId = params?.gameroomId;
-  // const [player, setPlayer] = useState<PlayerAPIResponse>();
-  // const [rivalMove, setRivalMove] = useState<"piedra" | "papel" | "tijera">();
-  // const [myMove, setMy] = useState<"piedra" | "papel" | "tijera">();
-  // const [result, setResult] = useState<"host" | "guest" | "draw">();
-  // const room = useRoom(String(gameRoomId));
-  // const me = room && Object.values(room.players).find(p => p.id === player?.playerId);
-  // const rival = room && Object.values(room.players).find(p => p.id !== player?.playerId);
-  // useEffect(()=>{
-  //   setTimeout(() => {
-  //     const winner = setWinner(Object.values(room.currentGame).find(player => player.host)?.move!, Object.values(room.currentGame).find(player => !player.host)?.move!);
-  //     setResult(winner);
-  //   }, 2000);
-  // }, [])
-  // useEffect(()=>{
-  //   usePlayer().then((p:PlayerAPIResponse) => setPlayer(p));
-  // }, []);
-  // const display:JSX.Element = (
-  //   <div className={styles["result"]}>
-  //     {result ? <ResultCard winner={result} img="win"/> : null}
-  //     <div className={styles["score"]}>
-  //       <h2>HISTORIAL</h2>
-  //       <p className={styles["result-option"]}>Rival: <span className={styles["bold"]}>0</span></p>
-  //       <p className={styles["result-option"]}>Yo: <span className={styles["bold"]}>0</span></p>
-  //       <p className={styles["result-option"]}>Empates: <span className={styles["bold"]}>0</span></p>
-  //     </div>
-  //     <Button type="button" color="black" onClick={()=>Router.push(`/lobby/${gameRoomId}`)}>Volver a jugar</Button>
-  //   </div>
-  // );
-  // console.log("Esto viene de /fight",room);
-  // console.log("Mi movimiento", room.currentGame[me!.id].move)
-  // console.log("Movimiento del rival", room.currentGame[rival!.id].move);
+  const params = useParams();
+  const paramsId = params?.gameroomId;
+  const [now, setNow] = useState(false);
+  const [result, setResult] = useState<"me" | "rival" | "draw">();
+  // const player = useRecoilValue<PlayerData>(playerState);
+  // const currentGameroom = useRecoilValue(gameroomState);
+  const { data, isLoading, error } = useCurrentGame(String(paramsId));
+  useEffect(()=>{
+    if(!isLoading && !error) {
+      const me = Object.values(data.players).find(p => p.id == localStorage.getItem("accessToken")); //reemplazar localhost con player.id
+      const rival = Object.values(data.players).find(p => p.id !== localStorage.getItem("accessToken")); //reemplazar localhost con player.id
+      const host = Object.values(data.currentGame).find(p => p.host);
+      const guest = Object.values(data.currentGame).find(p => !p.host);
+      const hostMove = host?.move as "piedra" | "papel" | "tijera";
+      const guestMove = guest?.move as "piedra" | "papel" | "tijera";
+      const consoleWinner = async () => {
+        // const winner = determineWinner(hostMove, guestMove);
+        me?.name == host?.name ? await pushToHistory(String(paramsId), determineWinner(hostMove,guestMove)) : null;
+        if(determineWinner(hostMove, guestMove) == "draw") {
+          return setResult("draw")
+        };
+        if((me?.name == host?.name && determineWinner(hostMove, guestMove) == "host") || (me?.name == guest?.name && determineWinner(hostMove, guestMove) == "guest")) {
+          return setResult("me")
+        };
+        return setResult("rival")
+      };
+      consoleWinner();
+      const timeout = setTimeout(()=>{
+        setNow(true);
+      }, 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [isLoading, error])
+  if(isLoading) return null;
+  if(error) return <div>Error...</div>;
+  
+  const me = Object.values(data.players).find(p => p.id == localStorage.getItem("accessToken")); //reemplazar localhost con player.id
+  const rival = Object.values(data.players).find(p => p.id !== localStorage.getItem("accessToken"));
+  const host = Object.values(data.currentGame).find(p => p.host);
+  const guest = Object.values(data.currentGame).find(p => !p.host);
+  const myMove = Object.values(data.currentGame).find(p => p.name == me?.name)?.move;
+  const rivalMove = Object.values(data.currentGame).find(p => p.name == rival?.name)?.move;
+  console.log(me?.name == host?.name ? "Yo soy el host" : "Yo soy el guest")
+  const handlePlayAgainClick = async (name:string) => {
+    if(name !== host?.name) return Router.push(`/lobby/${data.shortRoomId}`);
+    if(name == host.name) {
+      await endGame(String(data.shortRoomId));
+      Router.push(`/lobby/${data.shortRoomId}`);
+    }
+  }
   return (
     <main className={styles["fight-page"]}>
-      {/* {room && player ? (
-        <>
-          <div className={styles["rival-move"]}>
-            <Move move={room && room.currentGame[rival!.id].move} size="big"/>
+      <div className={styles["rival-move"]}>
+        <Move move={rivalMove as "piedra" | "papel" | "tijera"} size="big"/>
+      </div>
+      <div className={styles["my-move"]}>
+        <Move move={myMove as "piedra" | "papel" | "tijera"} size="big"/>
+      </div>
+      {result && now && (
+        <div className={styles["result"]}>
+          <ResultCard result={result}/>
+          <div className={styles["score"]}>
+            <h2>HISTORIAL</h2>
+            <p className={styles["result-option"]}>{host?.name}: <span className={styles["bold"]}>{data.history.hostWins}</span></p>
+            <p className={styles["result-option"]}>{guest?.name}: <span className={styles["bold"]}>{data.history.guestWins}</span></p>
+            <p className={styles["result-option"]}>Empates: <span className={styles["bold"]}>{data.history.draws}</span></p>
           </div>
-          <div className={styles["my-move"]}>
-            <Move move={room && room.currentGame[me!.id].move} size="big"/>
-          </div>
-        </>
-      ) : null}
-      {result ? display : null} */}
+          <Button type="button" color="black" onClick={()=>handlePlayAgainClick(String(me?.name))}>Volver a jugar</Button>
+        </div>
+      )}
     </main>
   )
 }

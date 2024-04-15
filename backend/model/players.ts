@@ -31,7 +31,7 @@ export class Player {
       .where("name", "==", name)
       .get();
     if (querySnapshot.empty) {
-      const newPlayer = await Player.createNewPlayer({ name, pin });
+      const newPlayer = await Player.createNewPlayer({ name, pin, id: "" });
       return {
         status: 0,
         message: `Bienvenido ${newPlayer.data.name}`,
@@ -65,8 +65,8 @@ export class Player {
       }
     }
   }
-  static async getPlayerById(accessId: string): Promise<Player | null> {
-    const querySnapshot = await playersCollection.doc(accessId).get();
+  static async getPlayerById(accessToken: string): Promise<Player | null> {
+    const querySnapshot = await playersCollection.doc(accessToken).get();
     if (!querySnapshot.exists) return null;
     const player = new Player(
       querySnapshot.id,

@@ -10,6 +10,7 @@
     box-shadow: var(--buttons-shadow-blue);
     transition: all .1s;
     width: 100%;
+    cursor: pointer;
 }
 .button:active {
     transform: translateY(8px);
