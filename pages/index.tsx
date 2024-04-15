@@ -9,6 +9,7 @@ import Router from "next/router";
 import { getPlayer, createGameroom } from "@/lib/api-calls";
 import { useRecoilState } from "recoil";
 import { playerState } from "@/atoms/playerState";
+import { getMe } from "@/lib/api-calls";
 export default function Home() {
   const [player, setPlayer] = useRecoilState<PlayerData>(playerState);
   const [currentStep, setCurrentStep] = useState<number>(player?.name ? 1 : 0);
@@ -66,7 +67,7 @@ export default function Home() {
   const handleClick = async (option: "newGame" | "joinRoom" | "back"):Promise<void> => {
     if(option == "newGame") {
       setSubmitting(true)
-      const newGameroom = await createGameroom(player.name, player.pin);
+      const newGameroom = await createGameroom();
       if(newGameroom) {
         setSubmitting(false)
         Router.push(`/lobby/${newGameroom?.shortRoomId}`);

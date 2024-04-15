@@ -63,13 +63,14 @@ export async function usePlayer() {
   }
 }
 
-export async function createGameroom(name: string, pin: number) {
+export async function createGameroom() {
+  const accessToken = localStorage.getItem("accessToken");
   const apiResponse = await fetch(`${API_BASE_URL}/gamerooms`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify({ name, pin }),
   });
   try {
     const apiData = await apiResponse.json();

@@ -27,14 +27,14 @@ export async function createGameroom(player: PlayerData) {
         online: true,
         name: host.name,
         ready: false,
-        move: null,
+        move: "",
       },
       guest: {
         host: false,
         online: false,
         name: "",
         ready: false,
-        move: null,
+        move: "",
       },
     },
   });

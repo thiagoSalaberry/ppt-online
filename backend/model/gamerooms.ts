@@ -42,7 +42,7 @@ export class Gameroom {
         ...this.data.currentGame,
         host: {
           host: true,
-          move: null,
+          move: "",
           name,
           online: true,
           ready: false,
@@ -58,7 +58,7 @@ export class Gameroom {
         ...this.data.currentGame,
         guest: {
           host: false,
-          move: null,
+          move: "",
           name,
           online: true,
           ready: false,
@@ -73,7 +73,7 @@ export class Gameroom {
         ...this.data.currentGame,
         guest: {
           host: false,
-          move: null,
+          move: "",
           name,
           online: true,
           ready: false,

@@ -28,14 +28,14 @@ type GameroomData = {
       name: string;
       online: boolean;
       ready: boolean;
-      move: "piedra" | "papel" | "tijera" | null;
+      move: "piedra" | "papel" | "tijera" | "";
     };
     guest: {
       host: false;
       name: string;
       online: boolean;
       ready: boolean;
-      move: "piedra" | "papel" | "tijera" | null;
+      move: "piedra" | "papel" | "tijera" | "";
     };
   };
 };

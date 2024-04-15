@@ -8,11 +8,11 @@ export default async function handler(
 ) {
   if (req.method !== "POST")
     return res.status(400).json({ message: "Falta el ID de la sala" });
-  const { playerId } = req.body;
-  if (!playerId)
+  const accessToken = req.headers.authorization?.split(" ")[1];
+  if (!accessToken)
     return res.status(400).json({ message: "Falta el ID del jugador." });
   try {
-    const player = await getPlayerById(playerId);
+    const player = await getPlayerById(accessToken);
     if (!player)
       return res.status(400).json({ message: "El jugador no existe" });
     const gameroom = await createGameroom(player);

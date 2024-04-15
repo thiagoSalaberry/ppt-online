@@ -54,8 +54,7 @@ type IconsProps = {
   size: string;
 };
 type ResultCardProps = {
-  winner: "host" | "guest" | "draw";
-  img: "win" | "loss" | "draw";
+  result: "me" | "rival" | "draw";
 };
 type LobbyHeaderProps = {
   shortRoomId: string;
@@ -113,13 +112,13 @@ type CurrentGame = {
     name: string;
     online: boolean;
     ready: boolean;
-    move: "piedra" | "papel" | "tijera" | null;
+    move: "piedra" | "papel" | "tijera" | "";
   };
   guest: {
     host: false;
     name: string;
     online: boolean;
     ready: boolean;
-    move: "piedra" | "papel" | "tijera" | null;
+    move: "piedra" | "papel" | "tijera" | "";
   };
 };
