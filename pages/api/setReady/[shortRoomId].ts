@@ -6,8 +6,11 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { shortRoomId } = req.query;
-  const { playerId } = req.body;
-  const ready = await setReady(String(shortRoomId), playerId);
+  const accessToken = req.headers.authorization?.split(" ")[1];
+  if (!shortRoomId || !accessToken) {
+    return res.status(400).send({ message: "Faltan datos" });
+  }
+  const ready = await setReady(String(shortRoomId), accessToken);
   if (!ready) return res.status(400).json("Algo salió mal");
   if (ready) return res.status(200).json(ready);
 }

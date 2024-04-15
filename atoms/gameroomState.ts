@@ -1,19 +1,19 @@
 import { atom } from "recoil";
 
-export const gameroomState = atom({
+export const gameroomState = atom<GameroomAPIResponse>({
   key: "gameroom",
   default: {
     currentGame: {
-      hostId: {
+      host: {
         host: true,
-        move: null,
+        move: "",
         name: "",
         online: false,
         ready: false,
       },
-      guestId: {
+      guest: {
         host: false,
-        move: null,
+        move: "",
         name: "",
         online: false,
         ready: false,
@@ -36,7 +36,5 @@ export const gameroomState = atom({
       },
     },
     shortRoomId: 0,
-    hostTest: "antes",
-    guestTest: "antes",
   },
 });

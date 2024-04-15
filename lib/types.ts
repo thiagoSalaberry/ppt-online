@@ -1,17 +1,21 @@
 type ButtonProps = {
+  type: "submit" | "button";
   color?: string;
   children: string;
-  onClick?: Function;
-  type: "submit" | "button";
+  submitting?: boolean;
+  onClick?: () => void;
 };
 type TextFieldProps = {
-  type: "text" | "number" | "email";
+  type: "text" | "number";
   name: string;
-  placeholder?: string;
+  id: string;
   label: string;
+  value?: string;
+  placeholder?: string;
+  disabled?: boolean;
   required?: boolean;
-  onSubmit?: (input: string | number) => void;
-  compRef: React.RefObject<HTMLInputElement>;
+  missing?: boolean;
+  onChange?: (value: string) => void;
 };
 type MoveProps = {
   move: "piedra" | "papel" | "tijera" | null;
@@ -30,8 +34,9 @@ type TextProps = {
   align?: "left" | "center" | "right";
 };
 type WaitingProps = {
-  connected: boolean;
   type: "lines" | "dots";
+  connected?: boolean;
+  color?: "white" | "black";
 };
 type GameroomCardProps = {
   gameroomId: string;
@@ -42,45 +47,47 @@ type GameroomCardProps = {
   full: boolean;
   requester: {
     name: string;
-    pin: number;
+    id: string;
   };
 };
 type IconsProps = {
   size: string;
 };
 type ResultCardProps = {
-  winner: "host" | "guest" | "draw";
-  img: "win" | "loss" | "draw";
+  result: "me" | "rival" | "draw";
 };
-
-//API
-type PlayerAPIResponse = {
-  playerData: {
-    name: string;
-    pin: number;
+type LobbyHeaderProps = {
+  shortRoomId: string;
+  currentGame: {
+    host: {
+      name: string;
+      online: boolean;
+    };
+    guest: {
+      name: string;
+      online: boolean;
+    };
   };
-  playerId: string;
+  history: {
+    hostWins: number;
+    guestWins: number;
+  };
+};
+//API
+type PlayerModelResponse = {
+  status: 0 | 1 | 2;
+  message: string;
+  player?: PlayerData;
+};
+type PlayerAPIResponse = {
+  message: string;
+  playerData: PlayerData;
 };
 type shortRoomIdAPIResponse = {
   shortRoomId: number;
 };
 type GameroomAPIResponse = {
-  currentGame: {
-    hostId: {
-      host: boolean;
-      move: null;
-      name: string;
-      online: boolean;
-      ready: boolean;
-    };
-    guestId: {
-      host: boolean;
-      move: null;
-      name: string;
-      online: boolean;
-      ready: boolean;
-    };
-  };
+  currentGame: CurrentGame;
   gameroomId: string;
   history: {
     draws: number;
@@ -98,4 +105,20 @@ type GameroomAPIResponse = {
     };
   };
   shortRoomId: number;
+};
+type CurrentGame = {
+  host: {
+    host: true;
+    name: string;
+    online: boolean;
+    ready: boolean;
+    move: "piedra" | "papel" | "tijera" | "";
+  };
+  guest: {
+    host: false;
+    name: string;
+    online: boolean;
+    ready: boolean;
+    move: "piedra" | "papel" | "tijera" | "";
+  };
 };

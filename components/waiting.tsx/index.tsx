@@ -1,19 +1,19 @@
 import styles from "./waiting.module.css";
 export function WaitingComp(props:WaitingProps) {
     const signal:JSX.Element = (
-        <div className={styles["lines-container"]}>
-            <div className={`${styles["line"]} ${props.connected ? styles["connected"] : ""}`}></div>
-            <div className={`${styles["line"]} ${props.connected ? styles["connected"] : ""}`}></div>
-            <div className={`${styles["line"]} ${props.connected ? styles["connected"] : ""}`}></div>
-            <div className={`${styles["line"]} ${props.connected ? styles["connected"] : ""}`}></div>
-        </div>
+        <span className={styles["lines-container"]}>
+            <span className={`${styles["line"]} ${props.connected ? styles["connected"] : ""}`}></span>
+            <span className={`${styles["line"]} ${props.connected ? styles["connected"] : ""}`}></span>
+            <span className={`${styles["line"]} ${props.connected ? styles["connected"] : ""}`}></span>
+            <span className={`${styles["line"]} ${props.connected ? styles["connected"] : ""}`}></span>
+        </span>
     );
     const dots:JSX.Element = (
-        <div className={styles["dots-container"]}>
-            <div className={`${styles["dot"]} ${props.connected ? styles["connected"] : ""}`}></div>
-            <div className={`${styles["dot"]} ${props.connected ? styles["connected"] : ""}`}></div>
-            <div className={`${styles["dot"]} ${props.connected ? styles["connected"] : ""}`}></div>
-        </div>
+        <span className={styles["dots-container"]}>
+            <span className={`${styles["dot"]} ${props.color ? styles["white"] : ""}`}></span>
+            <span className={`${styles["dot"]} ${props.color ? styles["white"] : ""}`}></span>
+            <span className={`${styles["dot"]} ${props.color ? styles["white"] : ""}`}></span>
+        </span>
     );
     if(props.type == "lines") return signal;
     if(props.type == "dots") return dots;

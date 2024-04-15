@@ -1,6 +1,7 @@
 .button {
     font-size: 22px;
     font-weight: 500;
+    min-height: 60px;
     color: white;
     background: var(--blue);
     border: none;
@@ -9,9 +10,14 @@
     box-shadow: var(--buttons-shadow-blue);
     transition: all .1s;
     width: 100%;
+    cursor: pointer;
 }
 .button:active {
-    transform: translateY(7px);
+    transform: translateY(8px);
+    box-shadow: none;
+}
+.button.submitting:active {
+    transform: translateY(4px);
     box-shadow: none;
 }
 .red {
@@ -35,4 +41,8 @@
     color: black;
     background: var(--grey);
     box-shadow: var(--buttons-shadow-grey);
+}
+.submitting {
+    transform: translateY(4px);
+    box-shadow: none;
 }

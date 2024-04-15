@@ -1,5 +1,5 @@
 import { Gameroom } from "../model/gamerooms";
-import { getPlayer, getPlayerById } from "./playerController";
+import { getPlayerById } from "./playerController";
 import { rtdb } from "../lib/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { Player } from "../model/players";
@@ -7,7 +7,7 @@ import { Player } from "../model/players";
 export async function createGameroom(player: PlayerData) {
   const longId = uuidv4(),
     shortId = Math.ceil(Math.random() * 1000000),
-    host = await getPlayer(player.name, player.pin),
+    host = player,
     history = {
       hostWins: 0,
       guestWins: 0,
@@ -17,17 +17,24 @@ export async function createGameroom(player: PlayerData) {
     gameroomId: longId,
     shortRoomId: shortId,
     players: {
-      host: { name: host.playerData.name, id: host.playerId },
+      host: { name: host.name, id: host.id! },
       guest: { name: "", id: "" },
     },
     history,
     currentGame: {
-      [host.playerId]: {
+      host: {
         host: true,
         online: true,
+        name: host.name,
         ready: false,
-        move: null,
-        name: host.playerData.name,
+        move: "",
+      },
+      guest: {
+        host: false,
+        online: false,
+        name: "",
+        ready: false,
+        move: "",
       },
     },
   });
@@ -65,31 +72,41 @@ export async function getGameroom(shortRoomId: string) {
   }
 }
 
-export async function joinRoom(
-  shortRoomId: string,
-  playerName: string,
-  playerPin: number
-) {
+export async function joinRoom(shortRoomId: string, playerId: string) {
   try {
+    const player = await Player.getPlayerById(playerId);
+    if (!player) return { status: 0, response: "El jugador no existe" };
     const gameroom = await Gameroom.getGameroomById(shortRoomId);
-    //Devuelve gameroom o null
-    if (!gameroom) return { status: 0, response: "La sala no existe" }; //
-    const player = await Player.getPlayerByNameAndPin(playerName, playerPin);
-    if (player) {
-      const added = await gameroom?.addPlayer(playerName, player?.id);
-      if (added?.response == 1) {
-        return { status: 2, response: "El host ahora está online" }; //
-      }
-      if (added?.response == 2 || added?.response == 3) {
-        return { status: 3, response: "El guest ahora está online" }; //
-      }
-      if (added?.response == 4)
-        return { status: 1, response: "La sala está llena" }; //
+    if (!gameroom) return { status: 1, response: "La sala no existe" }; //
+    const added = await gameroom.addPlayer(player.data.name, player.id);
+    if (added.response == 0) {
+      return { status: 2, response: "El host ahora está online" }; //
     }
+    if (added.response == 1 || added?.response == 2) {
+      return { status: 3, response: "El guest ahora está online" }; //
+    }
+    if (added.response == 3)
+      return { status: 4, response: "La sala está llena" }; //
   } catch (error) {
     throw new Error(
       `Error en la función joinRoom() de gameroomControllers.ts:`
     );
+  }
+}
+
+export async function setReady(shortRoomId: string, playerId: string) {
+  const gameroom = await Gameroom.getGameroomById(shortRoomId);
+  if (!gameroom) {
+    return { status: 0, response: "La sala no existe" };
+  } else {
+    const hostOrGuest = Object.entries(gameroom.data.players).find(
+      ([_, value]) => value.id === playerId
+    )?.[0] as "host" | "guest";
+    if (!hostOrGuest) {
+      return { status: -1, response: "No estás en esta partida" };
+    }
+    const settingMove = await gameroom.setReady(hostOrGuest);
+    return settingMove.message;
   }
 }
 
@@ -99,21 +116,40 @@ export async function setMove(
   move: "piedra" | "papel" | "tijera"
 ) {
   const gameroom = await Gameroom.getGameroomById(shortRoomId);
-  console.log(gameroom);
   if (!gameroom) {
     return { status: 0, response: "La sala no existe" };
   } else {
-    const settingMove = await gameroom.setMove(move, playerId);
+    const hostOrGuest = Object.entries(gameroom.data.players).find(
+      ([_, value]) => value.id === playerId
+    )?.[0] as "host" | "guest";
+    if (!hostOrGuest) {
+      return { status: -1, response: "No estás en esta partida" };
+    }
+    const settingMove = await gameroom.setMove(hostOrGuest, move);
     return settingMove.message;
   }
 }
 
-export async function setReady(shortRoomId: string, playerId: string) {
+export async function pushToHistory(
+  shortRoomId: string,
+  result: "host" | "guest" | "draw"
+) {
   const gameroom = await Gameroom.getGameroomById(shortRoomId);
   if (!gameroom) {
-    return { status: 0, response: "La sala no existe" };
+    return { status: 0, message: "La sala no existe" };
   } else {
-    const settingMove = await gameroom.setReady(playerId);
-    return settingMove.message;
+    await gameroom.pushToHistory(result);
+    await gameroom.pull();
+    return gameroom.data.history;
+  }
+}
+
+export async function endGame(shortRoomId: string) {
+  const gameroom = await Gameroom.getGameroomById(shortRoomId);
+  if (!gameroom) {
+    return { status: 0, message: "La sala no existe" };
+  } else {
+    await gameroom.endGame();
+    return { message: "El juego terminó" };
   }
 }
