@@ -69,5 +69,4 @@ export default function UIPage() {
       <p>Seleccionados: {trues}</p>
     </main>
   )
-}
-  
+}  
