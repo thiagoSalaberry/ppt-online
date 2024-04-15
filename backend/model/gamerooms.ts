@@ -113,4 +113,36 @@ export class Gameroom {
     const player = currentGameState[who].name;
     return { message: `El jugador ${player} ha elegido ${move}` };
   }
+  async pushToHistory(result: "host" | "guest" | "draw") {
+    const key: "draws" | "guestWins" | "hostWins" =
+      result == "draw" ? "draws" : `${result}Wins`;
+    const history = this.data.history;
+    this.data.history = {
+      ...history,
+      [key]: history[key] + 1,
+    };
+    await this.push();
+    return { message: "El historial se actualizó correctamente" };
+  }
+  async endGame() {
+    const gameHost = this.data.currentGame.host;
+    const gameGuest = this.data.currentGame.guest;
+    this.data.currentGame = {
+      host: {
+        host: gameHost.host,
+        name: gameHost.name,
+        ready: false,
+        online: gameHost.online,
+        move: "",
+      },
+      guest: {
+        host: gameGuest.host,
+        name: gameGuest.name,
+        ready: false,
+        online: gameGuest.online,
+        move: "",
+      },
+    };
+    await this.push();
+  }
 }

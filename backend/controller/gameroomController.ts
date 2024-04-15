@@ -129,3 +129,27 @@ export async function setMove(
     return settingMove.message;
   }
 }
+
+export async function pushToHistory(
+  shortRoomId: string,
+  result: "host" | "guest" | "draw"
+) {
+  const gameroom = await Gameroom.getGameroomById(shortRoomId);
+  if (!gameroom) {
+    return { status: 0, message: "La sala no existe" };
+  } else {
+    await gameroom.pushToHistory(result);
+    await gameroom.pull();
+    return gameroom.data.history;
+  }
+}
+
+export async function endGame(shortRoomId: string) {
+  const gameroom = await Gameroom.getGameroomById(shortRoomId);
+  if (!gameroom) {
+    return { status: 0, message: "La sala no existe" };
+  } else {
+    await gameroom.endGame();
+    return { message: "El juego terminó" };
+  }
+}

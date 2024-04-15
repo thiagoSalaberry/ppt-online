@@ -160,3 +160,41 @@ export async function setMove(
     throw new Error(error);
   }
 }
+
+export async function pushToHistory(
+  shortRoomId: string,
+  result: "host" | "guest" | "draw"
+) {
+  const apiResponse = await fetch(`${API_BASE_URL}/history/${shortRoomId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ result }),
+  });
+  try {
+    if (apiResponse.status == 200) {
+      const apiData = await apiResponse.json();
+      return apiData;
+    }
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+export async function endGame(shortRoomId: string) {
+  const apiResponse = await fetch(`${API_BASE_URL}/endGame/${shortRoomId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  try {
+    if (apiResponse.status == 200) {
+      const apiData = await apiResponse.json();
+      return apiData;
+    }
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}

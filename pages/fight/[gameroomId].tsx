@@ -9,6 +9,7 @@ import { determineWinner } from "@/lib/determineWinner";
 import { useCurrentGame } from "@/lib/hooks";
 import { playerState } from "@/atoms/playerState";
 import { gameroomState } from "@/atoms/gameroomState";
+import { endGame, pushToHistory } from "@/lib/api-calls";
 export default function Fight() {
   const params = useParams();
   const paramsId = params?.gameroomId;
@@ -25,12 +26,15 @@ export default function Fight() {
       const guest = Object.values(data.currentGame).find(p => !p.host);
       const hostMove = host?.move as "piedra" | "papel" | "tijera";
       const guestMove = guest?.move as "piedra" | "papel" | "tijera";
-      // console.log(`Este es el move de cada uno antes de entrar en determineWinner() y ocurre en ${location.pathname}`, {hostMove, guestMove})
-      console.log({hostMove, guestMove})
-      console.log(`${location.pathname}`,data)
-      const consoleWinner = () => {
-        if(determineWinner(hostMove, guestMove) == "draw") return setResult("draw");
-        if((me?.name == host?.name && determineWinner(hostMove, guestMove) == "host") || (me?.name == guest?.name && determineWinner(hostMove, guestMove) == "guest")) return setResult("me");
+      const consoleWinner = async () => {
+        // const winner = determineWinner(hostMove, guestMove);
+        me?.name == host?.name ? await pushToHistory(String(paramsId), determineWinner(hostMove,guestMove)) : null;
+        if(determineWinner(hostMove, guestMove) == "draw") {
+          return setResult("draw")
+        };
+        if((me?.name == host?.name && determineWinner(hostMove, guestMove) == "host") || (me?.name == guest?.name && determineWinner(hostMove, guestMove) == "guest")) {
+          return setResult("me")
+        };
         return setResult("rival")
       };
       consoleWinner();
@@ -49,7 +53,14 @@ export default function Fight() {
   const guest = Object.values(data.currentGame).find(p => !p.host);
   const myMove = Object.values(data.currentGame).find(p => p.name == me?.name)?.move;
   const rivalMove = Object.values(data.currentGame).find(p => p.name == rival?.name)?.move;
-
+  console.log(me?.name == host?.name ? "Yo soy el host" : "Yo soy el guest")
+  const handlePlayAgainClick = async (name:string) => {
+    if(name !== host?.name) return Router.push(`/lobby/${data.shortRoomId}`);
+    if(name == host.name) {
+      await endGame(String(data.shortRoomId));
+      Router.push(`/lobby/${data.shortRoomId}`);
+    }
+  }
   return (
     <main className={styles["fight-page"]}>
       <div className={styles["rival-move"]}>
@@ -67,7 +78,7 @@ export default function Fight() {
             <p className={styles["result-option"]}>{guest?.name}: <span className={styles["bold"]}>{data.history.guestWins}</span></p>
             <p className={styles["result-option"]}>Empates: <span className={styles["bold"]}>{data.history.draws}</span></p>
           </div>
-          <Button type="button" color="black" onClick={()=>{}}>Volver a jugar</Button>
+          <Button type="button" color="black" onClick={()=>handlePlayAgainClick(String(me?.name))}>Volver a jugar</Button>
         </div>
       )}
     </main>

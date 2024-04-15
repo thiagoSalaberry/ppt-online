@@ -6,14 +6,14 @@ export const gameroomState = atom<GameroomAPIResponse>({
     currentGame: {
       host: {
         host: true,
-        move: null,
+        move: "",
         name: "",
         online: false,
         ready: false,
       },
       guest: {
         host: false,
-        move: null,
+        move: "",
         name: "",
         online: false,
         ready: false,

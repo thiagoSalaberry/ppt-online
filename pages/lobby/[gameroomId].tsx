@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 import { getMe, joinRoom, searchGameroom } from "@/lib/api-calls";
 import { useCurrentGame, useRoom } from "@/lib/hooks";
-import LobbyContent from "./lobby-content";
+import {LobbyContent} from "@/components/lobby-content/lobby-content";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { playerState } from "@/atoms/playerState";
 import { gameroomState } from "@/atoms/gameroomState";
