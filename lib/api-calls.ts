@@ -1,24 +1,20 @@
 const env = process.env.NODE_ENV;
 const API_BASE_URL =
-  env == "development"
-    ? "http://localhost:3000"
-    : "https://ppt-online-react.vercel.app/api";
+  env == "production"
+    ? "https://ppt-online-react.vercel.app/api"
+    : "http://localhost:3000";
 export async function getPlayer(
   name: string,
   pin: number
 ): Promise<PlayerAPIResponse | null> {
   try {
-    const apiResponse = await fetch(
-      // `https://ppt-online-react.vercel.app/api/player`,
-      `${API_BASE_URL}/player`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, pin }),
-      }
-    );
+    const apiResponse = await fetch(`${API_BASE_URL}/player`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, pin }),
+    });
     if (apiResponse.status < 400) {
       const apiData = await apiResponse.json();
       return apiData;
